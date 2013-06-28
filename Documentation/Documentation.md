@@ -34,16 +34,6 @@ The Post-Processing stage contains two main files:
 
 For convenience, commonly utility functions are stored in scripts within the utils folder.
 
-ToDo
-----------------------------------------------
-
-1. Integrate libFM into the program
-2. Integrate SVDFeature into the program
-3. Develop a simple hybridization script
-4. Write effects.py
-5. Multi-thread the driver
-6. Integrate post-processing pair finding replacement.
-
 Acknowledgements
 ----------------------------------------------
 
