@@ -32,7 +32,7 @@ The Post-Processing stage contains two main files:
 
 2. post.py, a script which reformats the predictions by placing back in the global effects and looking for duplicates from the training set in the test set (and replacing with the appropriate value). It outputs the final predictions to Data/Outputs
 
-For convenience, commonly utility functions are stored in scripts within the utils folder.
+For convenience, commonly used utility functions are stored in scripts within the utils folder.
 
 ToDo
 ----------------------------------------------
