@@ -4,8 +4,7 @@ import re
 from math import *
 
 #--------------------------------------------------------------------
-# beam input files (NO TRAILING / IN work_path and bin_dir)
-#--------------------------------------------------------------------
+
 work_path = '/Users/jarviscolin/Desktop/work/libfm-1.34.src'
 
 template = 'bin/libFM -task r -train training_set_nodups.libfm -test predict_dummy.libfm -dim ’1,1,8’ -out colin_test8.txt'
