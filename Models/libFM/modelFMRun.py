@@ -3,8 +3,7 @@ def FMRun(os, utils):
 		fout_temp = 'Data/ModelPredictions/temp_d'+utils.FM_DIMS[i]+'_i'+utils.FM_STR_ITER+'.txt'
 		fout_final = 'Data/ModelPredictions/d'+utils.FM_DIMS[i]+'_i'+utils.FM_STR_ITER+'.txt'
 		rlog = 'Data/LogFiles/d'+utils.FM_DIMS[i]+'_i'+utils.FM_STR_ITER+'.log'
-		osStr = 'Models\libFM\libFM -task r -train ' + utils.FM_TRAIN_PATH + ' -test ' + utils.FM_TEST_PATH + ' -dim \''+utils.FM_GLOBAL_BIAS + ','+ utils.FM_ONE_WAY_INTERACTION + ','+ utils.FM_DIMS[i] + '\' -iter ' + utils.FM_STR_ITER + ' -rlog '+  rlog + ' -out ' + fout_temp
-		print(osStr)
+		osStr = 'Models/libFM/libfm -task r -train ' + utils.FM_TRAIN_PATH + ' -test ' + utils.FM_TEST_PATH + ' -dim \''+utils.FM_GLOBAL_BIAS + ','+ utils.FM_ONE_WAY_INTERACTION + ','+ utils.FM_DIMS[i] + '\' -iter ' + utils.FM_STR_ITER + ' -rlog '+  rlog + ' -out ' + fout_temp
 		os.system(osStr)
 		FMFixPredictions(utils,fout_temp,fout_final)
 		os.system('rm '+fout_temp)
