@@ -5,7 +5,9 @@ def preProcess(os,utils):
 # Removes duplicates
 # Randomizes the ordering
 # De-effects
+# Makes a prediction text with a "dummy" rating
 # Saves in Data/PreProcessed/training_set_processed.txt
+# and Data/PreProcessed/predict_dummy.txt
 #-----------------------------------------------------------------
 
 
