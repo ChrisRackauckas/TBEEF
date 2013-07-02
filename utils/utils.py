@@ -2,8 +2,8 @@
 
 template = 'bin/libFM -task r -train training_set_nodups.libfm -test predict_dummy.libfm -dim ’1,1,8’ -out colin_test8.txt'
 TEST_IDS_PATH = 'Data/Original/predict.txt'
-TEST_IDS_DUMMY_PATH = 'Data/Original/predict_dummy.txt'
-ORIGINAL_TRAIN_PATH = 'Data/Original/training_set_nodups_random.txt'
+TEST_IDS_DUMMY_PATH = 'Data/PreProcessed/predict_dummy.txt'
+ORIGINAL_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
 
 #### FM ####
 

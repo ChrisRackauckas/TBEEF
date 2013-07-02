@@ -1,14 +1,25 @@
+def preProcess(os,utils):
+
+#-----------------------------------------------------------------
+# Reads in data file with (userID, movieID, rating) format.
+# Removes duplicates
+# Randomizes the ordering
+# De-effects
+# Saves in Data/PreProcessed/training_set_processed.txt
+#-----------------------------------------------------------------
+
+
+
+def deEffectData(infilePath, outfilePath):
+
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
 # Returns dictionaries of average rating for each user, average
 #   rating for each movie, and the global average rating.
 # Output txt file with format (userID, movieID, newRating) where
 #   newRating has been subtracted from the global average rating.
-#
-# Code by Colin Jarvis
 #-----------------------------------------------------------------
 
-def deEffectData(infilePath, outfilePath):
     infile = open(infilePath, 'r')
     #initialize variables
     lineCounter= 0

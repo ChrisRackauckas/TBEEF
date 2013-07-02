@@ -14,7 +14,7 @@ import utils
 ################### State Variables ##################
 
 SETUP_FM = False
-RUN_FM = True
+RUN_FM = False
 
 #--------------------------------------------------------------------
 
