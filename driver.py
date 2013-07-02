@@ -18,12 +18,12 @@ import preProcess as pre
 
 ################### State Variables ##################
 
-PRE_PROCESS = True
-DE_EFFECT = False
-SETUP_FM = True
-RUN_FM = True
-SETUP_HYBRID = True
-RUN_HYBRID = True
+PRE_PROCESS  = False
+DE_EFFECT    = False
+SETUP_FM     = False
+RUN_FM       = False
+SETUP_HYBRID = False
+RUN_HYBRID   = False
 POST_PROCESS = True
 
 #--------------------------------------------------------------------

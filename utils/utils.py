@@ -41,6 +41,7 @@ HYBRID_TRAIN_MATRIX_PATH    = 'Data/Hybrid/hybridTrain.txt'
 HYBRID_PREDICT_MATRIX_PATH  = 'Data/Hybrid/hybridPredict.txt'
 HYBRID_SYNTHESIZED_PATH     = 'Data/Hybrid/hybridSynthesized.txt'
 OUTPUT_PATH                 = 'Data/Output/output.txt'
+TO_POST_PATH                = 'Data/Hybrid/toPost.txt'
 
 #### Utility Functions ####
 
