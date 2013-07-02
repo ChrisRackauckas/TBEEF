@@ -1,4 +1,12 @@
-Data/Original
+Data/
+
+################
+## libFM
+################
+
+*.y
+*.x
+*.xt
 
 #################
 ## R
@@ -6,6 +14,7 @@ Data/Original
 *.rhistory
 *.RData
 *.Rout
+
 #################
 ## Eclipse
 #################
