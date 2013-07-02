@@ -7,18 +7,18 @@ def FMRunParallel(os, utils,mproc):
 		pTest = mproc.Process(
 			  target=FMTestInstance,
 			  args = (utils.TEST_IDS_PATH,  
-			    dim,utils.FM_STR_ITER, \
-			    fout_test_final, \
-			    utils.FM_TRAIN_PATH, \
-			    utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, \
+			    dim,utils.FM_STR_ITER, 
+			    fout_test_final, 
+			    utils.FM_TRAIN_PATH, 
+			    utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, 
 			    utils.FM_ONE_WAY_INTERACTION))
 		pCV   = mproc.Process(
 			  target=FMCVInstance,
-			  args = (utils.PROCESSED_CV_PATH,dim, \
-			    utils.FM_STR_ITER, \
-			    fout_cv_final, \
-			    utils.FM_TRAIN_PATH, \
-			    utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, \
+			  args = (utils.PROCESSED_CV_PATH,dim, 
+			    utils.FM_STR_ITER, 
+			    fout_cv_final, 
+			    utils.FM_TRAIN_PATH, 
+			    utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, 
 			    utils.FM_ONE_WAY_INTERACTION))
 		utils.processes.append(pTest)
 		utils.processes.append(pCV)
@@ -33,16 +33,16 @@ def FMRunSerial(os,utils):
 			dim +'_i'+ utils.FM_STR_ITER +'.txt'
 		fout_cv_final = 'Data/ModelPredictions/FM_CV_d' +  \
 			dim +'_i'+ utils.FM_STR_ITER +'.txt'
-		FMTestInstance(utils.TEST_IDS_PATH,dim,utils.FM_STR_ITER, \
-			    fout_test_final, \
-			    utils.FM_TRAIN_PATH, \
-			    utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, \
+		FMTestInstance(utils.TEST_IDS_PATH,dim,utils.FM_STR_ITER, 
+			    fout_test_final, 
+			    utils.FM_TRAIN_PATH, 
+			    utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, 
 			    utils.FM_ONE_WAY_INTERACTION)
-		FMCVInstance(utils.PROCESSED_CV_PATH,dim, \
-			    utils.FM_STR_ITER, \
-			    fout_cv_final, \
-			    utils.FM_TRAIN_PATH, \
-			    utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, \
+		FMCVInstance(utils.PROCESSED_CV_PATH,dim, 
+			    utils.FM_STR_ITER, 
+			    fout_cv_final, 
+			    utils.FM_TRAIN_PATH, 
+			    utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, 
 			    utils.FM_ONE_WAY_INTERACTION)
 		utils.testPredictionPaths.append(fout_test_final)
 		utils.CVPredictionPaths.append(fout_cv_final)
@@ -54,15 +54,15 @@ def FMTestInstance(idsPath,dim,strItr,fout_test_final,trainPath,testPath,globalB
 			dim +'_i'+ strItr +'.txt'
 	rlog = 'Data/LogFiles/test_d' + dim + \
 		'_i'+ strItr +'.log'
-	osStrTest = './Models/libFM/libFM -task r -train ' + \
-		trainPath  + ' -test ' + \
-		testPath + ' -dim \'' + \
-		globalBias + ','+ \
-		oneWay + ','+ \
-		dim + '\' -iter ' + \
-		strItr + ' -rlog '+  \
-		rlog + ' -out ' + fout_test_temp
-	os.system(osStrTest + '> /dev/null')
+	os.system('./Models/libFM/libFM -task r -train ' + 
+		trainPath  + ' -test ' + 
+		testPath + ' -dim \'' + 
+		globalBias + ','+ 
+		oneWay + ','+ 
+		dim + '\' -iter ' + 
+		strItr + ' -rlog '+  
+		rlog + ' -out ' + 
+		fout_test_temp + '> /dev/null')
 	utils.fixTestPredictions(idsPath,fout_test_temp,fout_test_final)
 
 def FMCVInstance(processedCVPath,dim,strItr,fout_cv_final,trainPath,CVPath,globalBias,oneWay):
@@ -71,15 +71,15 @@ def FMCVInstance(processedCVPath,dim,strItr,fout_cv_final,trainPath,CVPath,globa
 			dim +'_i'+ strItr +'.txt'
 	rlog = 'Data/LogFiles/test_d' + dim + \
 		'_i'+ strItr +'.log'
-	osStrCV = './Models/libFM/libFM -task r -train ' + \
-		trainPath + ' -test ' + \
-		CVPath + ' -dim \'' + \
-		globalBias + ','+ \
-		oneWay + ','+ \
-		dim + '\' -iter ' + \
-		strItr + ' -rlog '+  \
-		rlog + ' -out ' + fout_cv_temp
-	os.system(osStrCV + '> /dev/null')
+	os.system('./Models/libFM/libFM -task r -train ' + 
+		trainPath + ' -test ' + 
+		CVPath + ' -dim \'' + 
+		globalBias + ','+ 
+		oneWay + ','+ 
+		dim + '\' -iter ' + 
+		strItr + ' -rlog '+  
+		rlog + ' -out ' + 
+		fout_cv_temp + '> /dev/null')
 	FMFixCV(processedCVPath,fout_cv_temp,fout_cv_final)
 
 def FMFixCV(processedCVPath,fout_temp,fout_final):

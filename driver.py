@@ -20,12 +20,12 @@ import preProcess as pre
 
 ################### Select Parts  ##################
 
-PRE_PROCESS  = False
-DE_EFFECT    = False
-SETUP_FM     = False
+PRE_PROCESS  = True
+DE_EFFECT    = True
+SETUP_FM     = True
 RUN_FM       = True
-SETUP_HYBRID = False
-RUN_HYBRID   = False
+SETUP_HYBRID = True
+RUN_HYBRID   = True
 POST_PROCESS = True
 
 ################## Select Performance ##############

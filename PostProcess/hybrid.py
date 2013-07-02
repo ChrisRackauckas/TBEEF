@@ -1,4 +1,7 @@
 def setupHybrid(os,utils):
+#------------------------------------------------
+#Sets up the input matrices for the synthesizer
+#------------------------------------------------
 	setupHybridTrain(os,utils)
 	setupHybridPredict(os,utils)
 
