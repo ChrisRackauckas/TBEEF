@@ -52,7 +52,7 @@ def splitData(utils, lineCount):
     counter = 0
     data = open(utils.PROCESSED_DATA_PATH, 'r')
     training = open(utils.PROCESSED_TRAIN_PATH, 'w')
-    crossVal = open(utils.PROCESSED_CROSSVAL_PATH, 'w')
+    crossVal = open(utils.PROCESSED_CV_PATH, 'w')
     for line in data:
         if counter < int(lineCount * utils.DATA_SET_SPLIT):
             training.write( line )
