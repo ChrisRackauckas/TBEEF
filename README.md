@@ -47,7 +47,8 @@ ToDo
 Contributors
 ----------------------------------------------
 
-Chris Rackauckas, University of California, Irvine
+*	Chris Rackauckas, University of California, Irvine
+*	Colin Jarvis, Macalester College
 
 Acknowledgements
 ----------------------------------------------
