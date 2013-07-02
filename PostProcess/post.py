@@ -1,5 +1,5 @@
 def postProcess(os,utils):
-	utils.fixTestPredictions(utils,utils.HYBRID_SYNTHESIZED_PATH,utils.TO_POST_PATH)
+	utils.fixTestPredictions(utils.TEST_IDS_PATH,utils.HYBRID_SYNTHESIZED_PATH,utils.TO_POST_PATH)
 	#findPairs(os,utils,utils.ORIGINAL_DATA_PATH,utils.TO_POST_PATH,utils.OUTPUT_PATH)
 
 def findPairs(os,utils,masterPath,changePath,toSave):

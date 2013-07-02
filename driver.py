@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import random
+import time
 import multiprocessing as mproc
 from math import *
 WORK_PATH = os.getcwd()
@@ -17,7 +18,7 @@ import hybrid
 import post
 import preProcess as pre
 
-################### State Variables ##################
+################### Select Parts  ##################
 
 PRE_PROCESS  = False
 DE_EFFECT    = False
@@ -26,6 +27,12 @@ RUN_FM       = True
 SETUP_HYBRID = False
 RUN_HYBRID   = False
 POST_PROCESS = True
+
+################## Select Performance ##############
+
+RUN_PARALLEL = True
+RUN_SERIAL   = False
+TIME_RUN     = False
 
 #--------------------------------------------------------------------
 
@@ -43,9 +50,39 @@ if SETUP_FM:
 
 ################### Run Models ###################
 
-if RUN_FM:
-    print("Running FM")    
-    modelFMRun.FMRun(os,utils, mproc)
+#Parallel--------------------------------
+if RUN_PARALLEL:
+	if TIME_RUN:
+		start_time = time.time()
+
+	if RUN_FM:
+		print("Running FM")    
+ 		modelFMRun.FMRunParallel(os,utils, mproc)
+
+
+####Join #####
+
+	for p in utils.processes:
+		p.join()
+
+	if TIME_RUN:
+		print(time.time() - start_time,"seconds")
+
+################## Serial #######################
+
+if RUN_SERIAL:
+	if TIME_RUN:
+		start_time = time.time()
+
+	if RUN_FM:
+		print("Running FM")    
+ 		modelFMRun.FMRunSerial(os,utils)
+	
+	if TIME_RUN:
+		print(time.time() - start_time,"seconds")
+
+
+
 
 ################### Run Hybrid ###################
 

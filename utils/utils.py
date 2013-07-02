@@ -57,9 +57,9 @@ def grabCSVColumn(csv_path,columnNumber):
 		ans.append(row[columnNumber])
 	return ans
 
-def fixTestPredictions(utils,toFix,toSave):
+def fixTestPredictions(idsPath,toFix,toSave):
     
-    ids = open(utils.TEST_IDS_PATH, 'r')
+    ids = open(idsPath, 'r')
     predictions = open(toFix, 'r')
     idlines = ids.readlines();
     plines = predictions.readlines();
