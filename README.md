@@ -37,12 +37,12 @@ For convenience, commonly used utility functions are stored in scripts within th
 ToDo
 ----------------------------------------------
 
-1. Integrate libFM into the program
-2. Integrate SVDFeature into the program
-3. Develop a simple hybridization script
-4. Write effects.py
-5. Multi-thread the driver
-6. Integrate post-processing pair finding replacement.
+1. Integrate SVDFeature into the program
+2. Multi-thread the driver
+3. Integrate post-processing pair finding replacement.
+4. Add Multi-Class Logistic Regression
+5. Add Ridge Regression
+6. More synthesize modes
 
 Contributors
 ----------------------------------------------

@@ -18,6 +18,7 @@ import preProcess as pre
 
 ################### State Variables ##################
 
+PRE_PROCESS = True
 DE_EFFECT = False
 SETUP_FM = True
 RUN_FM = True
@@ -30,8 +31,8 @@ POST_PROCESS = True
 
 
 ################### Pre-Process ###################
-
-pre.preProcess(os,utils,random,DE_EFFECT)
+if PRE_PROCESS:
+    pre.preProcess(os,utils,random,DE_EFFECT)
 
 ################### Setup Models ###################
 

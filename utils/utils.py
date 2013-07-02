@@ -22,10 +22,13 @@ DATA_SET_SPLIT = .8 #percent of data file for training, 1-value is cross val
 
 #### FM ####
 
-FM_TRAIN_PATH = 'Data/ModelData/FMTrain.txt'
-FM_TEST_PATH = 'Data/ModelData/FMTest.txt'
-FM_CV_PATH = 'Data/ModelData/FMCV.txt'
-FM_ITER = 5
+FM_TRAIN_BIN_PATH = 'Data/PreProcessed/FMTrainBin'
+FM_TRAIN_PATH     = 'Data/ModelData/FMTrain.txt'
+FM_TEST_BIN_PATH  = 'Data/PreProcessed/FMTestBin'
+FM_TEST_PATH      = 'Data/ModelData/FMTest.txt'
+FM_CV_BIN_PATH    = 'Data/PreProcessed/FMCVBin'
+FM_CV_PATH        = 'Data/ModelData/FMCV.txt'
+FM_ITER = 100
 FM_STR_ITER = str(FM_ITER)
 FM_GLOBAL_BIAS = '1' #either 1 or 0
 FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
