@@ -2,6 +2,7 @@
 import sys
 import os
 import re
+import random
 from math import *
 WORK_PATH = os.getcwd()
 sys.path.append(WORK_PATH + '/PreProcess')
@@ -10,6 +11,7 @@ sys.path.append(WORK_PATH + '/utils')
 import modelFMRun
 import modelFMSetup
 import utils
+import preProcess as pre
 
 ################### State Variables ##################
 
@@ -19,6 +21,7 @@ RUN_FM = False
 #--------------------------------------------------------------------
 
 ################### Pre-Process ###################
+pre.preProcess(os,utils,random)
 
 ################### Setup Models ###################
 
