@@ -20,6 +20,8 @@ def preProcess(os,utils,random):
         if line != '\n':
             line = line.replace('\n', '\t1\n') #adds dummy column
             outPredict.write(line)
+    inPredict.close()
+    outPredict.close()
 
     
     # randomizes, no dups
@@ -35,6 +37,7 @@ def preProcess(os,utils,random):
     newDataFile = open(utils.ORIGINAL_DATA_RNDM_NODUPS_PATH,'w')
     for _, line in data:
         newDataFile.write( line )
+    newDataFile.close()
             
 
     # De-effects data file
@@ -56,6 +59,9 @@ def splitData(utils, lineCount):
             counter +=1
         else:
             crossVal.write( line )
+    data.close()
+    training.close()
+    crossVal.close()
 
     
 
@@ -118,20 +124,25 @@ def deEffectData(infilePath, outfilePath, utils):
         movie = columns[1]
         newRating = globalMean - float(columns[2])
         outfile.write(user+'\t'+movie+'\t'+ str(newRating)+'\n')
+    infile.close()
+    outfile.close()
 
     # write user effect file
     userFile = open(utils.EFFECTS_USER_PATH, 'w')
     for i in userMeanDict:
         userFile.write(str(i) +'\t'+ str(userMeanDict.get(i)) + '\n')
+    userFile.close()
     
     # write movie effect file
     movieFile = open(utils.EFFECTS_MOVIE_PATH, 'w')
     for i in movieMeanDict:
         movieFile.write(str(i) +'\t'+ str(movieMeanDict.get(i)) + '\n')
+    movieFile.close()
 
     # write global effect file
     globalFile = open(utils.EFFECTS_GLOBAL_PATH, 'w')
     globalFile.write(str(globalMean))
+    globalFile.close()
 
         
 
