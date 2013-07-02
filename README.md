@@ -44,6 +44,11 @@ ToDo
 5. Multi-thread the driver
 6. Integrate post-processing pair finding replacement.
 
+Contributors
+----------------------------------------------
+
+Chris Rackauckas, University of California, Irvine
+
 Acknowledgements
 ----------------------------------------------
 
