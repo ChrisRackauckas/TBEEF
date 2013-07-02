@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import random
+import multiprocessing as mproc
 from math import *
 WORK_PATH = os.getcwd()
 sys.path.append(WORK_PATH + '/PreProcess')
@@ -21,7 +22,7 @@ import preProcess as pre
 PRE_PROCESS  = False
 DE_EFFECT    = False
 SETUP_FM     = False
-RUN_FM       = False
+RUN_FM       = True
 SETUP_HYBRID = False
 RUN_HYBRID   = False
 POST_PROCESS = True
@@ -44,7 +45,7 @@ if SETUP_FM:
 
 if RUN_FM:
     print("Running FM")    
-    modelFMRun.FMRun(os,utils)
+    modelFMRun.FMRun(os,utils, mproc)
 
 ################### Run Hybrid ###################
 

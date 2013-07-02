@@ -1,3 +1,7 @@
+#### Processes ####
+
+processes = []
+
 #### Paths ####
 
 TEST_IDS_PATH = 'Data/Original/predict.txt'
