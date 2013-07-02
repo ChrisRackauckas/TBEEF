@@ -1,9 +1,21 @@
 #### Paths ####
 
-template = 'bin/libFM -task r -train training_set_nodups.libfm -test predict_dummy.libfm -dim ’1,1,8’ -out colin_test8.txt'
 TEST_IDS_PATH = 'Data/Original/predict.txt'
 TEST_IDS_DUMMY_PATH = 'Data/PreProcessed/predict_dummy.txt'
-ORIGINAL_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
+ORIGINAL_DATA_PATH = 'Data/Original/data_set.txt'
+ORIGINAL_DATA_RNDM_NODUPS_PATH = 'Data/Original/data_set_rndm_nodups.txt'
+PROCESSED_DATA_PATH = 'Data/PreProcessed/data_set_processed.txt'
+PROCESSED_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
+PROCESSED_CROSSVAL_PATH = 'Data/PreProcessed/crossVal_set_processed.txt'
+
+EFFECTS_USER_PATH = 'Data/Effects/user_effects.txt'
+EFFECTS_MOVIE_PATH = 'Data/Effects/movie_effects.txt'
+EFFECTS_GLOBAL_PATH = 'Data/Effects/global_effects.txt'
+
+#### DATA ####
+
+DATA_SET_SPLIT = .8 # percent of data for training, 1-value is for cross validation
+
 
 #### FM ####
 
