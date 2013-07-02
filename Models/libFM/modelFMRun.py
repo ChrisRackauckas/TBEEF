@@ -5,8 +5,8 @@ def FMRun(os, utils):
 		fout_cv_temp = 'Data/ModelPredictions/FM_CV_temp_d'+utils.FM_DIMS[i]+'_i'+utils.FM_STR_ITER+'.txt'
 		fout_cv_final = 'Data/ModelPredictions/FM_CV_d'+utils.FM_DIMS[i]+'_i'+utils.FM_STR_ITER+'.txt'
 		rlog = 'Data/LogFiles/d'+utils.FM_DIMS[i]+'_i'+utils.FM_STR_ITER+'.log'
-		osStrTest = './Models/libFM/libfm -task r -train ' + utils.FM_TRAIN_PATH + ' -test ' + utils.FM_TEST_PATH + ' -dim \''+utils.FM_GLOBAL_BIAS + ','+ utils.FM_ONE_WAY_INTERACTION + ','+ utils.FM_DIMS[i] + '\' -iter ' + utils.FM_STR_ITER + ' -rlog '+  rlog + ' -out ' + fout_test_temp
-		osStrCV = './Models/libFM/libfm -task r -train ' + utils.FM_TRAIN_PATH + ' -test ' + utils.FM_CV_PATH + ' -dim \''+utils.FM_GLOBAL_BIAS + ','+ utils.FM_ONE_WAY_INTERACTION + ','+ utils.FM_DIMS[i] + '\' -iter ' + utils.FM_STR_ITER + ' -rlog '+  rlog + ' -out ' + fout_cv_temp
+		osStrTest = './Models/libFM/libFM -task r -train ' + utils.FM_TRAIN_PATH + ' -test ' + utils.FM_TEST_PATH + ' -dim \''+utils.FM_GLOBAL_BIAS + ','+ utils.FM_ONE_WAY_INTERACTION + ','+ utils.FM_DIMS[i] + '\' -iter ' + utils.FM_STR_ITER + ' -rlog '+  rlog + ' -out ' + fout_test_temp
+		osStrCV = './Models/libFM/libFM -task r -train ' + utils.FM_TRAIN_PATH + ' -test ' + utils.FM_CV_PATH + ' -dim \''+utils.FM_GLOBAL_BIAS + ','+ utils.FM_ONE_WAY_INTERACTION + ','+ utils.FM_DIMS[i] + '\' -iter ' + utils.FM_STR_ITER + ' -rlog '+  rlog + ' -out ' + fout_cv_temp
 		os.system(osStrTest)
 		os.system(osStrCV)
 		utils.fixTestPredictions(utils,fout_test_temp,fout_test_final)

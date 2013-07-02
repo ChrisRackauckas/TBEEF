@@ -7,7 +7,8 @@ def runHybrid(os,utils):
 # Calls an R script which uses the train and predict matrices
 # To generate a prediction
 #-------------------------------------------------
-	os.system('R PostProcess/hybrid.R')
+    print("Generating Results")
+    os.system('R CMD BATCH PostProcess/hybrid.R')
 
 
 

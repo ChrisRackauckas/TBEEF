@@ -18,6 +18,7 @@ import preProcess as pre
 
 ################### State Variables ##################
 
+DE_EFFECT = False
 SETUP_FM = True
 RUN_FM = True
 SETUP_HYBRID = True
@@ -29,21 +30,25 @@ POST_PROCESS = True
 
 
 ################### Pre-Process ###################
-pre.preProcess(os,utils,random)
+
+pre.preProcess(os,utils,random,DE_EFFECT)
 
 ################### Setup Models ###################
 
 if SETUP_FM:
+    print("Setting up FM")
     modelFMSetup.FMSetup(os, utils)
 
 ################### Run Models ###################
 
 if RUN_FM:
+    print("Running FM")    
     modelFMRun.FMRun(os,utils)
 
 ################### Run Hybrid ###################
 
 if SETUP_HYBRID:
+    print("Setting up hybrid")
     hybrid.setupHybrid(os,utils)
 
 if RUN_HYBRID:

@@ -1,4 +1,4 @@
-def preProcess(os,utils,random):
+def preProcess(os,utils,random,DE_EFFECT):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -41,9 +41,12 @@ def preProcess(os,utils,random):
             
 
     # De-effects data file
-    deEffectData(utils.ORIGINAL_DATA_RNDM_NODUPS_PATH, \
+    if DE_EFFECT:
+        deEffectData(utils.ORIGINAL_DATA_RNDM_NODUPS_PATH, \
                  utils.PROCESSED_DATA_PATH, utils)
-
+    else:
+       os.system("mv " + utils.ORIGINAL_DATA_RNDM_NODUPS_PATH + " " + \
+                  utils.PROCESSED_DATA_PATH)
     # Splits data set
     splitData(utils, lenData)
 
