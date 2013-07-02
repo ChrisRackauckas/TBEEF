@@ -1,8 +1,8 @@
 #### Paths ####
 
 TEST_IDS_PATH = 'Data/Original/predict.txt'
-TEST_IDS_DUMMY_PATH = 'Data/Original/predict_dummy.txt'
-ORIGINAL_TRAIN_PATH = 'Data/Original/training_set_nodups_random.txt'
+TEST_IDS_DUMMY_PATH = 'Data/PreProcessed/predict_dummy.txt'
+ORIGINAL_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
 
 #### FM ####
 
