@@ -52,34 +52,33 @@ if SETUP_FM:
 
 #Parallel--------------------------------
 if RUN_PARALLEL:
-	if TIME_RUN:
-		start_time = time.time()
+    if TIME_RUN:
+        start_time = time.time()
 
-	if RUN_FM:
-		print("Running FM")    
- 		modelFMRun.FMRunParallel(os,utils, mproc)
-
-
+    if RUN_FM:
+        print("Running FM")
+	modelFMRun.FMRunParallel(os,utils, mproc)
+	
 ####Join #####
+	
+        for p in utils.processes:
+            p.join()
 
-	for p in utils.processes:
-		p.join()
-
-	if TIME_RUN:
-		print(time.time() - start_time,"seconds")
+    if TIME_RUN:
+	print(time.time() - start_time,"seconds")
 
 ################## Serial #######################
 
 if RUN_SERIAL:
-	if TIME_RUN:
-		start_time = time.time()
+    if TIME_RUN:
+	start_time = time.time()
 
-	if RUN_FM:
-		print("Running FM")    
- 		modelFMRun.FMRunSerial(os,utils)
+    if RUN_FM:
+	print("Running FM")    
+ 	modelFMRun.FMRunSerial(os,utils)
 	
-	if TIME_RUN:
-		print(time.time() - start_time,"seconds")
+    if TIME_RUN:
+	print(time.time() - start_time,"seconds")
 
 
 
@@ -96,5 +95,5 @@ if RUN_HYBRID:
 ################### Post Process #################
 
 if POST_PROCESS:
-    post.postProcess(os,utils)
+    post.postProcess(os,utils, DE_EFFECT)
 
