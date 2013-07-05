@@ -23,6 +23,7 @@ CVPredictionPaths = [] #Array of paths where CV predictions are saved
 #### DATA ####
 
 DATA_SET_SPLIT = .8 #percent of data file for training, 1-value is cross val
+DATA_SIZE = 0 # value added in preprocessing
 
 #### FM ####
 

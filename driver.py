@@ -13,7 +13,7 @@ sys.path.append(WORK_PATH + '/Models/libFM')
 sys.path.append(WORK_PATH + '/utils')
 import modelFMRun
 import modelFMSetup
-import modelRRSetup
+#import modelRRSetup
 import utils
 import hybrid
 import post
@@ -29,7 +29,7 @@ if config.TIME_RUN:
 ################### Pre-Process ###################
 if config.PRE_PROCESS:
     print("Pre-Processing")
-    pre.preProcess(os,utils,random,config.DE_EFFECT)
+    pre.preProcess(os,utils,random,config.DE_EFFECT, config.RANDOMIZE_DATA)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################

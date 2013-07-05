@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Hybrid Movie Recommendation System</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Hybrid Movie Recommendation System</h1>
+
+<p>This program is a hybrid recommendation system, utilizing the models from various different statistical methods and patching them together in an intelligent way to improve prediction accuracy. It was specifically developed to implement the methods from the various top competitors in the Baidu, Inc. movie recommendation algorithm contest into a single unified approach and is written to work with datasets which follow the format of the contest.</p>
+
+<h2>Program Structure</h2>
+
+<p>The structure of the program is as follows. There are three main phases of the prediction algorithm:</p>
+
+<ol>
+<li>Pre-Processing - Getting the data ready to run the models.</li>
+<li>Modeling - Running the models to generate the predictions.</li>
+<li>Post-Processing - Utilizing the predictions from various models to generate a prediction.</li>
+</ol>
+
+<p>This program requires three datasets: a training dataset, cross-validation dataset, and a test/prediction dataset. The training dataset is used to train the models and the cross-validation dataset is used to train the post-processing techniques. Lastly, it uses the trained model to output the predictions for the test dataset (and, if the test set has predictions, it will also output the RMSE on the test set).</p>
+
+<p>The Pre-Processing stage contains two main files:</p>
+
+<ol>
+<li><p>effects.py, a file which parses the input training and cross-validation set for global effects (global mean, user mean, movie mean, etc), re-scales the data to be mean zero, and save the global information out to Data/Effects/globalEffects.txt for use in the post-processing phase.</p></li>
+<li><p>model$NAMESetup.py, a file which parses the de-globaled dataset for use within the specific named model. For example, modelFM.py would parse the training and cross-validation datasets into the binary forms for use in libFM and save these files to Data/ModelData/$NAME</p></li>
+</ol>
+
+<p>The Modeling stage contains the following items:</p>
+
+<ol>
+<li><p>The programs for training the models and outputting predictions, such as libFM, SVDFeature, etc.</p></li>
+<li><p>model$NAMERun.py, a file which uses the data from Data/ModelData/$NAME to train the model and generates predictions which are saved to Data/ModelPredictions.</p></li>
+</ol>
+
+<p>The Post-Processing stage contains two main files:</p>
+
+<ol>
+<li><p>hybrid.py, a script which takes in the predictions from Data/ModelPredictions and uses them to generate the predictions.</p></li>
+<li><p>post.py, a script which reformats the predictions by placing back in the global effects and looking for duplicates from the training set in the test set (and replacing with the appropriate value). It outputs the final predictions to Data/Outputs</p></li>
+</ol>
+
+<p>For convenience, commonly used utility functions are stored in scripts within the utils folder.</p>
+
+<h2>Dependencies</h2>
+
+<ul>
+<li>  R Package: ridge</li>
+</ul>
+
+<h2>ToDo</h2>
+
+<ol>
+<li>Integrate SVDFeature into the program</li>
+<li>Integrate post-processing pair finding replacement.</li>
+<li>Add Multi-Class Logistic Regression.</li>
+<li>Add Ridge Regression.</li>
+<li>More synthesize modes.</li>
+<li>Set floor and ceiling on output predictions.</li>
+</ol>
+
+<h2>Contributors</h2>
+
+<ul>
+<li>  Chris Rackauckas, University of California, Irvine</li>
+<li>  Colin Jarvis, Macalester College</li>
+<li>  Weijie CAI, Hong Kong University of Science and Technology</li>
+</ul>
+
+<h2>Acknowledgements</h2>
+
+<p>This research was made possible through the Research Industrial Projects for Students, Hong Kong (RIPS-HK), an undergraduate research opportunity ran by UCLA&#39;s Institute for Pure and Applied Mathematics (IPAM). This project was funded by the NSF. We thank our academic mentor Dr. Avery Ching, Hong Kong University of Science and Technology, and our industry client Baidu, Inc. for helping guide us through the project.</p>
+
+</body>
+
+</html>
+

@@ -2,6 +2,7 @@
 
 PRE_PROCESS  = True
 DE_EFFECT    = True
+RANDOMIZE_DATA = True
 SETUP_FM     = True
 RUN_FM       = True
 SETUP_HYBRID = True
