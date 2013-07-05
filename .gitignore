@@ -33,6 +33,7 @@ config.py
 *.rhistory
 *.RData
 *.Rout
+*.Rhistory
 
 #################
 ## Eclipse
