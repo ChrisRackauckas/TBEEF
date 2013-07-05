@@ -10,7 +10,7 @@ PROCESSED_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
 PROCESSED_CV_PATH = 'Data/PreProcessed/cv_set_processed.txt'
 
 ORIGINAL_DATA_PATH = 'Data/Original/data_set.txt'
-ORIGINAL_DATA_RNDM_NODUPS_PATH = 'Data/Original/data_set_nodups_rndm.txt'
+ORIGINAL_DATA_NODUPS_PATH = 'Data/Original/data_set_nodups_rndm.txt'
 PROCESSED_DATA_PATH = 'Data/PreProcessed/data_set_processed.txt'
 
 EFFECTS_USER_PATH = 'Data/Effects/user_effects.txt'

@@ -20,7 +20,7 @@ TIME_RUN     = False
 ################## Factorization Machines ##########
 
 FM_ITER = 100
-FM_DIMS = [ '1', '2', '4']
+FM_DIMS = [ '1', '2']
 FM_STR_ITER = str(FM_ITER)
 
 
