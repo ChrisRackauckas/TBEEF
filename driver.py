@@ -2,7 +2,7 @@
 import sys
 import os
 import re
-import random
+from random import random
 import time
 import multiprocessing as mproc
 from math import *

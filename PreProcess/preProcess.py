@@ -59,7 +59,7 @@ def cleanUpRandomizeData(utils, random, RANDOMIZE_DATA):
         for line in open(utils.ORIGINAL_DATA_PATH,'r'):
             if line != '\n':
                 if line not in lines_seen: # not a duplicate
-                    data.append( (random.random(), line) )
+                    data.append( (random(), line) )
                     lines_seen.add(line)
         data.sort()
         lenData = len(data)
