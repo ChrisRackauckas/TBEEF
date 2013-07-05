@@ -22,6 +22,9 @@ TIME_RUN     = False
 FM_ITER = 100
 FM_DIMS = [ '1', '2']
 FM_STR_ITER = str(FM_ITER)
+FM_INIT_STD = .3
 
+################## Hybrid #########################
 
+RR_CONST = 1
 

@@ -10,7 +10,7 @@ def setupHybrid(os,utils):
                                utils.grabCSVColumn,
                                utils.HYBRID_PREDICT_MATRIX_PATH)
 
-def runHybrid(os,utils,HYBRID_CHOICE):
+def runHybrid(os,utils,HYBRID_CHOICE,RR_CONST):
 #-------------------------------------------------
 # Calls an R script which uses the train and predict matrices
 # To generate a prediction
@@ -21,7 +21,7 @@ def runHybrid(os,utils,HYBRID_CHOICE):
         os.system('R CMD BATCH PostProcess/hybridOLS.R')
     if HYBRID_CHOICE==2:
         print("Hybrid Choice: Ridge Regression")
-        os.system('R CMD BATCH PostProcess/hybridRR.R')
+        os.system('R CMD BATCH PostProcess/hybridRR.R ' + RR_CONST)
 
 def buildHybridTrainingMatrix(processedCVPath,predictorPaths,outputPath,grabCSVColumnFunc):
 #-------------------------------------------------

@@ -85,7 +85,7 @@ if config.SETUP_HYBRID:
 
 if config.RUN_HYBRID:
     print("Running hybrid model")
-    hybrid.runHybrid(os,utils,config.HYBRID_CHOICE)
+    hybrid.runHybrid(os,utils,config.HYBRID_CHOICE,config.RR_CONST)
 
 ################### Post Process #################
 
