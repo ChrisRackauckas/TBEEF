@@ -1,4 +1,6 @@
-Models/libFM
+Models/libFM/libFM
+Models/libFM/convert
+Models/libFM/transpose
 
 ###############
 ## Data
