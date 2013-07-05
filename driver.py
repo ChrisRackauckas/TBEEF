@@ -20,7 +20,10 @@ import preProcess as pre
 import config
 #--------------------------------------------------------------------
 
-
+################## Timer ##########################
+if config.TIME_RUN:
+        print("Start Timing Parallel")
+        start_time = time.time()
 
 ################### Pre-Process ###################
 if config.PRE_PROCESS:
@@ -30,18 +33,29 @@ if config.PRE_PROCESS:
 
 ################### Setup Models ###################
 
-if config.SETUP_FM:
-    print("Setting up FM")
-    modelFMSetup.FMSetup(os, utils)
+if config.RUN_PARALLEL:
+    if config.SETUP_FM:
+        print("Setting up FM")
+        p = mproc.Process(
+                target = modelFMSetup.FMSetup,
+                args=(os,utils)) 
+
+        p.start()
+        utils.processes.append(p)
+    ####Join #####
+    for p in utils.processes:
+        p.join()
+    utils.processes = []
+
+if config.RUN_SERIAL:
+    if config.SETUP_FM:
+        print("Setting up FM")
+        modelFMSetup.FMSetup(os,utils,mproc) 
 
 ################### Run Models ###################
 
 #Parallel--------------------------------
 if config.RUN_PARALLEL:
-    if config.TIME_RUN:
-        print("Start timing parallel")
-        start_time = time.time()
-
     if config.RUN_FM:
         print("Running FM")
         modelFMRun.FMRunParallel(os,utils, mproc)
@@ -50,11 +64,8 @@ if config.RUN_PARALLEL:
     
         for p in utils.processes:
             p.join()
-
-    if config.TIME_RUN:
-        print(time.time() - start_time,"seconds")
-
-################## Serial #######################
+        utils.prcesses = []
+#Serial------------------------------------
 
 if config.RUN_SERIAL:
     if config.TIME_RUN:
@@ -64,12 +75,6 @@ if config.RUN_SERIAL:
     if config.RUN_FM:
         print("Running FM")    
         modelFMRun.FMRunSerial(os,utils)
-    
-    if config.TIME_RUN:
-        print(time.time() - start_time,"seconds")
-
-
-
 
 ################### Run Hybrid ###################
 
@@ -86,5 +91,12 @@ if config.RUN_HYBRID:
 if config.POST_PROCESS:
     print("Starting Post-Process") 
     post.postProcess(os,utils, config.DE_EFFECT)
+
+################### Timer ########################
+
+    if config.TIME_RUN:
+        print(time.time() - start_time,"seconds")
+
+##################################################
 
 print("Complete and successful!")
