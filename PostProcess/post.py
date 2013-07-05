@@ -7,43 +7,38 @@ def postProcess(os,utils, DE_EFFECT):
 
         utils.fixTestPredictions(utils.TEST_IDS_PATH,utils.HYBRID_SYNTHESIZED_PATH, \
                 utils.TO_POST_PATH)
-    #findPairs(os,utils,utils.ORIGINAL_DATA_PATH,utils.TO_POST_PATH,utils.OUTPUT_PATH)
 
+        umr = utils.userMovieRating
+        
         if DE_EFFECT:
                 globalMeanFile = open(utils.EFFECTS_GLOBAL_PATH, 'r')
                 globalMean = float(globalMeanFile.read())
                 globalMeanFile.close()
             
                 infile = open(utils.TO_POST_PATH, 'r')
-                outfile = open(utils.OUTPUT_PATH, 'w')
+                outfile = open(utils.RE_EFFECT_PATH, 'w')
                 for line in infile:
                         line = line.replace('\n', '')
                         columns = line.split('\t')
                         user = columns[0]
                         movie = columns[1]
                         newRating = globalMean + float(columns[2])
+                        if newRating > 5.0:
+                                newRating = 5.0
+
+                        #check to see if user,movie pair is in original data
+                        umrUserMovies = umr[user][0]
+                        umrUserRatings = umr[user][1]
+                        for i in range(len(umrUserMovies)):
+                                if umrUserMovies[i] == movie:
+                                        newRating = umrUserRatings[i]
+                                        
                         outfile.write(user+'\t'+movie+'\t'+ str(newRating)+'\n')
                 infile.close()
                 outfile.close()
 
         else:
-                os.system('cp '+ utils.TO_POST_PATH +' '+ utils.OUTPUT_PATH)
+                os.system('cp '+ utils.TO_POST_PATH +' '+ utils.RE_EFFECT_PATH)
 
-def findPairs(os,utils,masterPath,changePath,toSave):
-    masterFile = open(masterPath, 'r')
-    changeFile = open(changePath, 'r')
-    masterLines = masterFile.readlines()
-    changeLines = changeFile.readlines()
-    maxX = len(masterLines) 
+        findPairs(os,utils,utils.RE_EFFECT_PATH,utils.OUTPUT_PATH)
 
-    toWrite = []
-    for master in masterLines:
-        for change in changeLines:
-            toWrite.append(change[:-7])
-            if master[:-7]==change[:-7]:
-                toWrite.append(master[17:])
-            else:
-                toWrite.append(change[17:])
-    toWrite[len(toWrite)] = toWrite[len(toWrite)][:-2]
-    outfile = open(toSave, 'w')
-        outfile.writelines(["%s" % item  for item in toWrite])
