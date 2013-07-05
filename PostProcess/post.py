@@ -27,11 +27,12 @@ def postProcess(os,utils, DE_EFFECT):
                                 newRating = 5.0
 
                         #check to see if user,movie pair is in original data
-                        umrUserMovies = umr[user][0]
-                        umrUserRatings = umr[user][1]
-                        for i in range(len(umrUserMovies)):
-                                if umrUserMovies[i] == movie:
-                                        newRating = umrUserRatings[i]
+                        if user in umr:
+                                umrUserMovies = umr[user][0]
+                                umrUserRatings = umr[user][1]
+                                for i in range(len(umrUserMovies)):
+                                        if umrUserMovies[i] == movie:
+                                                newRating = umrUserRatings[i]
                                         
                         outfile.write(user+'\t'+movie+'\t'+ str(newRating)+'\n')
                 infile.close()
@@ -40,5 +41,4 @@ def postProcess(os,utils, DE_EFFECT):
         else:
                 os.system('cp '+ utils.TO_POST_PATH +' '+ utils.RE_EFFECT_PATH)
 
-        findPairs(os,utils,utils.RE_EFFECT_PATH,utils.OUTPUT_PATH)
 

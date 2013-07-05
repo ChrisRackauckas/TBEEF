@@ -102,14 +102,14 @@ def deEffectData(infilePath, outfilePath, utils):
             if moviesDict.get(movie)==None:
                  moviesDict[movie]=[]
             moviesDict[movie].append(rating)
-            '''
+            
             if user not in umr:
                 umr[user]=([movie],[rating])
             elif user in umr:
                 umr[user][0].append(movie)
                 umr[user][1].append(rating)
             utils.userMovieRating = umr
-            '''
+            
             globalSum += rating
             
     infile.close()
