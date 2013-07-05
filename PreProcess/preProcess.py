@@ -13,6 +13,7 @@ def preProcess(os,utils,random,DE_EFFECT):
 #-----------------------------------------------------------------
 
     # makes dummy prediction file
+    print("Preprocessing data...")
     inPredict = open(utils.TEST_IDS_PATH, 'r')
     outPredict = open(utils.TEST_IDS_DUMMY_PATH, 'w')
     for line in inPredict:
@@ -41,7 +42,6 @@ def preProcess(os,utils,random,DE_EFFECT):
 
     # De-effects data file
     if DE_EFFECT:
-        print("De-effecting data")
         deEffectData(utils.ORIGINAL_DATA_RNDM_NODUPS_PATH, \
                  utils.PROCESSED_DATA_PATH, utils)
     else:
@@ -84,6 +84,7 @@ def deEffectData(infilePath, outfilePath, utils):
     usersDict = {}
     moviesDict = {}
     globalSum = 0
+    umr = {}
     
     for line in infile:
         if line != '\n':
@@ -101,7 +102,14 @@ def deEffectData(infilePath, outfilePath, utils):
             if moviesDict.get(movie)==None:
                  moviesDict[movie]=[]
             moviesDict[movie].append(rating)
-
+            '''
+            if user not in umr:
+                umr[user]=([movie],[rating])
+            elif user in umr:
+                umr[user][0].append(movie)
+                umr[user][1].append(rating)
+            utils.userMovieRating = umr
+            '''
             globalSum += rating
             
     infile.close()

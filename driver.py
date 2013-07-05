@@ -60,7 +60,7 @@ if RUN_PARALLEL:
 
     if RUN_FM:
         print("Running FM")
-    modelFMRun.FMRunParallel(os,utils, mproc)
+        modelFMRun.FMRunParallel(os,utils, mproc)
     
 ####Join #####
     
@@ -68,21 +68,21 @@ if RUN_PARALLEL:
             p.join()
 
     if TIME_RUN:
-    print(time.time() - start_time,"seconds")
+        print(time.time() - start_time,"seconds")
 
 ################## Serial #######################
 
 if RUN_SERIAL:
     if TIME_RUN:
-    print("Start timing serial")
-    start_time = time.time()
+        print("Start timing serial")
+        start_time = time.time()
 
     if RUN_FM:
-    print("Running FM")    
-    modelFMRun.FMRunSerial(os,utils)
+        print("Running FM")    
+        modelFMRun.FMRunSerial(os,utils)
     
     if TIME_RUN:
-    print(time.time() - start_time,"seconds")
+        print(time.time() - start_time,"seconds")
 
 
 
