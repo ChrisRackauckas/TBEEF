@@ -44,18 +44,23 @@ FM_DIMS = [ '1', '2']
 HYBRID_TRAIN_MATRIX_PATH    = 'Data/Hybrid/hybridTrain.txt'
 HYBRID_PREDICT_MATRIX_PATH  = 'Data/Hybrid/hybridPredict.txt'
 HYBRID_SYNTHESIZED_PATH     = 'Data/Hybrid/hybridSynthesized.txt'
+RE_EFFECT_PATH              = 'Data/Output/re_effect.txt' 
 OUTPUT_PATH                 = 'Data/Output/output.txt'
 TO_POST_PATH                = 'Data/Hybrid/toPost.txt'
+
+#### User movie rating dictionary ####
+
+userMovieRating = {}
 
 #### Utility Functions ####
 
 def grabCSVColumn(csv_path,columnNumber):
-    import csv
-    data = csv.reader(open(csv_path), delimiter="\t", quotechar='|')
-    ans = []
-    for row in data:
-        ans.append(row[columnNumber])
-    return ans
+	import csv
+	data = csv.reader(open(csv_path), delimiter="\t", quotechar='|')
+	ans = []
+	for row in data:
+		ans.append(row[columnNumber])
+	return ans
 
 def fixTestPredictions(idsPath,toFix,toSave):
     
