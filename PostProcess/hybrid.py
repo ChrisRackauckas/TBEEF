@@ -2,8 +2,8 @@ def setupHybrid(os,utils):
 #------------------------------------------------
 #Sets up the input matrices for the synthesizer
 #------------------------------------------------
-	setupHybridTrain(os,utils)
-	setupHybridPredict(os,utils)
+    setupHybridTrain(os,utils)
+    setupHybridPredict(os,utils)
 
 def runHybrid(os,utils):
 #-------------------------------------------------
@@ -21,24 +21,24 @@ def setupHybridTrain(os,utils):
 # Through CVPredictionPaths array
 # Generates a txt file that is a matrix for training Hybrid
 #-------------------------------------------------
-	predictionArrays = [utils.grabCSVColumn(utils.PROCESSED_CV_PATH,2)]
-	for predictPath in utils.CVPredictionPaths:
-		predictionArrays.append(utils.grabCSVColumn(predictPath,2))
-	toWrite = []
-	header = "y"
-	for i in range(1,len(predictionArrays)):
-		istr = str(i)
-		header = header + "\tx" + istr
-	header = header + "\n"
-	toWrite.append(header)
-	for i in range(0,len(predictionArrays[0])):
-		rowStr = predictionArrays[0][i]
-		for j in range(1,len(predictionArrays)):
-			rowStr = rowStr + "\t" + predictionArrays[j][i]
-		rowStr = rowStr + "\n"
-		toWrite.append(rowStr)
-	outfile = open(utils.HYBRID_TRAIN_MATRIX_PATH, 'w')
-	outfile.writelines(["%s" % row  for row in toWrite])
+    predictionArrays = [utils.grabCSVColumn(utils.PROCESSED_CV_PATH,2)]
+    for predictPath in utils.CVPredictionPaths:
+        predictionArrays.append(utils.grabCSVColumn(predictPath,2))
+    toWrite = []
+    header = "y"
+    for i in range(1,len(predictionArrays)):
+        istr = str(i)
+        header = header + "\tx" + istr
+    header = header + "\n"
+    toWrite.append(header)
+    for i in range(0,len(predictionArrays[0])):
+        rowStr = predictionArrays[0][i]
+        for j in range(1,len(predictionArrays)):
+            rowStr = rowStr + "\t" + predictionArrays[j][i]
+        rowStr = rowStr + "\n"
+        toWrite.append(rowStr)
+    outfile = open(utils.HYBRID_TRAIN_MATRIX_PATH, 'w')
+    outfile.writelines(["%s" % row  for row in toWrite])
 
 def setupHybridPredict(os,utils):
 #-------------------------------------------------
@@ -46,21 +46,21 @@ def setupHybridPredict(os,utils):
 # Through testPredictionPaths array
 # Generates a txt file that is a matrix for training Hybrid
 #-------------------------------------------------
-	predictionArrays = []
-	for predictPath in utils.testPredictionPaths:
-		predictionArrays.append(utils.grabCSVColumn(predictPath,2))
-	toWrite = []
-	header = "x1"
-	for i in range(1,len(predictionArrays)):
-		istr = str(i+1)
-		header = header + "\tx" + istr
-	header = header + "\n"
-	toWrite.append(header)
-	for i in range(0,len(predictionArrays[0])):
-		rowStr = predictionArrays[0][i]
-		for j in range(1,len(predictionArrays)):
-			rowStr = rowStr + "\t" + predictionArrays[j][i]
-		rowStr = rowStr + "\n"
-		toWrite.append(rowStr)
-	outfile = open(utils.HYBRID_PREDICT_MATRIX_PATH, 'w')
-	outfile.writelines(["%s" % row  for row in toWrite])
+    predictionArrays = []
+    for predictPath in utils.testPredictionPaths:
+        predictionArrays.append(utils.grabCSVColumn(predictPath,2))
+    toWrite = []
+    header = "x1"
+    for i in range(1,len(predictionArrays)):
+        istr = str(i+1)
+        header = header + "\tx" + istr
+    header = header + "\n"
+    toWrite.append(header)
+    for i in range(0,len(predictionArrays[0])):
+        rowStr = predictionArrays[0][i]
+        for j in range(1,len(predictionArrays)):
+            rowStr = rowStr + "\t" + predictionArrays[j][i]
+        rowStr = rowStr + "\n"
+        toWrite.append(rowStr)
+    outfile = open(utils.HYBRID_PREDICT_MATRIX_PATH, 'w')
+    outfile.writelines(["%s" % row  for row in toWrite])

@@ -50,12 +50,12 @@ TO_POST_PATH                = 'Data/Hybrid/toPost.txt'
 #### Utility Functions ####
 
 def grabCSVColumn(csv_path,columnNumber):
-	import csv
-	data = csv.reader(open(csv_path), delimiter="\t", quotechar='|')
-	ans = []
-	for row in data:
-		ans.append(row[columnNumber])
-	return ans
+    import csv
+    data = csv.reader(open(csv_path), delimiter="\t", quotechar='|')
+    ans = []
+    for row in data:
+        ans.append(row[columnNumber])
+    return ans
 
 def fixTestPredictions(idsPath,toFix,toSave):
     

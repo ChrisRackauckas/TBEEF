@@ -13,7 +13,6 @@ def preProcess(os,utils,random,DE_EFFECT):
 #-----------------------------------------------------------------
 
     # makes dummy prediction file
-    print("Preprocessing data...")
     inPredict = open(utils.TEST_IDS_PATH, 'r')
     outPredict = open(utils.TEST_IDS_DUMMY_PATH, 'w')
     for line in inPredict:
@@ -42,6 +41,7 @@ def preProcess(os,utils,random,DE_EFFECT):
 
     # De-effects data file
     if DE_EFFECT:
+        print("De-effecting data")
         deEffectData(utils.ORIGINAL_DATA_RNDM_NODUPS_PATH, \
                  utils.PROCESSED_DATA_PATH, utils)
     else:

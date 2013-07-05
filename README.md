@@ -39,9 +39,10 @@ ToDo
 
 1. Integrate SVDFeature into the program
 2. Integrate post-processing pair finding replacement.
-3. Add Multi-Class Logistic Regression
-4. Add Ridge Regression
-5. More synthesize modes
+3. Add Multi-Class Logistic Regression.
+4. Add Ridge Regression.
+5. More synthesize modes.
+6. Set floor and ceiling on output predictions.
 
 Contributors
 ----------------------------------------------

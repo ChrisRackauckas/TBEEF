@@ -40,7 +40,9 @@ TIME_RUN     = False
 
 ################### Pre-Process ###################
 if PRE_PROCESS:
+    print("Pre-Processing")
     pre.preProcess(os,utils,random,DE_EFFECT)
+    print("Pre-Processing Complete")
 
 ################### Setup Models ###################
 
@@ -53,32 +55,34 @@ if SETUP_FM:
 #Parallel--------------------------------
 if RUN_PARALLEL:
     if TIME_RUN:
+        print("Start timing parallel")
         start_time = time.time()
 
     if RUN_FM:
         print("Running FM")
-	modelFMRun.FMRunParallel(os,utils, mproc)
-	
+    modelFMRun.FMRunParallel(os,utils, mproc)
+    
 ####Join #####
-	
+    
         for p in utils.processes:
             p.join()
 
     if TIME_RUN:
-	print(time.time() - start_time,"seconds")
+    print(time.time() - start_time,"seconds")
 
 ################## Serial #######################
 
 if RUN_SERIAL:
     if TIME_RUN:
-	start_time = time.time()
+    print("Start timing serial")
+    start_time = time.time()
 
     if RUN_FM:
-	print("Running FM")    
- 	modelFMRun.FMRunSerial(os,utils)
-	
+    print("Running FM")    
+    modelFMRun.FMRunSerial(os,utils)
+    
     if TIME_RUN:
-	print(time.time() - start_time,"seconds")
+    print(time.time() - start_time,"seconds")
 
 
 
@@ -90,10 +94,13 @@ if SETUP_HYBRID:
     hybrid.setupHybrid(os,utils)
 
 if RUN_HYBRID:
+    print("Running hybrid model")
     hybrid.runHybrid(os,utils)
 
 ################### Post Process #################
 
 if POST_PROCESS:
+    print("Starting Post-Process") 
     post.postProcess(os,utils, DE_EFFECT)
 
+print("Complete and successful!")
