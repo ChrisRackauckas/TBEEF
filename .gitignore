@@ -1,6 +1,16 @@
+##############
+## Binaries
+##############
+
 Models/libFM/libFM
 Models/libFM/convert
 Models/libFM/transpose
+
+###############
+## Config Files
+###############
+
+config.py
 
 ###############
 ## Data

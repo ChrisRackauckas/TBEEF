@@ -2,11 +2,13 @@ def setupHybrid(os,utils):
 #------------------------------------------------
 #Sets up the input matrices for the synthesizer
 #------------------------------------------------
-    buildRTrainingMatrix(utils.PROCESSED_CV_PATH,
+    buildHybridTrainingMatrix(utils.PROCESSED_CV_PATH,
                      utils.CVPredictionPaths,
                      utils.HYBRID_TRAIN_MATRIX_PATH,
                      utils.grabCSVColumn)
-    setupHybridPredict(os,utils)
+    buildHybridPredictorMatrix(utils.testPredictionPaths,
+                               utils.grabCSVColumn,
+                               utils.HYBRID_PREDICT_MATRIX_PATH)
 
 def runHybrid(os,utils):
 #-------------------------------------------------
@@ -18,7 +20,7 @@ def runHybrid(os,utils):
 
 
 
-def buildRTrainingMatrix(processedCVPath,predictorPaths,outputPath,grabCSVColumnFunc):
+def buildHybridTrainingMatrix(processedCVPath,predictorPaths,outputPath,grabCSVColumnFunc):
 #-------------------------------------------------
 # Takes in the prediction of various models on CV data
 # Through CVPredictionPaths array
@@ -43,15 +45,15 @@ def buildRTrainingMatrix(processedCVPath,predictorPaths,outputPath,grabCSVColumn
     outfile = open(outputPath, 'w')
     outfile.writelines(["%s" % row  for row in toWrite])
 
-def setupHybridPredict(os,utils):
+def buildHybridPredictorMatrix(testPredictionPaths,grabCSVColumnFunc,outputPath):
 #-------------------------------------------------
 # Takes in the prediction of various models on test data
 # Through testPredictionPaths array
 # Generates a txt file that is a matrix for training Hybrid
 #-------------------------------------------------
     predictionArrays = []
-    for predictPath in utils.testPredictionPaths:
-        predictionArrays.append(utils.grabCSVColumn(predictPath,2))
+    for predictPath in testPredictionPaths:
+        predictionArrays.append(grabCSVColumnFunc(predictPath,2))
     toWrite = []
     header = "x1"
     for i in range(1,len(predictionArrays)):
@@ -65,5 +67,5 @@ def setupHybridPredict(os,utils):
             rowStr = rowStr + "\t" + predictionArrays[j][i]
         rowStr = rowStr + "\n"
         toWrite.append(rowStr)
-    outfile = open(utils.HYBRID_PREDICT_MATRIX_PATH, 'w')
+    outfile = open(outputPath, 'w')
     outfile.writelines(["%s" % row  for row in toWrite])

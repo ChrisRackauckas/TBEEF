@@ -17,48 +17,32 @@ import utils
 import hybrid
 import post
 import preProcess as pre
-
-################### Select Parts  ##################
-
-PRE_PROCESS  = True
-DE_EFFECT    = True
-SETUP_FM     = True
-RUN_FM       = True
-SETUP_HYBRID = True
-RUN_HYBRID   = True
-POST_PROCESS = True
-
-################## Select Performance ##############
-
-RUN_PARALLEL = True
-RUN_SERIAL   = False
-TIME_RUN     = False
-
+import config
 #--------------------------------------------------------------------
 
 
 
 ################### Pre-Process ###################
-if PRE_PROCESS:
+if config.PRE_PROCESS:
     print("Pre-Processing")
-    pre.preProcess(os,utils,random,DE_EFFECT)
+    pre.preProcess(os,utils,random,config.DE_EFFECT)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################
 
-if SETUP_FM:
+if config.SETUP_FM:
     print("Setting up FM")
     modelFMSetup.FMSetup(os, utils)
 
 ################### Run Models ###################
 
 #Parallel--------------------------------
-if RUN_PARALLEL:
-    if TIME_RUN:
+if config.RUN_PARALLEL:
+    if config.TIME_RUN:
         print("Start timing parallel")
         start_time = time.time()
 
-    if RUN_FM:
+    if config.RUN_FM:
         print("Running FM")
         modelFMRun.FMRunParallel(os,utils, mproc)
     
@@ -67,21 +51,21 @@ if RUN_PARALLEL:
         for p in utils.processes:
             p.join()
 
-    if TIME_RUN:
+    if config.TIME_RUN:
         print(time.time() - start_time,"seconds")
 
 ################## Serial #######################
 
-if RUN_SERIAL:
-    if TIME_RUN:
+if config.RUN_SERIAL:
+    if config.TIME_RUN:
         print("Start timing serial")
         start_time = time.time()
 
-    if RUN_FM:
+    if config.RUN_FM:
         print("Running FM")    
         modelFMRun.FMRunSerial(os,utils)
     
-    if TIME_RUN:
+    if config.TIME_RUN:
         print(time.time() - start_time,"seconds")
 
 
@@ -89,18 +73,18 @@ if RUN_SERIAL:
 
 ################### Run Hybrid ###################
 
-if SETUP_HYBRID:
+if config.SETUP_HYBRID:
     print("Setting up hybrid")
     hybrid.setupHybrid(os,utils)
 
-if RUN_HYBRID:
+if config.RUN_HYBRID:
     print("Running hybrid model")
     hybrid.runHybrid(os,utils)
 
 ################### Post Process #################
 
-if POST_PROCESS:
+if config.POST_PROCESS:
     print("Starting Post-Process") 
-    post.postProcess(os,utils, DE_EFFECT)
+    post.postProcess(os,utils, config.DE_EFFECT)
 
 print("Complete and successful!")
