@@ -1,6 +1,0 @@
-dataTrain = read.csv("Data/Hybrid/hybridTrain.txt", sep="\t")
-fit = lm(data=dataTrain)
-summary(fit)
-dataPredict = read.csv("Data/Hybrid/hybridPredict.txt", sep="\t")
-predictions = predict(fit,dataPredict)
-write(predictions, file ="Data/Hybrid/hybridSynthesized.txt", ncolumns=1)

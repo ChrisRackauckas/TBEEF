@@ -13,6 +13,7 @@ sys.path.append(WORK_PATH + '/Models/libFM')
 sys.path.append(WORK_PATH + '/utils')
 import modelFMRun
 import modelFMSetup
+import modelRRSetup
 import utils
 import hybrid
 import post
@@ -50,9 +51,9 @@ if config.RUN_PARALLEL:
 if config.RUN_SERIAL:
     if config.SETUP_FM:
         print("Setting up FM")
-        modelFMSetup.FMSetup(os,utils,mproc) 
+        modelFMSetup.FMSetup(os,utils) 
 
-################### Run Models ###################
+################## Run Models ###################
 
 #Parallel--------------------------------
 if config.RUN_PARALLEL:
@@ -84,7 +85,7 @@ if config.SETUP_HYBRID:
 
 if config.RUN_HYBRID:
     print("Running hybrid model")
-    hybrid.runHybrid(os,utils)
+    hybrid.runHybrid(os,utils,config.HYBRID_CHOICE)
 
 ################### Post Process #################
 

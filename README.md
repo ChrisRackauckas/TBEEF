@@ -34,6 +34,11 @@ The Post-Processing stage contains two main files:
 
 For convenience, commonly used utility functions are stored in scripts within the utils folder.
 
+Dependencies
+------------------------------------
+
+*   R Package: ridge
+
 ToDo
 ----------------------------------------------
 

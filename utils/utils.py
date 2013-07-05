@@ -39,6 +39,12 @@ FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
 FM_PREDICTIONS_PATH = 'Data/ModelPredictions/'
 FM_DIMS = [ '1', '2']
 
+#### RR ####
+
+RR_TRAIN_PATH   = 'Data/ModelData/RRTrain.txt'
+RR_TEST_PATH    = 'Data/ModelData/RRTest.txt'
+RR_CV_PATH      = 'Data/ModelData/RRCV.txt'
+
 #### Hybrid ####
 
 HYBRID_TRAIN_MATRIX_PATH    = 'Data/Hybrid/hybridTrain.txt'
@@ -78,3 +84,9 @@ def fixTestPredictions(idsPath,toFix,toSave):
             output.append(idlines[x][:-2] + "\t" + plines[x])
     outfile = open(toSave, 'w')
     outfile.writelines(["%s" % item  for item in output])
+
+def prependTxtToFile(inputPath,outputPath,txt):
+    with file(inputPath, 'r') as original: \
+           data = original.read()
+    with file(outputPath, 'w') as modified: \
+           modified.write(txt + '\n' + data) 
