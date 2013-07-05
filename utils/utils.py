@@ -10,7 +10,7 @@ PROCESSED_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
 PROCESSED_CV_PATH = 'Data/PreProcessed/cv_set_processed.txt'
 
 ORIGINAL_DATA_PATH = 'Data/Original/data_set.txt'
-ORIGINAL_DATA_RNDM_NODUPS_PATH = 'Data/Original/data_set_nodups_rndm.txt'
+ORIGINAL_DATA_NODUPS_PATH = 'Data/Original/data_set_nodups_rndm.txt'
 PROCESSED_DATA_PATH = 'Data/PreProcessed/data_set_processed.txt'
 
 EFFECTS_USER_PATH = 'Data/Effects/user_effects.txt'
@@ -23,6 +23,7 @@ CVPredictionPaths = [] #Array of paths where CV predictions are saved
 #### DATA ####
 
 DATA_SET_SPLIT = .8 #percent of data file for training, 1-value is cross val
+DATA_SIZE = 0 # value added in preprocessing
 
 #### FM ####
 
@@ -32,7 +33,7 @@ FM_TEST_BIN_PATH  = 'Data/PreProcessed/FMTestBin'
 FM_TEST_PATH      = 'Data/ModelData/FMTest.txt'
 FM_CV_BIN_PATH    = 'Data/PreProcessed/FMCVBin'
 FM_CV_PATH        = 'Data/ModelData/FMCV.txt'
-FM_ITER = 100
+FM_ITER = 10
 FM_STR_ITER = str(FM_ITER)
 FM_GLOBAL_BIAS = '1' #either 1 or 0
 FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
