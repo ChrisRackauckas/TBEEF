@@ -59,7 +59,7 @@ if config.RUN_SERIAL:
 if config.RUN_PARALLEL:
     if config.RUN_FM:
         print("Running FM")
-        modelFMRun.FMRunParallel(os,utils, mproc)
+        modelFMRun.FMRunParallel(os,utils, mproc,config)
     
 ####Join #####
     
@@ -75,7 +75,7 @@ if config.RUN_SERIAL:
 
     if config.RUN_FM:
         print("Running FM")    
-        modelFMRun.FMRunSerial(os,utils)
+        modelFMRun.FMRunSerial(os,utils,config)
 
 ################### Run Hybrid ###################
 

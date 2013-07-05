@@ -32,12 +32,9 @@ FM_TEST_BIN_PATH  = 'Data/PreProcessed/FMTestBin'
 FM_TEST_PATH      = 'Data/ModelData/FMTest.txt'
 FM_CV_BIN_PATH    = 'Data/PreProcessed/FMCVBin'
 FM_CV_PATH        = 'Data/ModelData/FMCV.txt'
-FM_ITER = 100
-FM_STR_ITER = str(FM_ITER)
 FM_GLOBAL_BIAS = '1' #either 1 or 0
 FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
 FM_PREDICTIONS_PATH = 'Data/ModelPredictions/'
-FM_DIMS = [ '1', '2']
 
 #### RR ####
 
@@ -62,7 +59,7 @@ userMovieRating = {}
 
 def grabCSVColumn(csv_path,columnNumber):
 	import csv
-	data = csv.reader(open(csv_path), delimiter="\t", quotechar='|')
+	data = csv.reader(open(csv_path,'rU'), delimiter="\t", quotechar='|')
 	ans = []
 	for row in data:
 		ans.append(row[columnNumber])
@@ -74,7 +71,7 @@ def fixTestPredictions(idsPath,toFix,toSave):
     predictions = open(toFix, 'r')
     idlines = ids.readlines();
     plines = predictions.readlines();
-    maxX = len(idlines)-1
+    maxX = len(idlines)
 
     output = [];
     for x in range(0,maxX) :

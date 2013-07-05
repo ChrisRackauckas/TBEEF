@@ -1,13 +1,13 @@
-def FMRunParallel(os, utils,mproc):
-    for dim in utils.FM_DIMS:
+def FMRunParallel(os, utils,mproc,config):
+    for dim in config.FM_DIMS:
         fout_test_final = 'Data/ModelPredictions/FM_test_d' + \
-            dim +'_i'+ utils.FM_STR_ITER +'.txt'
+            dim +'_i'+ config.FM_STR_ITER +'.txt'
         fout_cv_final = 'Data/ModelPredictions/FM_CV_d' +  \
-            dim +'_i'+ utils.FM_STR_ITER +'.txt'
+            dim +'_i'+ config.FM_STR_ITER +'.txt'
         pTest = mproc.Process(
               target=FMTestInstance,
               args = (utils.TEST_IDS_PATH,  
-                dim,utils.FM_STR_ITER, 
+                dim,config.FM_STR_ITER, 
                 fout_test_final, 
                 utils.FM_TRAIN_PATH, 
                 utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, 
@@ -15,7 +15,7 @@ def FMRunParallel(os, utils,mproc):
         pCV   = mproc.Process(
               target=FMCVInstance,
               args = (utils.PROCESSED_CV_PATH,dim, 
-                utils.FM_STR_ITER, 
+                config.FM_STR_ITER, 
                 fout_cv_final, 
                 utils.FM_TRAIN_PATH, 
                 utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, 
@@ -27,19 +27,19 @@ def FMRunParallel(os, utils,mproc):
         utils.testPredictionPaths.append(fout_test_final)
         utils.CVPredictionPaths.append(fout_cv_final)
 
-def FMRunSerial(os,utils):
-    for dim in utils.FM_DIMS:
+def FMRunSerial(os,utils,config):
+    for dim in config.FM_DIMS:
         fout_test_final = 'Data/ModelPredictions/FM_test_d' + \
-            dim +'_i'+ utils.FM_STR_ITER +'.txt'
+            dim +'_i'+ config.FM_STR_ITER +'.txt'
         fout_cv_final = 'Data/ModelPredictions/FM_CV_d' +  \
-            dim +'_i'+ utils.FM_STR_ITER +'.txt'
-        FMTestInstance(utils.TEST_IDS_PATH,dim,utils.FM_STR_ITER, 
+            dim +'_i'+ config.FM_STR_ITER +'.txt'
+        FMTestInstance(utils.TEST_IDS_PATH,dim,config.FM_STR_ITER, 
                 fout_test_final, 
                 utils.FM_TRAIN_PATH, 
                 utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, 
                 utils.FM_ONE_WAY_INTERACTION)
         FMCVInstance(utils.PROCESSED_CV_PATH,dim, 
-                utils.FM_STR_ITER, 
+                config.FM_STR_ITER, 
                 fout_cv_final, 
                 utils.FM_TRAIN_PATH, 
                 utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, 
