@@ -16,7 +16,8 @@ def FMRunParallel(os, utils,mproc,config):
                 utils.FM_TRAIN_PATH, 
                 utils.FM_TEST_PATH, utils.FM_GLOBAL_BIAS, 
                 utils.FM_ONE_WAY_INTERACTION,
-                config.FM_INIT_STD))
+                config.FM_INIT_STD,
+                utils.fixTestPredictions))
         pCV   = mproc.Process(
               target=FMCVInstance,
               args = (utils.PROCESSED_CV_PATH,dim, 
@@ -26,7 +27,8 @@ def FMRunParallel(os, utils,mproc,config):
                 utils.FM_CV_PATH, utils.FM_GLOBAL_BIAS, 
                 utils.FM_ONE_WAY_INTERACTION,
                 printOut,
-                config.FM_INIT_STD))
+                config.FM_INIT_STD,
+                utils.fixTestPredictions))
         utils.processes.append(pTest)
         utils.processes.append(pCV)
         pTest.start()
