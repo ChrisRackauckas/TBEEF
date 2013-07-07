@@ -11,9 +11,8 @@ sys.path.append(WORK_PATH + '/PreProcess')
 sys.path.append(WORK_PATH + '/PostProcess')
 sys.path.append(WORK_PATH + '/Models/libFM')
 sys.path.append(WORK_PATH + '/utils')
-sys.path.append(WORK_PATH + '/Data/FeatureData')
 import modelFMRun
-import createFeature as feat
+import featureSetupFM as feat
 import modelFMSetup
 #import modelRRSetup
 import utils
