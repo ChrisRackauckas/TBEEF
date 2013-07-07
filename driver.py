@@ -11,7 +11,9 @@ sys.path.append(WORK_PATH + '/PreProcess')
 sys.path.append(WORK_PATH + '/PostProcess')
 sys.path.append(WORK_PATH + '/Models/libFM')
 sys.path.append(WORK_PATH + '/utils')
+sys.path.append(WORK_PATH + '/Data/FeatureData')
 import modelFMRun
+import createFeature as feat
 import modelFMSetup
 #import modelRRSetup
 import utils
@@ -31,6 +33,12 @@ if config.PRE_PROCESS:
     print("Pre-Processing")
     pre.preProcess(os,utils,random,config.DE_EFFECT, config.RANDOMIZE_DATA)
     print("Pre-Processing Complete")
+
+################### Add Features ###################
+
+if config.FEATURES:
+    feat.createFeature(os,utils,config.MOVIE_TAG, \
+                       config.SOCIAL,config.HISTORY)
 
 ################### Setup Models ###################
 
