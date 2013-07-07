@@ -6,11 +6,16 @@ processes = []
 
 TEST_IDS_PATH = 'Data/Original/predict.txt'
 TEST_IDS_DUMMY_PATH = 'Data/PreProcessed/predict_dummy.txt'
+TEST_IDS_DUMMY_TEMP_PATH = 'Data/PreProcessed/predict_dummy_temp.txt'
 PROCESSED_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
+PROCESSED_TRAIN_TEMP_PATH = 'Data/PreProcessed/training_set_processed_temp.txt'
 PROCESSED_CV_PATH = 'Data/PreProcessed/cv_set_processed.txt'
+PROCESSED_CV_TEMP_PATH = 'Data/PreProcessed/cv_set_processed_temp.txt'
 
 ORIGINAL_DATA_PATH = 'Data/Original/data_set.txt'
 ORIGINAL_DATA_NODUPS_PATH = 'Data/Original/data_set_nodups_rndm.txt'
+MOVIE_TAG_PATH = 'Data/FeatureData/movie_tag.txt'
+
 PROCESSED_DATA_PATH = 'Data/PreProcessed/data_set_processed.txt'
 
 EFFECTS_USER_PATH = 'Data/Effects/user_effects.txt'

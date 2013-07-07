@@ -1,14 +1,21 @@
 ################### Select Parts  ##################
 
 PRE_PROCESS  = True
-DE_EFFECT    = True
+DE_EFFECT    = False
 RANDOMIZE_DATA = True
 SETUP_FM     = True
-RUN_FM       = True
-SETUP_HYBRID = True
-RUN_HYBRID   = True
-POST_PROCESS = True
+RUN_FM       = False
+SETUP_HYBRID = False
+RUN_HYBRID   = False
+POST_PROCESS = False
 HYBRID_CHOICE = 1
+
+################### Select Features  ##################
+FEATURES = True
+
+MOVIE_TAG = True
+SOCIAL = False
+HISTORY = False
 
 ################## Select Performance ##############
 
