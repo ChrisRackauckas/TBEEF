@@ -11,15 +11,13 @@ def FMRun(os, utils,mproc,config,model):
     predTest = model[4][13]
     logCV    = model[4][14]
     logTest  = model[4][15]
-    fout_test_final = predTest + '_t' + trial + '.txt'
-    fout_cv_final =   predCV   + '_t' + trial + '.txt'
-    fout_test_temp =  predTest + '_temp_t' + trial +'.txt'
-    fout_cv_temp =    predCV   + '_temp_t' + trial +'.txt'
+    fout_test_temp =  predTest  + '_temp'
+    fout_cv_temp =   predCV    + '_temp'
     pTest = mproc.Process(
             target=FMInstance,
             args = (bootTest,  
             dim,config.FM_STR_ITER, 
-            fout_test_final,
+            predTest,
             fout_test_temp,
             runTrain, runTest, 
             logTest, utils.FM_GLOBAL_BIAS, 
@@ -30,7 +28,7 @@ def FMRun(os, utils,mproc,config,model):
             target=FMInstance,
             args = (bootCV,dim, 
             config.FM_STR_ITER, 
-            fout_cv_final,
+            predCV,
             fout_cv_temp,
             runTrain, runCV, 
             logCV, utils.FM_GLOBAL_BIAS, 
@@ -41,8 +39,6 @@ def FMRun(os, utils,mproc,config,model):
     utils.processes.append(pCV)
     pTest.start()
     pCV.start()
-    utils.testPredictionPaths.append(fout_test_final)
-    utils.CVPredictionPaths.append(fout_cv_final)
 
 def FMInstance(fixIds,dim,strItr,fout_final,fout_temp,runTrain,runTest,rlog,globalBias,oneWay,initStd,printOut,prependUserMovieToPredictions):
     import os

@@ -41,8 +41,10 @@ FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
 #### Holds  ####
 
 modelsData = []
-testPredictionPaths = []#Array of paths where test predictions are saved
-CVPredictionPaths = []  #Array of paths where CV predictions are saved
+testPredictionPaths = []#Array of lists of paths 
+                        #where test predictions are saved
+CVPredictionPaths = []  #Array of lists of paths 
+                        #where CV predictions are saved
 processes = []          #Array of current processes
 userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
 
