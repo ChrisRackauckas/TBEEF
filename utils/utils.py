@@ -6,10 +6,10 @@ PROCESSED_TRAIN_PATH    = 'Data/PreProcessed/training_set_processed.txt'
 
 ORIGINAL_DATA_PATH              = 'Data/Original/data_set.txt'
 ORIGINAL_DATA_CLEAN_PATH        = 'Data/PreProcessed/data_set_clean.txt'
-ORIGINAL_DATA_CLEAN_RNDM_PATH   = 'Data/PreProcessed/data_set_clean_rndm.txt'
 MOVIE_TAG_PATH                  = 'Data/Original/movie_tag.txt'
 
-PROCESSED_DATA_PATH = 'Data/PreProcessed/data_set_processed.txt'
+PROCESSED_DATA_PATH      = 'Data/PreProcessed/data_set_processed'
+PROCESSED_DATA_PATH_TEMP = 'Data/PreProcessed/data_set_processed_temp'
 
 EFFECTS_USER_PATH   = 'Data/Effects/user_effects.txt'
 EFFECTS_MOVIE_PATH  = 'Data/Effects/movie_effects.txt'
@@ -40,6 +40,7 @@ FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
 
 #### Holds  ####
 
+modelsData = []
 testPredictionPaths = []#Array of paths where test predictions are saved
 CVPredictionPaths = []  #Array of paths where CV predictions are saved
 processes = []          #Array of current processes
@@ -81,16 +82,33 @@ def prependTxtToFile(inputPath,outputPath,txt):
            modified.write(txt + '\n' + data)
 
 
-def bootstrap(inputPath, outputPath, nRows, random):
-# takes nRows-many random rows with replacement from infile and writes to outfile
+def bootstrap(inputPath,outputPath, nRows, random,replace):
+# takes nRows-many random rows 
+# with/wihout replacement (boolean replace)
+# from infile and writes to outfile
     fout = open(outputPath, 'w')
     rows =[]
-    for line in open(inputPath, 'r'):
-        rows.append(line)
-    for i in range(nRows):
-        fout.write(rows[ random.randint(0, len(rows)-1) ])
+    fin  = open(inputPath, 'r')
+    if replace:
+        for line in fin:
+            rows.append(line)
+        for i in range(nRows):
+            fout.write(rows[ random.randint(0, len(rows)-1) ])
+    else:
+        finLines = fin.readlines()
+        samples = random.sample(range(0,len(finLines)),nRows)
+        for i in samples:
+            rows.append(finLines[i])
+        fout.write(rows)
     fout.close()
 
+def bootsplit(inputPath,tempPath,outputPath1,outputPath2,split,random):
+    #Takes in an input data
+    #Randomizes it and splits it
+    #Same as sampling without replacement
+    #And saving leftovers as a second dataset
+    randomizeData(random,inputPath,tempPath)
+    splitData(tempPath,outputPath1,outputPath2,split)
 
 def appendColumns(infilePath1, infilePath2, outfilePath, outputSorted):
 # takes two data files and adds them together, grouping by user, sorting specified by outputSoreted
@@ -178,4 +196,24 @@ def aggregatePredictions(masterPath, foutPath, actualPred, predictionPathList):
                     fout.write(line+'\t'+string+'\n')
             else:
                 fout.write(line+'\n')
- 
+
+def splitData(inputPath,outputPath1,outputPath2,split):
+#-----------------------------------------------------------------
+# Takes the processed data file and splits it into a training set
+#   and cross validation set according to utils.DATA_SET_SPLIT
+#-----------------------------------------------------------------
+    counter     = 0
+    data        = open(inputPath, 'r')
+    outfile1    = open(outputPath1, 'w')
+    outfile2    = open(outputPath2, 'w')
+    dataLines   = data.readlines()
+    lineCount   = len(dataLines)
+    for line in dataLines:
+        if counter < int(lineCount * split):
+            outfile1.write( line )
+            counter +=1
+        else:
+            outfile2.write( line )
+    data.close()
+    outfile1.close()
+    outfile2.close()

@@ -1,6 +1,5 @@
 def runModels(sys,os,utils,mproc,config):
     import modelFMRun
-    for model in config.models:
+    for model in utils.modelsData:
         if model[1] == 'FM':
-            modelFMRun.FMRun(os,utils,mproc,config,model)
-        
+            modelFMRun.FMRun(os,utils,mproc,config,model)        

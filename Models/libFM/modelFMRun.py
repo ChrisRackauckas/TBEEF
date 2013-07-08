@@ -1,6 +1,7 @@
 def FMRun(os, utils,mproc,config,model):
-    tag = model[0]
-    dim= model[3][0]
+    tag      = model[0]
+    trial    = model[5]
+    dim      = model[3][0]
     bootCV   = model[4][1]
     bootTest = model[4][2]
     runTrain = model[4][9]
@@ -10,14 +11,10 @@ def FMRun(os, utils,mproc,config,model):
     predTest = model[4][13]
     logCV    = model[4][14]
     logTest  = model[4][15]
-    fout_test_final = predTest + '_d' + \
-            dim +'_i'+ config.FM_STR_ITER +'.txt'
-    fout_cv_final = predCV +'_d' +  \
-            dim +'_i'+ config.FM_STR_ITER +'.txt'
-    fout_test_temp = predTest + '_temp__d' + \
-            dim +'_i'+ config.FM_STR_ITER +'.txt'
-    fout_cv_temp = predCV +'_temp_d' +  \
-            dim +'_i'+ config.FM_STR_ITER +'.txt'
+    fout_test_final = predTest + '_t' + trial + '.txt'
+    fout_cv_final =   predCV   + '_t' + trial + '.txt'
+    fout_test_temp =  predTest + '_temp_t' + trial +'.txt'
+    fout_cv_temp =    predCV   + '_temp_t' + trial +'.txt'
     pTest = mproc.Process(
             target=FMInstance,
             args = (bootTest,  
@@ -47,13 +44,11 @@ def FMRun(os, utils,mproc,config,model):
     utils.testPredictionPaths.append(fout_test_final)
     utils.CVPredictionPaths.append(fout_cv_final)
 
-def FMInstance(fixIds,dim,strItr,fout_final,fout_temp,runTrain,runTest,logTest,globalBias,oneWay,initStd,printOut,prependUserMovieToPredictions):
+def FMInstance(fixIds,dim,strItr,fout_final,fout_temp,runTrain,runTest,rlog,globalBias,oneWay,initStd,printOut,prependUserMovieToPredictions):
     import os
     redirect = "> /dev/null"
     if printOut:
         redirect = ""
-    rlog = 'Data/LogFiles/test_d' + dim + \
-        '_i'+ strItr +'.log'
     os.system('./Models/libFM/libFM -task r -train ' + 
         runTrain + ' -test ' + 
         runTest + ' -init_stdev ' + 

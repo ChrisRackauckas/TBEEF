@@ -15,24 +15,20 @@ def preProcess(os,utils,random,DE_EFFECT):
     makeDummyPredictions(utils)
 
     cleanUpData(utils.ORIGINAL_DATA_PATH,
-                utils.ORIGINAL_DATA_CLEAN_PATH)
-    utils.randomizeData(random,utils.ORIGINAL_DATA_CLEAN_PATH,
-                        utils.ORIGINAL_DATA_CLEAN_RNDM_PATH)
-            
+                utils.ORIGINAL_DATA_CLEAN_PATH)   
 
     # De-effects data file
     if DE_EFFECT:
-        deEffectData(utils.ORIGINAL_DATA_CLEAN_RNDM_PATH, \
+        deEffectData(utils.ORIGINAL_DATA_CLEAN_PATH, \
                  utils.PROCESSED_DATA_PATH, utils)
     else:
-       os.system("cp " + utils.ORIGINAL_DATA_CLEAN_RNDM_PATH + " " + \
+       os.system("cp " + utils.ORIGINAL_DATA_CLEAN_PATH + " " + \
                   utils.PROCESSED_DATA_PATH)
 
 def makeDummyPredictions(utils):
 #-----------------------------------------------------------------
 # Makes dummy 3rd column in prediction file for LibFM
 #-----------------------------------------------------------------
-    print("Preprocessing data...")
     inPredict = open(utils.TEST_IDS_PATH, 'r')
     outPredict = open(utils.TEST_IDS_DUMMY_PATH, 'w')
     for line in inPredict:
@@ -57,28 +53,6 @@ def cleanUpData(inputPath,outputPath):
                 newDataFile.write( line )
     newDataFile.close()
             
-def splitData(utils, lineCount):
-#-----------------------------------------------------------------
-# Takes the processed data file and splits it into a training set
-#   and cross validation set according to utils.DATA_SET_SPLIT
-#-----------------------------------------------------------------
-
-    counter = 0
-    data = open(utils.PROCESSED_DATA_PATH, 'r')
-    training = open(utils.PROCESSED_TRAIN_PATH, 'w')
-    crossVal = open(utils.PROCESSED_CV_PATH, 'w')
-    for line in data:
-        if counter < int(lineCount * utils.DATA_SET_SPLIT):
-            training.write( line )
-            counter +=1
-        else:
-            crossVal.write( line )
-    data.close()
-    training.close()
-    crossVal.close()
-
-    
-
 def deEffectData(infilePath, outfilePath, utils):
 
 #-----------------------------------------------------------------
@@ -95,7 +69,7 @@ def deEffectData(infilePath, outfilePath, utils):
     usersDict = {}  # all ratings by user
     moviesDict = {} # all ratings by movie
     globalSum = 0
-    umr = {}        # dictionary of movies and ratings by user, saved to utils.userMovieRating
+    umr = {} # dictionary of movies and ratings by user, saved to utils.userMovieRating
     
     for line in infile:
         if line != '\n':
@@ -166,8 +140,6 @@ def deEffectData(infilePath, outfilePath, utils):
     globalFile.write(str(globalMean))
     globalFile.close()
 
-        
-
 def listAverager(ls):
 
 #-----------------------------------------------------------------
@@ -177,6 +149,4 @@ def listAverager(ls):
     total = 0
     for i in ls:
         total += i
-    return total/len(ls)
-        
-        
+    return total/len(ls)        

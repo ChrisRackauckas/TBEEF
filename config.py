@@ -23,8 +23,9 @@ ensembleModels = [['OLSR','OLS',[]]]
 
 ################### Select Parts  ##################
 
+TRIALS           = 2
 PRE_PROCESS      = True
-DE_EFFECT        = True
+DE_EFFECT        = False
 SETUP_MODELS     = True
 RUN_MODELS       = True
 SETUP_HYBRID     = True
@@ -32,14 +33,12 @@ RUN_HYBRID       = False
 POST_PROCESS     = False
 HYBRID_CHOICE    = 1
 
-################## Select Bootstrap Size  ##################
+################## Select Bootstrap Parameters  ##################
 
-BOOTSTRAP_SIZE_TRAIN = 50000
-BOOTSTRAP_SIZE_CV    = 10000
+BOOTSTRAP_SPLITS     = [.8,.8]
 
-################## Select Performance ##############
+################## Timer  ##############
 
-RUN_PARALLEL = True
 TIME_RUN     = False
 
 ################## Factorization Machines ##########
