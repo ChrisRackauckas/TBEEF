@@ -16,6 +16,7 @@ config.py
 ## Data
 ###############
 
+Data/
 *.txt
 *.model
 
