@@ -1,4 +1,4 @@
-def preProcess(os,utils,random,DE_EFFECT, RANDOMIZE_DATA):
+def preProcess(os,utils,random,DE_EFFECT):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -14,28 +14,24 @@ def preProcess(os,utils,random,DE_EFFECT, RANDOMIZE_DATA):
 
     makeDummyPredictions(utils)
 
-    cleanUpRandomizeData(utils,random, RANDOMIZE_DATA)
+    cleanUpData(utils.ORIGINAL_DATA_PATH,
+                utils.ORIGINAL_DATA_CLEAN_PATH)
+    utils.randomizeData(random,utils.ORIGINAL_DATA_CLEAN_PATH,
+                        utils.ORIGINAL_DATA_CLEAN_RNDM_PATH)
             
 
     # De-effects data file
     if DE_EFFECT:
-        deEffectData(utils.ORIGINAL_DATA_NODUPS_PATH, \
+        deEffectData(utils.ORIGINAL_DATA_CLEAN_RNDM_PATH, \
                  utils.PROCESSED_DATA_PATH, utils)
     else:
-       os.system("cp " + utils.ORIGINAL_DATA_NODUPS_PATH + " " + \
+       os.system("cp " + utils.ORIGINAL_DATA_CLEAN_RNDM_PATH + " " + \
                   utils.PROCESSED_DATA_PATH)
-       
-    # Splits data set
-    splitData(utils, utils.DATA_SIZE)
-
-
 
 def makeDummyPredictions(utils):
-
 #-----------------------------------------------------------------
 # Makes dummy 3rd column in prediction file for LibFM
 #-----------------------------------------------------------------
-
     print("Preprocessing data...")
     inPredict = open(utils.TEST_IDS_PATH, 'r')
     outPredict = open(utils.TEST_IDS_DUMMY_PATH, 'w')
@@ -47,40 +43,21 @@ def makeDummyPredictions(utils):
     outPredict.close()
 
 
-def cleanUpRandomizeData(utils, random, RANDOMIZE_DATA):
-
+def cleanUpData(inputPath,outputPath):
 #-----------------------------------------------------------------
 # Erases empty lines and duplicates, randomizes rows if randomize == True
 #-----------------------------------------------------------------
-
     lines_seen = set() # holds lines already seen
     data = []
-    if RANDOMIZE_DATA:
-        for line in open(utils.ORIGINAL_DATA_PATH,'r'):
-            if line != '\n':
-                if line not in lines_seen: # not a duplicate
-                    data.append( (random(), line) )
-                    lines_seen.add(line)
-        data.sort()
-        lenData = len(data)
-        newDataFile = open(utils.ORIGINAL_DATA_NODUPS_PATH,'w')
-        for _, line in data:
-            newDataFile.write( line )
-        newDataFile.close()
-        
-    else:   # erases dups and empty lines only
-        newDataFile = open(utils.ORIGINAL_DATA_NODUPS_PATH,'w')
-        for line in open(utils.ORIGINAL_DATA_PATH,'r'):
-            if line != '\n':
-                if line not in lines_seen: # not a duplicate
-                    lines_seen.add(line)
-                    newDataFile.write( line )
-        newDataFile.close()
-    utils.DATA_SIZE = len(lines_seen)
-        
-
+    newDataFile = open(outputPath,'w')
+    for line in open(inputPath,'r'):
+        if line != '\n':
+            if line not in lines_seen: # not a duplicate
+                lines_seen.add(line)
+                newDataFile.write( line )
+    newDataFile.close()
+            
 def splitData(utils, lineCount):
-
 #-----------------------------------------------------------------
 # Takes the processed data file and splits it into a training set
 #   and cross validation set according to utils.DATA_SET_SPLIT

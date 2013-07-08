@@ -1,65 +1,49 @@
-#### Processes ####
-
-processes = []
-
 #### Paths ####
 
-TEST_IDS_PATH = 'Data/Original/predict.txt'
-TEST_IDS_DUMMY_PATH = 'Data/PreProcessed/predict_dummy.txt'
-TEST_IDS_DUMMY_TEMP_PATH = 'Data/PreProcessed/predict_dummy_temp.txt'
-PROCESSED_TRAIN_PATH = 'Data/PreProcessed/training_set_processed.txt'
-PROCESSED_TRAIN_TEMP_PATH = 'Data/PreProcessed/training_set_processed_temp.txt'
-PROCESSED_CV_PATH = 'Data/PreProcessed/cv_set_processed.txt'
-PROCESSED_CV_TEMP_PATH = 'Data/PreProcessed/cv_set_processed_temp.txt'
+TEST_IDS_PATH           = 'Data/Original/predict.txt'
+TEST_IDS_DUMMY_PATH     = 'Data/PreProcessed/predict_dummy.txt'
+PROCESSED_TRAIN_PATH    = 'Data/PreProcessed/training_set_processed.txt'
 
-ORIGINAL_DATA_PATH = 'Data/Original/data_set.txt'
-ORIGINAL_DATA_NODUPS_PATH = 'Data/Original/data_set_nodups_rndm.txt'
-MOVIE_TAG_PATH = 'Data/FeatureData/movie_tag.txt'
+ORIGINAL_DATA_PATH              = 'Data/Original/data_set.txt'
+ORIGINAL_DATA_CLEAN_PATH        = 'Data/PreProcessed/data_set_clean.txt'
+ORIGINAL_DATA_CLEAN_RNDM_PATH   = 'Data/PreProcessed/data_set_clean_rndm.txt'
+MOVIE_TAG_PATH                  = 'Data/Original/movie_tag.txt'
 
 PROCESSED_DATA_PATH = 'Data/PreProcessed/data_set_processed.txt'
 
-EFFECTS_USER_PATH = 'Data/Effects/user_effects.txt'
-EFFECTS_MOVIE_PATH = 'Data/Effects/movie_effects.txt'
+EFFECTS_USER_PATH   = 'Data/Effects/user_effects.txt'
+EFFECTS_MOVIE_PATH  = 'Data/Effects/movie_effects.txt'
 EFFECTS_GLOBAL_PATH = 'Data/Effects/global_effects.txt'
 
-testPredictionPaths = [] #Array of paths where test predictions are saved
-CVPredictionPaths = [] #Array of paths where CV predictions are saved
+MODEL_BOOT_PATH       = 'Data/ModelSetup/boot_'
+MODEL_RUN_PATH        = 'Data/ModelData/'
+MODEL_PREDICT_PATH    = 'Data/ModelPredictions/'
+MODEL_BIN_PATH        = 'Data/ModelSetup/bin_'
+MODEL_FEATURED_PATH   = 'Data/ModelSetup/feat_'
+MODEL_LOG_PATH        = 'Data/LogFiles/'
 
-#### DATA ####
+HYBRID_TRAIN_MATRIX_PATH    = 'Data/HybridSetup/hybridTrain.txt'
+HYBRID_PREDICT_MATRIX_PATH  = 'Data/HybridSetup/hybridPredict.txt'
 
-DATA_SET_SPLIT = .8 #percent of data file for training, 1-value is cross val
-DATA_SIZE = 0 # value added in preprocessing
+HYBRID_BOOT_PATH      = 'Data/HybridSetup/boot_'
+HYBRID_PREDICT_PATH   = 'Data/HybridPredictions/'
 
-#### FM ####
-
-FM_TRAIN_BIN_PATH = 'Data/PreProcessed/FMTrainBin'
-FM_TRAIN_PATH     = 'Data/ModelData/FMTrain.txt'
-FM_TEST_BIN_PATH  = 'Data/PreProcessed/FMTestBin'
-FM_TEST_PATH      = 'Data/ModelData/FMTest.txt'
-FM_CV_BIN_PATH    = 'Data/PreProcessed/FMCVBin'
-FM_CV_PATH        = 'Data/ModelData/FMCV.txt'
-FM_GLOBAL_BIAS = '1' #either 1 or 0
-FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
-FM_PREDICTIONS_PATH = 'Data/ModelPredictions/'
-
-#### RR ####
-
-RR_TRAIN_PATH   = 'Data/ModelData/RRTrain.txt'
-RR_TEST_PATH    = 'Data/ModelData/RRTest.txt'
-RR_CV_PATH      = 'Data/ModelData/RRCV.txt'
-
-#### Hybrid ####
-
-HYBRID_TRAIN_MATRIX_PATH    = 'Data/Hybrid/hybridTrain.txt'
-HYBRID_PREDICT_MATRIX_PATH  = 'Data/Hybrid/hybridPredict.txt'
-HYBRID_SYNTHESIZED_PATH     = 'Data/Hybrid/hybridSynthesized.txt'
+HYBRID_SYNTHESIZED_PATH     = 'Data/HybridPredictions/hybridSynthesized.txt'
 RE_EFFECT_PATH              = 'Data/Output/re_effect.txt' 
 OUTPUT_PATH                 = 'Data/Output/output.txt'
 TO_POST_PATH                = 'Data/Hybrid/toPost.txt'
 
-#### User movie rating dictionary ####
+#### FM ####
 
-userMovieRating = {}
+FM_GLOBAL_BIAS = '1' #either 1 or 0
+FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
+
+#### Holds  ####
+
+testPredictionPaths = []#Array of paths where test predictions are saved
+CVPredictionPaths = []  #Array of paths where CV predictions are saved
+processes = []          #Array of current processes
+userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
 
 #### Utility Functions ####
 
@@ -71,21 +55,23 @@ def grabCSVColumn(csv_path,columnNumber):
 		ans.append(row[columnNumber])
 	return ans
 
-def fixTestPredictions(idsPath,toFix,toSave):
-    
-    ids = open(idsPath, 'r')
-    predictions = open(toFix, 'r')
-    idlines = ids.readlines();
-    plines = predictions.readlines();
-    maxX = len(idlines)
-
+def prependUserMovieToPredictions(idsPath,fixPath,savePath):
+    ### Takes in a column of ratings as toFix
+    ### Takes in user and movie id's through idsPath
+    ### Makes user movie rating and saves toSave
+    ### ratingsCol is a boolean for implying
+    ### whether the input for idsPath
+    ### has a column of ratings or not
+    import csv
+    data = csv.reader(open(idsPath,'rU'), delimiter="\t", quotechar='|')
+    fixData = open(fixPath, 'r')
+    fixLines = fixData.readlines();
+    i = 0
     output = [];
-    for x in range(0,maxX) :
-        if x == maxX:
-            output.append(idlines[x] + "\t" + plines[x])
-        else :
-            output.append(idlines[x][:-2] + "\t" + plines[x])
-    outfile = open(toSave, 'w')
+    for row in data :
+        output.append(row[0] + '\t' + row[1] + "\t" + fixLines[i])
+        i = i + 1
+    outfile = open(savePath, 'w')
     outfile.writelines(["%s" % item  for item in output])
 
 def prependTxtToFile(inputPath,outputPath,txt):
@@ -140,3 +126,56 @@ def appendColumns(infilePath1, infilePath2, outfilePath, outputSorted):
             for line in linesByUser.get(user):
                 fout.write(line)
     fout.close()
+
+def randomizeData(random,inputPath,outputPath):
+    lines_seen = set() # holds lines already seen
+    data = [] 
+    newDataFile = open(outputPath,'w')
+    for line in open(inputPath,'r'):
+        if line != '\n':
+            if line not in lines_seen: # not a duplicate
+                data.append( (random.random(), line) )
+                lines_seen.add(line)
+    data.sort()
+    newDataFile = open(outputPath,'w')
+    for _, line in data:
+        newDataFile.write( line )
+    newDataFile.close()
+
+def aggregatePredictions(masterPath, foutPath, actualPred, predictionPathList):
+    master = open(masterPath, 'r')
+    fout = open(foutPath, 'w')
+    userDict={}
+    for path in predictionPathList:
+        fin = open(path, 'r')
+        for line in fin:
+            if line != '\n':
+                line = line.replace('\n','')
+                columns = line.split('\t')
+                user = columns[0]
+                movie = columns[1]
+                rating = columns[2]
+                if user not in userDict:
+                    userDict[user]={}
+                if movie not in userDict[user]:
+                    userDict[user][movie]=[]
+                userDict[user][movie].append(rating)
+        
+    for line in master:
+        if line != '\n':
+            line = line.replace('\n','')
+            columns = line.split('\t')
+            user = columns[0]
+            movie = columns[1]
+            if actualPred:
+                rating = columns[2]
+            if user in userDict:
+                if movie in userDict[user]:
+                    string = ''
+                    for pred in userDict[user][movie]:
+                        string = string+pred+'\t'
+                    string=string[:-1]  # erases the hanging tab
+                    fout.write(line+'\t'+string+'\n')
+            else:
+                fout.write(line+'\n')
+ 
