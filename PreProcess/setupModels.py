@@ -13,13 +13,17 @@ def setupModels(sys,os,utils,config,random,mproc):
                 utils.PROCESSED_DATA_PATH_TEMP + '_t' + strTrial,
                 bootTrain, bootCV, config.BOOTSTRAP_SPLITS[0],
                 random)
-        
+        bootTest  =  utils.MODEL_BOOT_PATH + \
+                        '_test' + '_t' + strTrial       
+        ### Setup test datasets separate for parallel ###
+        os.system('cp ' + utils.TEST_IDS_DUMMY_PATH +
+                    ' ' + bootTest)
+
         for model in config.models:
             tag = model[0]
             print("Setting up model " + tag)
             ### Define paths and append to modelsData ###
-            bootTest  =  utils.MODEL_BOOT_PATH     + tag + \
-                                    '_test' + '_t' + strTrial     
+     
             featTrain  = utils.MODEL_FEATURED_PATH + tag + \
                                    '_train' + '_t' + strTrial
             featCV     = utils.MODEL_FEATURED_PATH + tag + \
@@ -57,11 +61,7 @@ def setupModels(sys,os,utils,config,random,mproc):
             modelData = [tag,model[1],model[2],model[3],modelPaths,strTrial]
             utils.modelsData.append(modelData)
             
-            ### Setup test datasets separate for parallel ###
-            os.system('cp ' + utils.TEST_IDS_DUMMY_PATH +
-                    ' ' + bootTest)
-
-
+            
             ### Run Setup Functions
             if model[1] == 'FM':
                 modelFMSetup.FMSetup(os,utils,modelData)

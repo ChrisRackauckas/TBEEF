@@ -1,6 +1,6 @@
 def FMSetup(os,utils,model):
     import FMFeatureSetup
-    ### Take input to feat ###
+    ### Take boot to feat ###
     print("Setting Up Features")
     FMFeatureSetup.FMSetupFeatures(os,utils,model)
     ### Take feat to bin to run ###

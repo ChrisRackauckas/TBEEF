@@ -33,7 +33,7 @@ def makeDummyPredictions(utils):
     outPredict = open(utils.TEST_IDS_DUMMY_PATH, 'w')
     for line in inPredict:
         if line != '\n':
-            line = line.replace('\n', '\t1\n') #adds dummy column
+            line = line.replace('\n','\t1\n') #adds dummy column
             outPredict.write(line)
     inPredict.close()
     outPredict.close()
