@@ -1,15 +1,17 @@
-def runModels(sys,os,utils,mproc,config):
-    import modelFMRun
-    import modelSVDRun
-    for trial in range(0,config.TRIALS):
+def runModels(sproc,modelList,testPredictionPaths,CVPredictionPaths,trials,subprocesses):
+    for trial in range(0,trials):
         # Setup utility arrays
-        utils.testPredictionPaths.append([])
-        utils.CVPredictionPaths.append([])
-    for model in utils.modelsData:
-        print("Running Model " + model[0])
-        if model[1] == 'FM':
-            modelFMRun.FMRun(os,utils,mproc,config,model)
-        if model[1] == 'SVD':
-            modelSVDRun.SVDRun(os,utils,mproc,config,model)
-        utils.testPredictionPaths[int(model[5])].append(model[4][13])
-        utils.CVPredictionPaths[int(model[5])].append(model[4][12])
+        testPredictionPaths.append([])
+        CVPredictionPaths.append([])
+    for model in modelList:
+        print("Running Model " + model.tag)
+        model.run(sproc,subprocesses)
+        testPredictionPaths[int(model.trial)].append(model.predCV)
+        CVPredictionPaths[int(model.trial)].append(model.predTest)
+
+def fixRun(mproc,processes,modelList):
+    for model in modelList:
+        p = mproc.Process(target=model.fixRun)
+        p.start()
+        processes.append(p)
+

@@ -47,14 +47,8 @@ SVDFEATURE_BINARY         = './Models/SVDFeature/svd_feature'
 SVDFEATURE_INFER_BINARY   = './Models/SVDFeature/svd_feature_infer'
 SVDFEATURE_MODEL_OUT_PATH = 'Data/ModelData/'
 
-#### Holds  ####
+### Holds ##########
 
-modelsData = []
-testPredictionPaths = []#Array of lists of paths 
-                        #where test predictions are saved
-CVPredictionPaths = []  #Array of lists of paths 
-                        #where CV predictions are saved
-processes = []          #Array of current processes
 userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
 
 #### Utility Functions ####
@@ -66,25 +60,6 @@ def grabCSVColumn(csv_path,columnNumber):
 	for row in data:
 		ans.append(row[columnNumber])
 	return ans
-
-def prependUserMovieToPredictions(idsPath,fixPath,savePath):
-    ### Takes in a column of ratings as toFix
-    ### Takes in user and movie id's through idsPath
-    ### Makes user movie rating and saves toSave
-    ### ratingsCol is a boolean for implying
-    ### whether the input for idsPath
-    ### has a column of ratings or not
-    import csv
-    data = csv.reader(open(idsPath,'rU'), delimiter="\t", quotechar='|')
-    fixData = open(fixPath, 'r')
-    fixLines = fixData.readlines();
-    i = 0
-    output = [];
-    for row in data :
-        output.append(row[0] + '\t' + row[1] + "\t" + fixLines[i])
-        i = i + 1
-    outfile = open(savePath, 'w')
-    outfile.writelines(["%s" % item  for item in output])
 
 def prependTxtToFile(inputPath,outputPath,txt):
     with file(inputPath, 'r') as original: \

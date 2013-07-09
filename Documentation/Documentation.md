@@ -1,40 +1,52 @@
-Hybrid Movie Recommendation System
+Hybrid Movie Recommendation System Documentation
 ==============================================
 
-This program is a hybrid recommendation system, utilizing the models from various different statistical methods and patching them together in an intelligent way to improve prediction accuracy. It was specifically developed to implement the methods from the various top competitors in the Baidu, Inc. movie recommendation algorithm contest into a single unified approach and is written to work with datasets which follow the format of the contest.
+This program is a hybrid recommendation system. This documentation is written for those who wish to modify the program in some manner or join the effect. 
 
 Program Structure
 ----------------------------------------------
 
-The structure of the program is as follows. There are three main phases of the prediction algorithm:
+Data Structures
+----------------------------------------------------
 
-1. Pre-Processing - Getting the data ready to run the models.
-2. Modeling - Running the models to generate the predictions.
-3. Post-Processing - Utilizing the predictions from various models to generate a prediction.
+The main data structures of the program are as follows:
 
-This program requires three datasets: a training dataset, cross-validation dataset, and a test/prediction dataset. The training dataset is used to train the models and the cross-validation dataset is used to train the post-processing techniques. Lastly, it uses the trained model to output the predictions for the test dataset (and, if the test set has predictions, it will also output the RMSE on the test set).
+1. Models. For computational efficiency purposes (and the fact that they are reasonably simple and rarely written to), models are defined using arrays instead of objects. Models start by definition by the user in the configuration file, config.py. The user specifies the models as follows:
+    
+    [tag,program,featureSet,[misc]]
 
-The Pre-Processing stage contains two main files:
+- Tag is a unique identifier to the model. It must be unique in order to ensure the models do no overwrite eachother's data files.
+- Program is a string, either 'FM' or 'SVD', which states whether the model should be evaluated using either libFM or SVDFeature respectively.
+- Feature set is a parameter that lets the user choose which feature set the models should use. To know which features are implemented, look inside the PreProcess directory to find the libFM and SVDFeature setup directories. Inside each of these directories should be a file titled -FeatureSetup.py. These are the folders where the feature choice process occurs. Look for conditional statements based on model[2], these are the statements that check the feature set parameter.
+- Misc is a list of miscellaneous parameters for controlling the models. Currently, the choices are as follows:
 
-1. effects.py, a file which parses the input training and cross-validation set for global effects (global mean, user mean, movie mean, etc), re-scales the data to be mean zero, and save the global information out to Data/Effects/globalEffects.txt for use in the post-processing phase.
+--libFM: ['dimensions']
+--SVD: []
 
-2. model$NAMESetup.py, a file which parses the de-globaled dataset for use within the specific named model. For example, modelFM.py would parse the training and cross-validation datasets into the binary forms for use in libFM and save these files to Data/ModelData/$NAME
+At the model setup phase, these are converted into a larger model for the purpose of calculation. These are then saved into modelData, an array stored in utils/utils.py. This stucture is defined as follows:
 
-The Modeling stage contains the following items:
+    [tag,program,featureSet,[misc],[paths],trial]
 
-1. The programs for training the models and outputting predictions, such as libFM, SVDFeature, etc.
+The first four options are copied from the array before. The last two are defined as follows:
 
-2. model$NAMERun.py, a file which uses the data from Data/ModelData/$NAME to train the model and generates predictions which are saved to Data/ModelPredictions.
+- Paths is a list of relevant paths for model setup. The list is in the following order:
 
-The Post-Processing stage contains two main files:
+--bootTrain : Training dataset given by bootsplit
+--bootCV : CV dataset given by bootsplit
+--bootTest : Test dataset with dummy variables (required for computation)
+--featTrain 
+--featCV
+--featTest
+--tmpTrain
+--tmpCV
+--tmpTest
+--runTrain : Training dataset for the model to run
+--runCV : CV dataset for the model to run
+--runTest : Test dataset for the model to run
+--predCV : Where the predictions from the CV dataset are saved
+--predTest : Where the predictions from the Test dataset are saved
+--logCV : Where the logfile for the CV run is saved (libFM)
+--logTest : Where the logfile for the Test run is saved (libFM)
+--configPath : Where the config file for the run is saved (SVDFeature)
 
-1. hybrid.py, a script which takes in the predictions from Data/ModelPredictions and uses them to generate the predictions.
-
-2. post.py, a script which reformats the predictions by placing back in the global effects and looking for duplicates from the training set in the test set (and replacing with the appropriate value). It outputs the final predictions to Data/Outputs
-
-For convenience, commonly utility functions are stored in scripts within the utils folder.
-
-Acknowledgements
-----------------------------------------------
-
-This research was made possible through the Research Industrial Projects for Students, Hong Kong (RIPS-HK), an undergraduate research opportunity ran by UCLA's Institute for Pure and Applied Mathematics (IPAM). This project was funded by the NSF. We thank our academic mentor Dr. Avery Ching, Hong Kong University of Science and Technology, and our industry client Baidu, Inc. for helping guide us through the project.
+As for the feat and tmp datasets, their order is defined by the program choice. The flow is as follows for libFM. 

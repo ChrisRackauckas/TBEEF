@@ -5,11 +5,11 @@ def setupHybrid(os,utils):
     utils.aggregatePredictions(utils.TEST_IDS_PATH,
                          utils.HYBRID_TRAIN_MATRIX_PATH,
                          True,
-                         utils.CVPredictionPaths)
+                         utils.CVPredictionPaths[0])
     utils.aggregatePredictions(utils.ORIGINAL_DATA_CLEAN_PATH,
                          utils.HYBRID_PREDICT_MATRIX_PATH,
                          False,
-                         utils.testPredictionPaths)
+                         utils.testPredictionPaths[0])
 def runHybrid(os,utils,config,mproc):
 #-------------------------------------------------
 # Calls an R script which uses the train and predict matrices

@@ -5,6 +5,7 @@ import re
 import random
 import time
 import multiprocessing as mproc
+import subprocess as sproc
 from math import *
 WORK_PATH = os.getcwd()
 sys.path.append(WORK_PATH + '/PreProcess')
@@ -14,8 +15,7 @@ sys.path.append(WORK_PATH + '/Models/libFM')
 sys.path.append(WORK_PATH + '/Models/SVDFeature')
 sys.path.append(WORK_PATH + '/Models')
 sys.path.append(WORK_PATH + '/utils')
-sys.path.append(WORK_PATH + '/PreProcess/libFM')
-sys.path.append(WORK_PATH + '/PreProcess/SVDFeature')
+import Model
 import runModels
 import setupModels
 import utils
@@ -23,7 +23,15 @@ import hybrid
 import post
 import preProcess as pre
 import config
+#### Holds  ####
 
+modelList = []
+testPredictionPaths = []#Array of lists of paths 
+                        #where test predictions are saved
+CVPredictionPaths = []  #Array of lists of paths 
+                        #where CV predictions are saved
+processes = []          #Array of current processes
+subprocesses = []       #Array of subproccesses
 #--------------------------------------------------------------------
 
 ################## Timer ##########################
@@ -42,24 +50,29 @@ if config.PRE_PROCESS:
 ################### Setup Models ###################
 
 if config.SETUP_MODELS:
-    setupModels.setupModels(sys,os,utils,config,random,mproc)
+    setupModels.setupModels(sys,os,utils,config,random,mproc,processes,modelList)
 
-    #### Join #####
-
-    for p in utils.processes:
+    for p in processes:
         p.join()
-    utils.processes = []
-
+    processes = []
 ################# Run Models ###################
 
 if config.RUN_MODELS:
-    runModels.runModels(sys,os,utils,mproc,config)
+    runModels.runModels(sproc,modelList,
+                testPredictionPaths,CVPredictionPaths,
+                config.TRIALS,subprocesses)
 
     #### Join #####
     
-    for p in utils.processes:
+    for p in subprocesses:
+        p.wait()
+    subprocesses = []
+
+    runModels.fixRun(mproc,processes,modelList)
+
+    for p in processes:
         p.join()
-    utils.prcesses = []
+    processes = []
 
 ################### Setup Hybrid ###################
 
