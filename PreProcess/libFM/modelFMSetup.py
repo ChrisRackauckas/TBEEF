@@ -14,9 +14,9 @@ def FMDataConvert(os,model):
     featTrain = model[4][3]
     featCV    = model[4][4]
     featTest  = model[4][5]
-    binTrain  = model[4][6]
-    binCV     = model[4][7]
-    binTest   = model[4][8]
+    tmpTrain  = model[4][6]
+    tmpCV     = model[4][7]
+    tmpTest   = model[4][8]
     runTrain  = model[4][9]
     runCV     = model[4][10]
     runTest   = model[4][11]
@@ -29,36 +29,36 @@ def FMDataConvert(os,model):
     os.system('./Models/libFM/convert --ifile ' + 
             featTrain + 
             '.libfm ' + '--ofilex ' + 
-            binTrain + 
+            tmpTrain + 
             '.x --ofiley ' + 
             runTrain + '.y' +
             '> /dev/null') 
     os.system('./Models/libFM/convert --ifile ' + 
             featCV + 
             '.libfm ' + '--ofilex ' + 
-            binCV +
+            tmpCV +
             '.x --ofiley ' + 
             runCV + '.y' +
             '> /dev/null')
     os.system('./Models/libFM/convert --ifile ' + 
             featTest + 
             '.libfm ' + '--ofilex ' + 
-            binTest + 
+            tmpTest + 
             '.x --ofiley ' + 
             runTest + '.y'
             '> /dev/null')
     os.system('./Models/libFM/transpose --ifile ' + 
-            binTrain + 
+            tmpTrain + 
             '.x --ofile ' + 
             runTrain + '.xt' +
             '> /dev/null')
     os.system('./Models/libFM/transpose --ifile ' + 
-            binTest + 
+            tmpTest + 
             '.x --ofile ' + 
             runTest + '.xt' +
             '> /dev/null')
     os.system('./Models/libFM/transpose --ifile ' + 
-            binCV + '.x --ofile ' + 
+            tmpCV + '.x --ofile ' + 
             runCV + '.xt' + 
             '> /dev/null')  
 

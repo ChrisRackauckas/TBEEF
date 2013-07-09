@@ -15,7 +15,7 @@ def FMRun(os, utils,mproc,config,model):
     fout_cv_temp =   predCV    + '_temp'
     pTest = mproc.Process(
             target=FMInstance,
-            args = (bootTest,  
+            args = (utils.LIBFM_BINARY,bootTest,  
             dim,config.FM_STR_ITER, 
             predTest,
             fout_test_temp,
@@ -26,7 +26,7 @@ def FMRun(os, utils,mproc,config,model):
             utils.prependUserMovieToPredictions))
     pCV   = mproc.Process(
             target=FMInstance,
-            args = (bootCV,dim, 
+            args = (utils.LIBFM_BINARY,bootCV,dim, 
             config.FM_STR_ITER, 
             predCV,
             fout_cv_temp,
@@ -40,12 +40,12 @@ def FMRun(os, utils,mproc,config,model):
     pTest.start()
     pCV.start()
 
-def FMInstance(fixIds,dim,strItr,fout_final,fout_temp,runTrain,runTest,rlog,globalBias,oneWay,initStd,printOut,prependUserMovieToPredictions):
+def FMInstance(libFMPath,fixIds,dim,strItr,fout_final,fout_temp,runTrain,runTest,rlog,globalBias,oneWay,initStd,printOut,prependUserMovieToPredictions):
     import os
     redirect = "> /dev/null"
     if printOut:
         redirect = ""
-    os.system('./Models/libFM/libFM -task r -train ' + 
+    os.system(libFMPath + ' -task r -train ' + 
         runTrain + ' -test ' + 
         runTest + ' -init_stdev ' + 
         initStd + ' -dim \'' + 

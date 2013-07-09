@@ -1,6 +1,8 @@
 ################### Select Models ##################
 
-models = [['basicFM','FM','Basic',['2']]] 
+models = [#['basicFM','FM','Basic',['2']],
+          ['basicSVD','SVD','Basic',[]]
+         ] 
 
 # Defining models:
 # Each element is a list: 
@@ -27,11 +29,10 @@ TRIALS           = 2
 PRE_PROCESS      = True
 DE_EFFECT        = False
 SETUP_MODELS     = True
-RUN_MODELS       = True
-SETUP_HYBRID     = True
+RUN_MODELS       = False
+SETUP_HYBRID     = False
 RUN_HYBRID       = False
 POST_PROCESS     = False
-HYBRID_CHOICE    = 1
 
 ################## Select Bootstrap Parameters  ##################
 
@@ -46,6 +47,16 @@ TIME_RUN     = False
 FM_ITER = 100
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
+
+################## SVD Feature #####################
+
+SVD_LEARNING_RATE         = '.005'
+SVD_REGULARIZATION_ITEM   = '.004'
+SVD_REGULARIZATION_USER   = '.004'
+SVD_REGULARIZATION_GLOBAL = '.001'
+SVD_NUM_FACTOR            = '64'
+SVD_ACTIVE_TYPE           = '0'
+
 
 ################## Hybrid #########################
 

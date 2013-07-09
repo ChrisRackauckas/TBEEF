@@ -18,12 +18,13 @@ EFFECTS_GLOBAL_PATH = 'Data/Effects/global_effects.txt'
 MODEL_BOOT_PATH       = 'Data/ModelSetup/boot_'
 MODEL_RUN_PATH        = 'Data/ModelData/'
 MODEL_PREDICT_PATH    = 'Data/ModelPredictions/'
-MODEL_BIN_PATH        = 'Data/ModelSetup/bin_'
+MODEL_TMP_PATH        = 'Data/ModelSetup/tmp_'
 MODEL_FEATURED_PATH   = 'Data/ModelSetup/feat_'
 MODEL_LOG_PATH        = 'Data/LogFiles/'
+MODEL_CONFIG_PATH     = 'Data/ModelData/cfg_'
 
-HYBRID_TRAIN_MATRIX_PATH    = 'Data/HybridSetup/hybridTrain.txt'
-HYBRID_PREDICT_MATRIX_PATH  = 'Data/HybridSetup/hybridPredict.txt'
+HYBRID_TRAIN_MATRIX_PATH    = 'Data/HybridSetup/hTrain'
+HYBRID_PREDICT_MATRIX_PATH  = 'Data/HybridSetup/hPred'
 
 HYBRID_BOOT_PATH      = 'Data/HybridSetup/boot_'
 HYBRID_PREDICT_PATH   = 'Data/HybridPredictions/'
@@ -35,8 +36,16 @@ TO_POST_PATH                = 'Data/Hybrid/toPost.txt'
 
 #### FM ####
 
-FM_GLOBAL_BIAS = '1' #either 1 or 0
-FM_ONE_WAY_INTERACTION = '1' #either 1 or 0
+FM_GLOBAL_BIAS            = '1' #either 1 or 0
+FM_ONE_WAY_INTERACTION    = '1' #either 1 or 0
+LIBFM_BINARY              = './Models/libFM/libFM'
+
+#### SVD Feature ###
+
+SVDFEATURE_BUFFER_BINARY  = './Models/svdFeature/tools/make_feature_buffer'
+SVDFEATURE_BINARY         = './Models/svdFeature/svd_feature'
+SVDFEATURE_INFER_BINARY   = './Models/svdFeature/svd_feature_infer'
+SVDFEATURE_MODEL_OUT_PATH = 'Data/ModelData/'
 
 #### Holds  ####
 

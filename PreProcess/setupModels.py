@@ -1,5 +1,6 @@
 def setupModels(sys,os,utils,config,random,mproc):
     import modelFMSetup
+    import modelSVDSetup
     for trial in range(0,config.TRIALS):
         strTrial = str(trial)
         ### Bootsplit the dataset ###
@@ -23,11 +24,11 @@ def setupModels(sys,os,utils,config,random,mproc):
                                       '_CV' + '_t' + strTrial
             featTest   = utils.MODEL_FEATURED_PATH + tag + \
                                     '_test' + '_t' + strTrial
-            binTrain   = utils.MODEL_BIN_PATH      + tag + \
+            tmpTrain   = utils.MODEL_TMP_PATH      + tag + \
                                    '_train' + '_t' + strTrial
-            binCV      = utils.MODEL_BIN_PATH      + tag + \
+            tmpCV      = utils.MODEL_TMP_PATH      + tag + \
                                       '_CV' + '_t' + strTrial
-            binTest    = utils.MODEL_BIN_PATH      + tag + \
+            tmpTest    = utils.MODEL_TMP_PATH      + tag + \
                                      '_test'+ '_t' + strTrial 
             runTrain   = utils.MODEL_RUN_PATH      + tag + \
                                    '_train' + '_t' + strTrial
@@ -43,11 +44,16 @@ def setupModels(sys,os,utils,config,random,mproc):
                                       '_CV' + '_t' + strTrial
             logTest    = utils.MODEL_LOG_PATH      + tag + \
                                     '_test' + '_t' + strTrial
+            configCV   = utils.MODEL_CONFIG_PATH   + tag + \
+                                      '_CV' + '_t' + strTrial
+            configTest = utils.MODEL_CONFIG_PATH   + tag + \
+                                    '_test' + '_t' + strTrial
             modelPaths = [bootTrain,bootCV,bootTest,
                           featTrain,featCV,featTest,
-                          binTrain,binCV,binTest,
+                          tmpTrain,tmpCV,tmpTest,
                           runTrain,runCV,runTest,
-                          predCV,predTest,logCV,logTest]
+                          predCV,predTest,logCV,
+                          logTest,configCV,configTest]
             modelData = [tag,model[1],model[2],model[3],modelPaths,strTrial]
             utils.modelsData.append(modelData)
 
@@ -62,5 +68,5 @@ def setupModels(sys,os,utils,config,random,mproc):
             ### Run Setup Functions
             if model[1] == 'FM':
                 modelFMSetup.FMSetup(os,utils,modelData)
-            if model[1] == 'SVDFeature':
-                print("SVDFeature not set up!")
+            if model[1] == 'SVD':
+                modelSVDSetup.SVDSetup(os,utils,modelData,config)
