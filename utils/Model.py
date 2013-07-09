@@ -33,7 +33,9 @@ class Model(object):
         self.predTest   = utils.MODEL_PREDICT_PATH  + self.tag + \
                                     '_test' + '_t' + strTrial
         self.trial      = strTrial
-        self.MOVIE_TAG_PATH = utils.MOVIE_TAG_PATH
+        self.movieTagPath   = utils.MOVIE_TAG_PATH
+        self.userSocialPath = utils.USER_SOCIAL_PATH
+        self.userHistoryPath= utils.USER_HISTORY_PATH
 
     def prependUserMovieToPredictions(self,idsPath,fixPath,savePath):
         ### Takes in a column of ratings as toFix

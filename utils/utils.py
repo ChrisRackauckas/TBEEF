@@ -6,7 +6,10 @@ PROCESSED_TRAIN_PATH    = 'Data/PreProcessed/training_set_processed.txt'
 
 ORIGINAL_DATA_PATH              = 'Data/Original/data_set.txt'
 ORIGINAL_DATA_CLEAN_PATH        = 'Data/PreProcessed/data_set_clean.txt'
+
 MOVIE_TAG_PATH                  = 'Data/Original/movie_tag.txt'
+USER_SOCIAL_PATH                = 'Data/Original/user_social.txt'
+USER_HISTORY_PATH               = 'Data/Original/user_history.txt'
 
 PROCESSED_DATA_PATH      = 'Data/PreProcessed/data_set_processed'
 PROCESSED_DATA_PATH_TEMP = 'Data/PreProcessed/data_set_processed_temp'

@@ -26,12 +26,10 @@ ToDo
     - Multinomial logistic regression
     - Item-Based Collaborative Filering
 2. Implement synthesis.
-3. Parallelize model setup.
-4. Parallelize model run.
-5. Parallelize ensemble setup.
-6. Parallelize ensemble run.
-7. Implement more features for SVD and FM.
-8. Document and clean parts of the code. 
+3. Parallelize ensemble setup.
+4. Parallelize ensemble run.
+5. Implement more features for SVD and FM.
+6. Document and clean parts of the code. 
 
 Contributors
 ----------------------------------------------
