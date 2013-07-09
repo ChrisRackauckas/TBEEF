@@ -1,6 +1,6 @@
 ################### Select Models ##################
 
-models = [#['basicFM','FM','Basic',['2']],
+models = [['basicFM','FM','Basic',['2']],
           ['basicSVD','SVD','Basic',[]]
          ] 
 
