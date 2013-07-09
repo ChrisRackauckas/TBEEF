@@ -25,7 +25,7 @@ ensembleModels = [['OLSR','OLS',[]]]
 
 ################### Select Parts  ##################
 
-TRIALS           = 1
+TRIALS           = 2 
 PRE_PROCESS      = True
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
