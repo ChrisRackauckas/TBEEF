@@ -4,26 +4,36 @@ def FMSetupFeatures(os,utils,model):
 # creates the features for LibFM
 #----------------------------------------------------------------- 
     if model[2] == 'Basic':
+        # sends bootTrain, bootCV, bootTest to featTrain, featCv, featTest
         os.system('cp ' + model[4][0] + ' ' + model[4][3])
         os.system('cp ' + model[4][1] + ' ' + model[4][4])
         os.system('cp ' + model[4][2] + ' ' + model[4][5])
 
-#    if MOVIE_TAG:
-#        print('...Movie Tag data')
-#        addMovieMeta(os,utils, utils.PROCESSED_TRAIN_PATH,\
-#                     utils.PROCESSED_TRAIN_TEMP_PATH)
-#        addMovieMeta(os,utils, utils.PROCESSED_CV_PATH,\
-#                     utils.PROCESSED_CV_TEMP_PATH)
-#        addMovieMeta(os,utils, utils.TEST_IDS_DUMMY_PATH,\
-#                     utils.TEST_IDS_DUMMY_TEMP_PATH)
+    if model[2] == 'MovieTag':
+        print('...Movie Tag data')
+        addMovieMeta(os,utils, model[4][0], model[4][3] )
+        addMovieMeta(os,utils, model[4][1], model[4][4] )
+        addMovieMeta(os,utils, model[4][2], model[4][5] )
 
-#    if SOCIAL:
-#        print('...Social data')
-#        addSocialMeta(os,utils)
+    if model[2] == 'NearestNeighbor':
+        print('...Nearest Neighbor data')
+        nearestNeighbor(os,utils, model[4][0], model[4][3] )
+        nearestNeighbor(os,utils, model[4][1], model[4][4] )
+        nearestNeighbor(os,utils, model[4][2], model[4][5] )
+        
+    if model[2] == 'Social':
+        # TODO
+        print('...Social data')
+        addSocialMeta(os,utils, model[4][0], model[4][3] )
+        addSocialMeta(os,utils, model[4][1], model[4][4] )
+        addSocialMeta(os,utils, model[4][2], model[4][5] )
 
-#   if HISTORY:
-#        print('...History data')
-#        addHistoryMeta(os,utils)
+    if model[2] == 'History':
+        # TODO
+        print('...History data')
+        addHistoryMeta(os,utils, model[4][0], model[4][3] )
+        addHistoryMeta(os,utils, model[4][1], model[4][4] )
+        addHistoryMeta(os,utils, model[4][2], model[4][5] )
         
 
 def addMovieMeta(os, utils, finPath, foutPath):
@@ -58,9 +68,17 @@ def addMovieMeta(os, utils, finPath, foutPath):
     dataSet.close()
     dataSetWithTags.close()
 
-    os.system('mv '+foutPath+' '+ finPath)
 
+def nearestNeighbor(os, utils, fin, fout):
 
+#-----------------------------------------------------------------
+# creates new data set with NN data for LibFM
+#-----------------------------------------------------------------
+
+    # TODO
+    return
+
+    
 def addSocialMeta(os,utils):
 
 #-----------------------------------------------------------------

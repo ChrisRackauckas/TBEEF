@@ -1,7 +1,8 @@
 ################### Select Models ##################
 
-models = [#['basicFM','FM','Basic',['2']],
-          ['basicSVD','SVD','Basic',[]]
+models = [#['basicFM','FM','Basic',['2'] ],
+            ['movieTagFM','FM','MovieTag',['2'] ]
+          #['basicSVD','SVD','Basic',[]]
          ] 
 
 # Defining models:
@@ -25,8 +26,8 @@ ensembleModels = [['OLSR','OLS',[]]]
 
 ################### Select Parts  ##################
 
-TRIALS           = 2
-PRE_PROCESS      = True
+TRIALS           = 1
+PRE_PROCESS      = False
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
 RUN_MODELS       = True

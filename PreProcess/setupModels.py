@@ -48,12 +48,12 @@ def setupModels(sys,os,utils,config,random,mproc):
                                     '_test' + '_t' + strTrial
             configPath = utils.MODEL_CONFIG_PATH   + tag + \
                                               '_t' + strTrial
-            modelPaths = [bootTrain,bootCV,bootTest,
-                          featTrain,featCV,featTest,
-                          tmpTrain,tmpCV,tmpTest,
-                          runTrain,runCV,runTest,
-                          predCV,predTest,logCV,
-                          logTest,configPath]
+            modelPaths = [bootTrain, bootCV, bootTest,
+                          featTrain, featCV, featTest,
+                          tmpTrain, tmpCV, tmpTest,
+                          runTrain, runCV, runTest,
+                          predCV, predTest, logCV,
+                          logTest, configPath ] 
             modelData = [tag,model[1],model[2],model[3],modelPaths,strTrial]
             utils.modelsData.append(modelData)
             
