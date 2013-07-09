@@ -27,9 +27,9 @@ ensembleModels = [['OLSR','OLS',[]]]
 
 TRIALS           = 2
 PRE_PROCESS      = True
-DE_EFFECT        = False
+DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
-RUN_MODELS       = False
+RUN_MODELS       = True
 SETUP_HYBRID     = False
 RUN_HYBRID       = False
 POST_PROCESS     = False
@@ -56,7 +56,7 @@ SVD_REGULARIZATION_USER   = '.004'
 SVD_REGULARIZATION_GLOBAL = '.001'
 SVD_NUM_FACTOR            = '64'
 SVD_ACTIVE_TYPE           = '0'
-
+SVD_NUM_ITER              = '40'
 
 ################## Hybrid #########################
 

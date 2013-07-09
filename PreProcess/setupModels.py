@@ -3,6 +3,7 @@ def setupModels(sys,os,utils,config,random,mproc):
     import modelSVDSetup
     for trial in range(0,config.TRIALS):
         strTrial = str(trial)
+        print("Setting up trial " + strTrial)
         ### Bootsplit the dataset ###
         bootTrain =  utils.MODEL_BOOT_PATH  +   \
                                    '_train' + '_t' + strTrial
@@ -15,6 +16,7 @@ def setupModels(sys,os,utils,config,random,mproc):
         
         for model in config.models:
             tag = model[0]
+            print("Setting up model " + tag)
             ### Define paths and append to modelsData ###
             bootTest  =  utils.MODEL_BOOT_PATH     + tag + \
                                     '_test' + '_t' + strTrial     
@@ -44,26 +46,21 @@ def setupModels(sys,os,utils,config,random,mproc):
                                       '_CV' + '_t' + strTrial
             logTest    = utils.MODEL_LOG_PATH      + tag + \
                                     '_test' + '_t' + strTrial
-            configCV   = utils.MODEL_CONFIG_PATH   + tag + \
-                                      '_CV' + '_t' + strTrial
-            configTest = utils.MODEL_CONFIG_PATH   + tag + \
-                                    '_test' + '_t' + strTrial
+            configPath = utils.MODEL_CONFIG_PATH   + tag + \
+                                              '_t' + strTrial
             modelPaths = [bootTrain,bootCV,bootTest,
                           featTrain,featCV,featTest,
                           tmpTrain,tmpCV,tmpTest,
                           runTrain,runCV,runTest,
                           predCV,predTest,logCV,
-                          logTest,configCV,configTest]
+                          logTest,configPath]
             modelData = [tag,model[1],model[2],model[3],modelPaths,strTrial]
             utils.modelsData.append(modelData)
-
+            
             ### Setup test datasets separate for parallel ###
-            if modelData[1] == 'FM':
-                os.system('cp ' + utils.TEST_IDS_DUMMY_PATH +
+            os.system('cp ' + utils.TEST_IDS_DUMMY_PATH +
                     ' ' + bootTest)
-            else :
-                os.system('cp ' + utils.TEST_IDS_PATH +
-                    ' ' + bootTest)
+
 
             ### Run Setup Functions
             if model[1] == 'FM':

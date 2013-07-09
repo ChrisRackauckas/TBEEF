@@ -11,10 +11,11 @@ sys.path.append(WORK_PATH + '/PreProcess')
 sys.path.append(WORK_PATH + '/Hybrid')
 sys.path.append(WORK_PATH + '/PostProcess')
 sys.path.append(WORK_PATH + '/Models/libFM')
+sys.path.append(WORK_PATH + '/Models/SVDFeature')
 sys.path.append(WORK_PATH + '/Models')
 sys.path.append(WORK_PATH + '/utils')
 sys.path.append(WORK_PATH + '/PreProcess/libFM')
-sys.path.append(WORK_PATH + '/PreProcess/svdFeature')
+sys.path.append(WORK_PATH + '/PreProcess/SVDFeature')
 import runModels
 import setupModels
 import utils

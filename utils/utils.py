@@ -42,9 +42,9 @@ LIBFM_BINARY              = './Models/libFM/libFM'
 
 #### SVD Feature ###
 
-SVDFEATURE_BUFFER_BINARY  = './Models/svdFeature/tools/make_feature_buffer'
-SVDFEATURE_BINARY         = './Models/svdFeature/svd_feature'
-SVDFEATURE_INFER_BINARY   = './Models/svdFeature/svd_feature_infer'
+SVDFEATURE_BUFFER_BINARY  = './Models/SVDFeature/tools/make_feature_buffer'
+SVDFEATURE_BINARY         = './Models/SVDFeature/svd_feature'
+SVDFEATURE_INFER_BINARY   = './Models/SVDFeature/svd_feature_infer'
 SVDFEATURE_MODEL_OUT_PATH = 'Data/ModelData/'
 
 #### Holds  ####
