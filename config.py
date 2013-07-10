@@ -28,11 +28,11 @@ ensembleModels = [['OLSR','OLS',[]]]
 
 TRIALS           = 2 
 PRE_PROCESS      = True
-DE_EFFECT        = False #If De-effect is false, model predictions are correct
+DE_EFFECT        = True #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
 RUN_MODELS       = True
-SETUP_HYBRID     = False
-RUN_HYBRID       = False
+SETUP_HYBRID     = True
+RUN_HYBRID       = True
 POST_PROCESS     = False
 
 ################## Select Bootstrap Parameters  ##################
@@ -45,7 +45,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 100
+FM_ITER = 10
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
@@ -57,7 +57,7 @@ SVD_REGULARIZATION_USER   = '.004'
 SVD_REGULARIZATION_GLOBAL = '.001'
 SVD_NUM_FACTOR            = '64'
 SVD_ACTIVE_TYPE           = '0'
-SVD_NUM_ITER              = '40'
+SVD_NUM_ITER              = '10'
 
 ################## Hybrid #########################
 

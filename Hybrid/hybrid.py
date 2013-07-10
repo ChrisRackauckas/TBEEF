@@ -1,42 +1,42 @@
-def setupHybrid(os,utils):
-#------------------------------------------------
-#Sets up the input matrices for the synthesizer
-#------------------------------------------------
-    utils.aggregatePredictions(utils.TEST_IDS_PATH,
-                         utils.HYBRID_TRAIN_MATRIX_PATH,
-                         True,
-                         utils.CVPredictionPaths[0])
-    utils.aggregatePredictions(utils.ORIGINAL_DATA_CLEAN_PATH,
-                         utils.HYBRID_PREDICT_MATRIX_PATH,
-                         False,
-                         utils.testPredictionPaths[0])
-def runHybrid(os,utils,config,mproc):
+def setupHybrid(utils,config,random,split,CVPredictionPaths,testPredictionPaths,modelList,trials):
+    from HybridModel import HybridModel
+    ### Setup data matrices and construct hybrid models ###
+
+    for trial in range(0,trials):
+        hybridOriginal = utils.HYBRID_ORIGINAL_PATH \
+                            + '_train_t' + str(trial)
+        hybridPredict = utils.HYBRID_ORIGINAL_PATH \
+                            + '_test_t' + str(trial)
+        bootCV = utils.MODEL_BOOT_PATH  +   \
+                                      '_CV' + '_t' + str(trial)
+        buildTrainingMatrixFromPredictions(bootCV,hybridOriginal,
+                         CVPredictionPaths[trial],utils.grabCSVColumn)
+        buildPredictorMatrixFromPredictions(testPredictionPaths[trial],
+                         utils.grabCSVColumn,hybridPredict)
+        utils.bootsplit(hybridOriginal,hybridOriginal + '_tmp',
+                utils.HYBRID_BOOT_PATH + '_train_t' + str(trial),
+                utils.HYBRID_BOOT_PATH + '_CV_t'    + str(trial),
+                split,random) 
+        for configModel in config.ensembleModels:
+            model = HybridModel(configModel,utils,str(trial))
+            modelList.append(model)
+
+
+def runHybrid(sproc,subprocesses,modelList):
 #-------------------------------------------------
 # Calls an R script which uses the train and predict matrices
 # To generate a prediction
 #-------------------------------------------------
-    print("Generating Results")
-    for model in config.ensembleModels:
-        tag = model[0]
-        bootTrain = utils.HYBRID_BOOT_PATH + tag + '_train'
-        bootTest  = utils.HYBRID_BOOT_PATH + tag + '_test'
-        logFile   = utils.HYBRID_LOG_PATH  + tag
-        predPath  = utils.HYBRID_PRED_PATH + tag 
-        hybridPaths = [bootTrain,bootTest,logFile]
-        if model[1] == 'OLS':
-            print("Hybrid Choice: OLS Regression")
-            os.system('R CMD BATCH Hybrid/hybridOLS.R')
-        if HYBRID_CHOICE==2:
-            print("Hybrid Choice: Ridge Regression")
-            os.system('R CMD BATCH Hybrid/hybridRR.R ')
+    for model in modelList:
+        model.run(sproc,subprocesses)
 
-def buildTrainingMatrixFromPredictions(fullSet,predictorPaths,outputPath,grabCSVColumnFunc):
+def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc):
 #-------------------------------------------------
 # Takes in the prediction of various models on CV data
 # Through CVPredictionPaths array
 # Generates a txt file that is a matrix for training Hybrid
 #-------------------------------------------------
-    predictionArrays = [grabCSVColumnFunc(processedCVPath,2)]
+    predictionArrays = [grabCSVColumnFunc(fullSet,2)]
     for predictPath in predictorPaths:
         predictionArrays.append(grabCSVColumnFunc(predictPath,2))
     toWrite = []

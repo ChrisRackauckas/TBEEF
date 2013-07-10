@@ -1,36 +1,35 @@
 #### Paths ####
 
-TEST_IDS_PATH           = 'Data/Original/predict.txt'
-TEST_IDS_DUMMY_PATH     = 'Data/PreProcessed/predict_dummy.txt'
-PROCESSED_TRAIN_PATH    = 'Data/PreProcessed/training_set_processed.txt'
+TEST_IDS_PATH               = 'Data/Original/predict.txt'
+TEST_IDS_DUMMY_PATH         = 'Data/PreProcessed/predict_dummy.txt'
+PROCESSED_TRAIN_PATH        = 'Data/PreProcessed/training_set_processed.txt'
 
-ORIGINAL_DATA_PATH              = 'Data/Original/data_set.txt'
-ORIGINAL_DATA_CLEAN_PATH        = 'Data/PreProcessed/data_set_clean.txt'
+ORIGINAL_DATA_PATH          = 'Data/Original/data_set.txt'
+ORIGINAL_DATA_CLEAN_PATH    = 'Data/PreProcessed/data_set_clean.txt'
 
-MOVIE_TAG_PATH                  = 'Data/Original/movie_tag.txt'
-USER_SOCIAL_PATH                = 'Data/Original/user_social.txt'
-USER_HISTORY_PATH               = 'Data/Original/user_history.txt'
+MOVIE_TAG_PATH              = 'Data/Original/movie_tag.txt'
+USER_SOCIAL_PATH            = 'Data/Original/user_social.txt'
+USER_HISTORY_PATH           = 'Data/Original/user_history.txt'
 
-PROCESSED_DATA_PATH      = 'Data/PreProcessed/data_set_processed'
-PROCESSED_DATA_PATH_TEMP = 'Data/PreProcessed/data_set_processed_temp'
+PROCESSED_DATA_PATH         = 'Data/PreProcessed/data_set_processed'
+PROCESSED_DATA_PATH_TEMP    = 'Data/PreProcessed/data_set_processed_temp'
 
-EFFECTS_USER_PATH   = 'Data/Effects/user_effects.txt'
-EFFECTS_MOVIE_PATH  = 'Data/Effects/movie_effects.txt'
-EFFECTS_GLOBAL_PATH = 'Data/Effects/global_effects.txt'
+EFFECTS_USER_PATH           = 'Data/Effects/user_effects.txt'
+EFFECTS_MOVIE_PATH          = 'Data/Effects/movie_effects.txt'
+EFFECTS_GLOBAL_PATH         = 'Data/Effects/global_effects.txt'
 
-MODEL_BOOT_PATH       = 'Data/ModelSetup/boot_'
-MODEL_RUN_PATH        = 'Data/ModelData/'
-MODEL_PREDICT_PATH    = 'Data/ModelPredictions/'
-MODEL_TMP_PATH        = 'Data/ModelSetup/tmp_'
-MODEL_FEATURED_PATH   = 'Data/ModelSetup/feat_'
-MODEL_LOG_PATH        = 'Data/LogFiles/'
-MODEL_CONFIG_PATH     = 'Data/ModelData/cfg_'
+MODEL_BOOT_PATH             = 'Data/ModelSetup/boot_'
+MODEL_RUN_PATH              = 'Data/ModelData/'
+MODEL_PREDICT_PATH          = 'Data/ModelPredictions/'
+MODEL_TMP_PATH              = 'Data/ModelSetup/tmp_'
+MODEL_FEATURED_PATH         = 'Data/ModelSetup/feat_'
+MODEL_LOG_PATH              = 'Data/LogFiles/'
+MODEL_CONFIG_PATH           = 'Data/ModelData/cfg_'
 
-HYBRID_TRAIN_MATRIX_PATH    = 'Data/HybridSetup/hTrain'
-HYBRID_PREDICT_MATRIX_PATH  = 'Data/HybridSetup/hPred'
-
-HYBRID_BOOT_PATH      = 'Data/HybridSetup/boot_'
-HYBRID_PREDICT_PATH   = 'Data/HybridPredictions/'
+HYBRID_ORIGINAL_PATH        = 'Data/HybridSetup/orig_' 
+HYBRID_BOOT_PATH            = 'Data/HybridSetup/boot_'
+HYBRID_LOG_PATH             = 'Data/LogFiles/h_'
+HYBRID_PREDICT_PATH         = 'Data/HybridPredictions/'
 
 HYBRID_SYNTHESIZED_PATH     = 'Data/HybridPredictions/hybridSynthesized.txt'
 RE_EFFECT_PATH              = 'Data/Output/re_effect.txt' 
@@ -39,16 +38,16 @@ TO_POST_PATH                = 'Data/Hybrid/toPost.txt'
 
 #### FM ####
 
-FM_GLOBAL_BIAS            = '1' #either 1 or 0
-FM_ONE_WAY_INTERACTION    = '1' #either 1 or 0
-LIBFM_BINARY              = './Models/libFM/libFM'
+FM_GLOBAL_BIAS              = '1' #either 1 or 0
+FM_ONE_WAY_INTERACTION      = '1' #either 1 or 0
+LIBFM_BINARY                = './Models/libFM/libFM'
 
 #### SVD Feature ###
 
-SVDFEATURE_BUFFER_BINARY  = './Models/SVDFeature/tools/make_feature_buffer'
-SVDFEATURE_BINARY         = './Models/SVDFeature/svd_feature'
-SVDFEATURE_INFER_BINARY   = './Models/SVDFeature/svd_feature_infer'
-SVDFEATURE_MODEL_OUT_PATH = 'Data/ModelData/'
+SVDFEATURE_BUFFER_BINARY    = './Models/SVDFeature/tools/make_feature_buffer'
+SVDFEATURE_BINARY           = './Models/SVDFeature/svd_feature'
+SVDFEATURE_INFER_BINARY     = './Models/SVDFeature/svd_feature_infer'
+SVDFEATURE_MODEL_OUT_PATH   = 'Data/ModelData/'
 
 ### Holds ##########
 

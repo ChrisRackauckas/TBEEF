@@ -1,6 +1,16 @@
-dataTrain = read.csv("Data/Hybrid/hybridTrain.txt", sep="\t")
-fit = lm(data=dataTrain)
+args<-commandArgs(TRUE)
+trainPath = args[1]
+CVPath    = args[2]
+testPath  = args[3]
+predCV    = args[4]
+predTest  = args[5]
+
+dataTrain = read.csv(trainPath, sep="\t")
+dataCV    = read.csv(CVPath,    sep="\t")
+dataTest  = read.csv(testPath,  sep="\t")
+fit = lm(y~.,data=dataTrain)
 summary(fit)
-dataPredict = read.csv("Data/Hybrid/hybridPredict.txt", sep="\t")
-predictions = predict(fit,dataPredict)
-write(predictions, file ="Data/Hybrid/hybridSynthesized.txt", ncolumns=1)
+CVPredictions = predict(fit,dataCV)
+TestPredictions= predict(fit,dataTest)
+write(CVPredictions, file = predCV, ncolumns=1)
+write(TestPredictions, file = predTest, ncolumns=1)

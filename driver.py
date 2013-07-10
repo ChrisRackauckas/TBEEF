@@ -76,15 +76,17 @@ if config.RUN_MODELS:
 
 ################### Setup Hybrid ###################
 
+modelList = []
+
 if config.SETUP_HYBRID:
     print("Setting up hybrid")
-    hybrid.setupHybrid(os,utils)
+    hybrid.setupHybrid(utils,config,random,config.BOOTSTRAP_SPLITS[1],CVPredictionPaths,testPredictionPaths,modelList,config.TRIALS)
 
 ################### Run Hybrid #####################
 
 if config.RUN_HYBRID:
     print("Running hybrid model")
-    hybrid.runHybrid(os,utils,config,mproc)
+    hybrid.runHybrid(sproc,subprocesses,modelList)
 
 ################### Post Process #################
 
