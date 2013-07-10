@@ -31,7 +31,10 @@ HYBRID_BOOT_PATH            = 'Data/HybridSetup/boot_'
 HYBRID_LOG_PATH             = 'Data/LogFiles/h_'
 HYBRID_PREDICT_PATH         = 'Data/HybridPredictions/'
 
-HYBRID_SYNTHESIZED_PATH     = 'Data/HybridPredictions/hybridSynthesized.txt'
+SYNTH_ORIGINAL_PATH         = 'Data/SynthSetup/'
+SYNTH_PREDICT_PATH          = 'Data/SynthPredictions/'
+SYNTH_LOG_PATH              = 'Data/LogFiles/s_'
+
 RE_EFFECT_PATH              = 'Data/Output/re_effect.txt' 
 OUTPUT_PATH                 = 'Data/Output/output.txt'
 TO_POST_PATH                = 'Data/Hybrid/toPost.txt'

@@ -5,11 +5,11 @@ class Model(object):
         self.featureSet = configModel[2]
         self.misc       = configModel[3]
         self.bootTrain  =  utils.MODEL_BOOT_PATH  +   \
-                                   '_train' + '_t' + strTrial
+                                   'train' + '_t' + strTrial
         self.bootCV     =  utils.MODEL_BOOT_PATH  +   \
-                                      '_CV' + '_t' + strTrial
+                                      'CV' + '_t' + strTrial
         self.bootTest   =  utils.MODEL_BOOT_PATH + \
-                                    '_test' + '_t' + strTrial  
+                                    'test' + '_t' + strTrial  
         self.featTrain  = utils.MODEL_FEATURED_PATH + self.tag + \
                                         '_train' + '_t' + strTrial
         self.featCV     = utils.MODEL_FEATURED_PATH + self.tag + \
@@ -32,6 +32,8 @@ class Model(object):
                                        '_CV'+ '_t' + strTrial
         self.predTest   = utils.MODEL_PREDICT_PATH  + self.tag + \
                                     '_test' + '_t' + strTrial
+        self.predCVTmp  = self.predCV   + '_tmp'
+        self.predTestTmp= self.predTest + '_tmp'
         self.trial      = strTrial
         self.movieTagPath   = utils.MOVIE_TAG_PATH
         self.userSocialPath = utils.USER_SOCIAL_PATH
@@ -55,3 +57,13 @@ class Model(object):
             i = i + 1
         outfile = open(savePath, 'w')
         outfile.writelines(["%s" % item  for item in output])
+        
+    def fixRun(self):
+        self.prependUserMovieToPredictions(self.bootTest,
+                self.predTestTmp,
+                self.predTest)
+
+        self.prependUserMovieToPredictions(self.bootCV,
+                self.predCVTmp,
+                self.predCV)
+

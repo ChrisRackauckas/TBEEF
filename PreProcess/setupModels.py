@@ -6,11 +6,11 @@ def setupModels(sys,os,utils,config,random,mproc,processes,modelList):
         print("Setting up trial " + strTrial)
         ### Setup boot strings ###
         bootTrain =  utils.MODEL_BOOT_PATH  +   \
-                                   '_train' + '_t' + strTrial
+                                   'train' + '_t' + strTrial
         bootCV    =  utils.MODEL_BOOT_PATH  +   \
-                                      '_CV' + '_t' + strTrial
+                                      'CV' + '_t' + strTrial
         bootTest  =  utils.MODEL_BOOT_PATH + \
-                        '_test' + '_t' + strTrial 
+                        'test' + '_t' + strTrial 
         ### Split dataset ###
         ### Setup test datasets separate for parallel ###
         utils.bootsplit(utils.PROCESSED_DATA_PATH,

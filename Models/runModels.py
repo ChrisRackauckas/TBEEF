@@ -14,4 +14,3 @@ def fixRun(mproc,processes,modelList):
         p = mproc.Process(target=model.fixRun)
         p.start()
         processes.append(p)
-

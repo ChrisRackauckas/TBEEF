@@ -24,6 +24,8 @@ ensembleModels = [['OLSR','OLS',[]]]
 # modelType defines what model to use
 # misc is the arguments to the program
 
+synthModel = ['OLSR','OLS',[]]
+
 ################### Select Parts  ##################
 
 TRIALS           = 2 
@@ -33,6 +35,8 @@ SETUP_MODELS     = True
 RUN_MODELS       = True
 SETUP_HYBRID     = True
 RUN_HYBRID       = True
+SETUP_SYNTHESIZE = True
+RUN_SYNTHESIZE   = True
 POST_PROCESS     = False
 
 ################## Select Bootstrap Parameters  ##################
@@ -45,7 +49,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 10
+FM_ITER = 2
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 

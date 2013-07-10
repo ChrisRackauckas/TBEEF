@@ -126,8 +126,6 @@ class FMModel(Model):
 ### Run ###
 
     def run(self,sproc,subprocesses):
-        fout_test_temp = self.predTest  + '_temp'
-        fout_cv_temp   = self.predCV    + '_temp'
 
         cvStr = self.libFMBinary + ' -task r -train ' + \
             self.runTrain + ' -test ' + \
@@ -138,7 +136,7 @@ class FMModel(Model):
             self.dims + '\' -iter ' + \
             self.strItr + ' -rlog '+  \
             self.logCV + ' -out ' + \
-            fout_cv_temp
+            self.predCVTmp
         cvArr = cvStr.split()
         testStr = self.libFMBinary + ' -task r -train ' + \
             self.runTrain + ' -test ' + \
@@ -149,20 +147,10 @@ class FMModel(Model):
             self.dims + '\' -iter ' + \
             self.strItr + ' -rlog '+  \
             self.logTest + ' -out ' + \
-            fout_test_temp
+            self.predTestTmp
         testArr = testStr.split()
         ### CV ###
         pCV = sproc.Popen(cvArr,shell=False)
         pTest = sproc.Popen(testArr,shell=False)
         subprocesses.append(pTest)
         subprocesses.append(pCV)
-
-    def fixRun(self):
-        self.prependUserMovieToPredictions(self.bootTest,
-                self.predTest + '_temp',
-                self.predTest)
-
-        self.prependUserMovieToPredictions(self.bootCV,
-                self.predCV + '_temp',
-                self.predCV)
-

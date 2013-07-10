@@ -4,31 +4,42 @@ def setupHybrid(utils,config,random,split,CVPredictionPaths,testPredictionPaths,
 
     for trial in range(0,trials):
         hybridOriginal = utils.HYBRID_ORIGINAL_PATH \
-                            + '_train_t' + str(trial)
+                            + 'train_t' + str(trial)
         hybridPredict = utils.HYBRID_ORIGINAL_PATH \
-                            + '_test_t' + str(trial)
+                            + 'test_t' + str(trial) + '_tmp'
         bootCV = utils.MODEL_BOOT_PATH  +   \
-                                      '_CV' + '_t' + str(trial)
+                                      'CV' + '_t' + str(trial)
         buildTrainingMatrixFromPredictions(bootCV,hybridOriginal,
                          CVPredictionPaths[trial],utils.grabCSVColumn)
         buildPredictorMatrixFromPredictions(testPredictionPaths[trial],
                          utils.grabCSVColumn,hybridPredict)
         utils.bootsplit(hybridOriginal,hybridOriginal + '_tmp',
-                utils.HYBRID_BOOT_PATH + '_train_t' + str(trial),
-                utils.HYBRID_BOOT_PATH + '_CV_t'    + str(trial),
-                split,random) 
+                utils.HYBRID_BOOT_PATH + 'train_t' + str(trial) + '_tmp',
+                utils.HYBRID_BOOT_PATH + 'CV_t'    + str(trial) + '_tmp',
+                split,random)
+        addHeader(utils.HYBRID_BOOT_PATH + 'train_t' + str(trial) + '_tmp',
+                  utils.HYBRID_BOOT_PATH + 'train_t' + str(trial),False)
+        addHeader(utils.HYBRID_BOOT_PATH + 'CV_t'    + str(trial) + '_tmp',
+                  utils.HYBRID_BOOT_PATH + 'CV_t'    + str(trial),False)
+        addHeader(utils.HYBRID_ORIGINAL_PATH + 
+                  'test_t'    + str(trial) + '_tmp',
+                  utils.HYBRID_ORIGINAL_PATH + 
+                  'test_t'    + str(trial),True)
+
         for configModel in config.ensembleModels:
             model = HybridModel(configModel,utils,str(trial))
             modelList.append(model)
 
 
-def runHybrid(sproc,subprocesses,modelList):
+def runHybrid(sproc,subprocesses,modelList,CVPredictionPaths,testPredictionPaths):
 #-------------------------------------------------
 # Calls an R script which uses the train and predict matrices
 # To generate a prediction
 #-------------------------------------------------
     for model in modelList:
         model.run(sproc,subprocesses)
+        CVPredictionPaths.append(model.predCV)
+        testPredictionPaths.append(model.predTest)
 
 def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc):
 #-------------------------------------------------
@@ -40,12 +51,6 @@ def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSV
     for predictPath in predictorPaths:
         predictionArrays.append(grabCSVColumnFunc(predictPath,2))
     toWrite = []
-    header = "y"
-    for i in range(1,len(predictionArrays)):
-        istr = str(i)
-        header = header + "\tx" + istr
-    header = header + "\n"
-    toWrite.append(header)
     for i in range(0,len(predictionArrays[0])):
         rowStr = predictionArrays[0][i]
         for j in range(1,len(predictionArrays)):
@@ -65,12 +70,6 @@ def buildPredictorMatrixFromPredictions(testPredictionPaths,grabCSVColumnFunc,ou
     for predictPath in testPredictionPaths:
         predictionArrays.append(grabCSVColumnFunc(predictPath,2))
     toWrite = []
-    header = "x1"
-    for i in range(1,len(predictionArrays)):
-        istr = str(i+1)
-        header = header + "\tx" + istr
-    header = header + "\n"
-    toWrite.append(header)
     for i in range(0,len(predictionArrays[0])):
         rowStr = predictionArrays[0][i]
         for j in range(1,len(predictionArrays)):
@@ -79,3 +78,24 @@ def buildPredictorMatrixFromPredictions(testPredictionPaths,grabCSVColumnFunc,ou
         toWrite.append(rowStr)
     outfile = open(outputPath, 'w')
     outfile.writelines(["%s" % row  for row in toWrite])
+    
+def addHeader(inputPath, outputPath,testSet):
+    inData = open(inputPath, 'r')
+    outData= open(outputPath,'w')
+    if testSet:
+        header = "x1"
+        additional = 1
+    else :
+        header = "y"
+        additional = 0
+    inLines = inData.readlines()
+    numCols = len(inLines[0].split())
+    toWrite = []
+    for i in range(1,numCols):
+        istr = str(i+additional)
+        header = header + "\tx" + istr
+    header = header + "\n"
+    toWrite.append(header)
+    toWrite.extend(inLines)
+    outData.writelines(["%s" % row for row in toWrite])
+

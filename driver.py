@@ -20,6 +20,7 @@ import runModels
 import setupModels
 import utils
 import hybrid
+import synthesize
 import post
 import preProcess as pre
 import config
@@ -84,9 +85,43 @@ if config.SETUP_HYBRID:
 
 ################### Run Hybrid #####################
 
+CVPredictionPaths = []
+testPredictionPaths = []
+
 if config.RUN_HYBRID:
     print("Running hybrid model")
-    hybrid.runHybrid(sproc,subprocesses,modelList)
+    runModels.runModels(sproc,modelList,
+                testPredictionPaths,CVPredictionPaths,
+                config.TRIALS,subprocesses)
+
+
+    for p in subprocesses:
+        p.wait()
+    subprocesses = []
+
+################### Setup Synthesize ###################
+
+modelList = []
+
+if config.SETUP_SYNTHESIZE:
+    print("Setting up synthesis")
+    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,config.synthModel,config.TRIALS,modelList)
+
+################### Run Synthesize #####################
+
+CVPredictionPaths = []
+testPredictionPaths = []
+
+if config.RUN_SYNTHESIZE:
+    print("Running synthesis")
+    runModels.runModels(sproc,modelList,
+                testPredictionPaths,CVPredictionPaths,
+                config.TRIALS,subprocesses)
+
+
+    for p in subprocesses:
+        p.wait()
+    subprocesses = []
 
 ################### Post Process #################
 
