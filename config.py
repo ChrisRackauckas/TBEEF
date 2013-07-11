@@ -45,7 +45,7 @@ BOOTSTRAP_SPLITS     = [.8,.8]
 
 ################## Timer  ##############
 
-TIME_RUN     = True
+TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
