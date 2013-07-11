@@ -7,6 +7,7 @@ class SynthModel(HybridModel):
         self.misc       = configModel[2]
         self.trial      = strTrial
         
+        self.bootTest   = utils.TEST_IDS_PATH
         self.runTrain   = utils.SYNTH_ORIGINAL_PATH \
                           + 'train_t' + strTrial
         self.runTest    = utils.SYNTH_ORIGINAL_PATH \
@@ -21,5 +22,5 @@ class SynthModel(HybridModel):
         self.predCVTmp  = self.predTestTmp
         self.log        = utils.SYNTH_LOG_PATH + self.tag + '_t' \
                           + strTrial
-
+        self.CVSet = False
         self.setupRVars(utils)

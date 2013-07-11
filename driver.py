@@ -99,6 +99,13 @@ if config.RUN_HYBRID:
         p.wait()
     subprocesses = []
 
+    runModels.fixRun(mproc,processes,modelList)
+
+    for p in processes:
+        p.join()
+    processes = []
+
+
 ################### Setup Synthesize ###################
 
 modelList = []
@@ -122,6 +129,8 @@ if config.RUN_SYNTHESIZE:
     for p in subprocesses:
         p.wait()
     subprocesses = []
+    
+    runModels.fixRun(mproc,processes,modelList)
 
 ################### Post Process #################
 

@@ -30,18 +30,10 @@ def setupHybrid(utils,config,random,split,CVPredictionPaths,testPredictionPaths,
             model = HybridModel(configModel,utils,str(trial))
             modelList.append(model)
 
-
-def runHybrid(sproc,subprocesses,modelList,CVPredictionPaths,testPredictionPaths):
-#-------------------------------------------------
-# Calls an R script which uses the train and predict matrices
-# To generate a prediction
-#-------------------------------------------------
-    for model in modelList:
-        model.run(sproc,subprocesses)
-        CVPredictionPaths.append(model.predCV)
-        testPredictionPaths.append(model.predTest)
-
 def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc):
+    print(fullSet)
+    print(outputPath)
+    print(predictorPaths)
 #-------------------------------------------------
 # Takes in the prediction of various models on CV data
 # Through CVPredictionPaths array

@@ -23,6 +23,7 @@ class HybridModel(Model):
         self.log        = utils.HYBRID_LOG_PATH + self.tag + '_t'\
                                                 + strTrial
         self.setupRVars(utils)
+        self.CVSet      = True
 
     def setupRVars(self,utils):
         import os

@@ -37,7 +37,7 @@ SETUP_HYBRID     = True
 RUN_HYBRID       = True
 SETUP_SYNTHESIZE = True
 RUN_SYNTHESIZE   = True
-POST_PROCESS     = False
+POST_PROCESS     = True
 
 ################## Select Bootstrap Parameters  ##################
 

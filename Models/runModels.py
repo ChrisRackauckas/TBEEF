@@ -6,8 +6,8 @@ def runModels(sproc,modelList,testPredictionPaths,CVPredictionPaths,trials,subpr
     for model in modelList:
         print("Running Model " + model.tag)
         model.run(sproc,subprocesses)
-        testPredictionPaths[int(model.trial)].append(model.predCV)
-        CVPredictionPaths[int(model.trial)].append(model.predTest)
+        testPredictionPaths[int(model.trial)].append(model.predTest)
+        CVPredictionPaths[int(model.trial)].append(model.predCV)
 
 def fixRun(mproc,processes,modelList):
     for model in modelList:

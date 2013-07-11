@@ -38,6 +38,7 @@ class Model(object):
         self.movieTagPath   = utils.MOVIE_TAG_PATH
         self.userSocialPath = utils.USER_SOCIAL_PATH
         self.userHistoryPath= utils.USER_HISTORY_PATH
+        self.CVSet = True
 
     def prependUserMovieToPredictions(self,idsPath,fixPath,savePath):
         ### Takes in a column of ratings as toFix
@@ -62,8 +63,8 @@ class Model(object):
         self.prependUserMovieToPredictions(self.bootTest,
                 self.predTestTmp,
                 self.predTest)
-
-        self.prependUserMovieToPredictions(self.bootCV,
+        if self.CVSet:
+            self.prependUserMovieToPredictions(self.bootCV,
                 self.predCVTmp,
                 self.predCV)
 
