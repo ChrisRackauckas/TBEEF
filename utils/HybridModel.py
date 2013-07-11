@@ -22,6 +22,8 @@ class HybridModel(Model):
         self.predTestTmp= self.predTest + '_tmp'
         self.log        = utils.HYBRID_LOG_PATH + self.tag + '_t'\
                                                 + strTrial
+        self.RMSEPath   = utils.HYBRID_RMSE_PATH+ self.tag + '_t'\
+                                                + strTrial
         self.setupRVars(utils)
         self.CVSet      = True
 
@@ -31,9 +33,10 @@ class HybridModel(Model):
         self.RR         = 'Hybrid/hybridRR.R '
         self.RCatch     = self.runTrain + ' ' + self.runCV +\
                           ' ' + self.runTest + ' ' + self.predCVTmp \
-                          + ' ' + self.predTestTmp  
+                          + ' ' + self.predTestTmp + ' ' + self.RMSEPath
         self.RscriptPath= os.path.abspath('Rscript')
         
+
     def run(self,sproc,subprocesses):  
         if self.mode == 'OLS': 
             print("Hybrid Choice: OLS Regression")

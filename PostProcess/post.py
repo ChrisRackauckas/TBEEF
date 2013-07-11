@@ -1,4 +1,4 @@
-def postProcess(os,utils, DE_EFFECT,trials,userMovieRating):
+def postProcess(os,utils, DE_EFFECT,trials,userMovieRating,RMSEPaths):
 #-----------------------------------------------------------------
 # Reads in prediction data file with (userID, movieID, effected rating)
 #       rating and Re-effects data (to 1 to 5 range)
@@ -14,8 +14,10 @@ def postProcess(os,utils, DE_EFFECT,trials,userMovieRating):
         else:
             os.system('cp '+ predTest +' '+ trialOutput)
 
-    winner = pickWinner(trials)
-
+    winner = pickWinner(trials,RMSEPaths)
+    print("Best trial: " + str(winner[0]))
+    print("Best Synth Boot/K-Fold RMSE:  " + str(winner[1]))
+    trialOutput = utils.TRIAL_OUTPUT_PATH + 't' + str(winner[0])
     os.system('cp ' + trialOutput + ' ' + utils.OUTPUT_PATH)
 
 def reEffect(utils,inputFile,outputFile,userMovieRating):
@@ -45,5 +47,14 @@ def reEffect(utils,inputFile,outputFile,userMovieRating):
     infile.close()
     outfile.close()
 
-def pickWinner(trials): 
-    trialsOut = '0'
+def pickWinner(trials,RMSEPaths): 
+    bestRMSE = 5
+    bestTrial= 0
+    for i in range(0,trials):
+        rFile = open(RMSEPaths[i],'r')
+        RMSE = float(rFile.read())
+        if RMSE<bestRMSE:
+            bestTrial = i
+            bestRMSE  = RMSE
+
+    return(bestTrial,bestRMSE)

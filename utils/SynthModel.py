@@ -21,5 +21,7 @@ class SynthModel(HybridModel):
         self.predCVTmp  = self.predTestTmp
         self.log        = utils.SYNTH_LOG_PATH + self.tag + '_t' \
                           + strTrial
+        self.RMSEPath   = utils.SYNTH_RMSE_PATH+ self.tag + '_t' \
+                          + strTrial
         self.CVSet = False
         self.setupRVars(utils)

@@ -1,4 +1,4 @@
-def runModels(sproc,modelList,testPredictionPaths,CVPredictionPaths,trials):
+def runModels(sproc,modelList,testPredictionPaths,CVPredictionPaths,trials,RMSEPaths,useRMSE):
     subprocesses = []
     for trial in range(0,trials):
         # Setup utility arrays
@@ -9,6 +9,8 @@ def runModels(sproc,modelList,testPredictionPaths,CVPredictionPaths,trials):
         model.run(sproc,subprocesses)
         testPredictionPaths[int(model.trial)].append(model.predTest)
         CVPredictionPaths[int(model.trial)].append(model.predCV)
+        if useRMSE:
+            RMSEPaths.append(model.RMSEPath)
 
     for p in subprocesses:
         p.wait()

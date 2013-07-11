@@ -26,6 +26,7 @@ import preProcess as pre
 import config
 #### Holds  ####
 
+RMSEPaths = []
 userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
 modelList = []
 testPredictionPaths = []#Array of lists of paths 
@@ -59,7 +60,7 @@ if config.SETUP_MODELS:
 if config.RUN_MODELS:
     runModels.runModels(sproc,modelList,
                 testPredictionPaths,CVPredictionPaths,
-                config.TRIALS)
+                config.TRIALS,RMSEPaths,False)
 
     #### Fix #####
     runModels.fixRun(mproc,modelList)
@@ -81,7 +82,7 @@ if config.RUN_HYBRID:
     print("Running hybrid model")
     runModels.runModels(sproc,modelList,
                 testPredictionPaths,CVPredictionPaths,
-                config.TRIALS)
+                config.TRIALS,RMSEPaths,False)
 
 
     runModels.fixRun(mproc,modelList)
@@ -103,7 +104,7 @@ if config.RUN_SYNTHESIZE:
     print("Running synthesis")
     runModels.runModels(sproc,modelList,
                 testPredictionPaths,CVPredictionPaths,
-                config.TRIALS)
+                config.TRIALS,RMSEPaths,True)
 
    
     runModels.fixRun(mproc,modelList)
@@ -112,7 +113,7 @@ if config.RUN_SYNTHESIZE:
 
 if config.POST_PROCESS:
     print("Starting Post-Process") 
-    post.postProcess(os,utils,config.DE_EFFECT,config.TRIALS,userMovieRating)
+    post.postProcess(os,utils,config.DE_EFFECT,config.TRIALS,userMovieRating,RMSEPaths)
 
 ################### Timer ########################
 

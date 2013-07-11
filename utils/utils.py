@@ -30,9 +30,11 @@ HYBRID_ORIGINAL_PATH        = 'Data/HybridSetup/orig_'
 HYBRID_BOOT_PATH            = 'Data/HybridSetup/boot_'
 HYBRID_LOG_PATH             = 'Data/LogFiles/h_'
 HYBRID_PREDICT_PATH         = 'Data/HybridPredictions/'
+HYBRID_RMSE_PATH            = 'Data/HybridPredictions/RMSE_'
 
 SYNTH_ORIGINAL_PATH         = 'Data/SynthSetup/'
 SYNTH_PREDICT_PATH          = 'Data/SynthPredictions/'
+SYNTH_RMSE_PATH             = 'Data/SynthPredictions/RMSE_'
 SYNTH_LOG_PATH              = 'Data/LogFiles/s_'
 
 TRIAL_OUTPUT_PATH           = 'Data/Output/' 
