@@ -52,29 +52,17 @@ if config.PRE_PROCESS:
 ################### Setup Models ###################
 
 if config.SETUP_MODELS:
-    setupModels.setupModels(sys,os,utils,config,random,mproc,processes,modelList)
+    setupModels.setupModels(sys,os,utils,config,random,mproc,modelList) 
 
-    for p in processes:
-        p.join()
-    processes = []
 ################# Run Models ###################
 
 if config.RUN_MODELS:
     runModels.runModels(sproc,modelList,
                 testPredictionPaths,CVPredictionPaths,
-                config.TRIALS,subprocesses)
+                config.TRIALS)
 
-    #### Join #####
-    
-    for p in subprocesses:
-        p.wait()
-    subprocesses = []
-
-    runModels.fixRun(mproc,processes,modelList)
-
-    for p in processes:
-        p.join()
-    processes = []
+    #### Fix #####
+    runModels.fixRun(mproc,modelList)
 
 ################### Setup Hybrid ###################
 
@@ -82,7 +70,7 @@ modelList = []
 
 if config.SETUP_HYBRID:
     print("Setting up hybrid")
-    hybrid.setupHybrid(utils,config,random,config.BOOTSTRAP_SPLITS[1],CVPredictionPaths,testPredictionPaths,modelList,config.TRIALS)
+    hybrid.setupHybrid(utils,config,mproc,random,config.BOOTSTRAP_SPLITS[1],CVPredictionPaths,testPredictionPaths,modelList,config.TRIALS)
 
 ################### Run Hybrid #####################
 
@@ -93,19 +81,10 @@ if config.RUN_HYBRID:
     print("Running hybrid model")
     runModels.runModels(sproc,modelList,
                 testPredictionPaths,CVPredictionPaths,
-                config.TRIALS,subprocesses)
+                config.TRIALS)
 
 
-    for p in subprocesses:
-        p.wait()
-    subprocesses = []
-
-    runModels.fixRun(mproc,processes,modelList)
-
-    for p in processes:
-        p.join()
-    processes = []
-
+    runModels.fixRun(mproc,modelList)
 
 ################### Setup Synthesize ###################
 
@@ -113,7 +92,7 @@ modelList = []
 
 if config.SETUP_SYNTHESIZE:
     print("Setting up synthesis")
-    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,config.synthModel,config.TRIALS,modelList)
+    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,config.synthModel,config.TRIALS,modelList,mproc,processes)
 
 ################### Run Synthesize #####################
 
@@ -124,18 +103,10 @@ if config.RUN_SYNTHESIZE:
     print("Running synthesis")
     runModels.runModels(sproc,modelList,
                 testPredictionPaths,CVPredictionPaths,
-                config.TRIALS,subprocesses)
+                config.TRIALS)
 
-
-    for p in subprocesses:
-        p.wait()
-    subprocesses = []
-    
-    runModels.fixRun(mproc,processes,modelList)
-
-    for p in processes:
-        p.join()
-    processes = []
+   
+    runModels.fixRun(mproc,modelList)
 
 ################### Post Process #################
 

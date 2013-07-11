@@ -1,34 +1,46 @@
-def setupHybrid(utils,config,random,split,CVPredictionPaths,testPredictionPaths,modelList,trials):
+def setupHybrid(utils,config,mproc,random,split,CVPredictionPaths,testPredictionPaths,modelList,trials):
     from HybridModel import HybridModel
     ### Setup data matrices and construct hybrid models ###
-
+    processes = []
     for trial in range(0,trials):
-        hybridOriginal = utils.HYBRID_ORIGINAL_PATH \
-                            + 'train_t' + str(trial)
-        hybridPredict = utils.HYBRID_ORIGINAL_PATH \
-                            + 'test_t' + str(trial) + '_tmp'
-        bootCV = utils.MODEL_BOOT_PATH  +   \
-                                      'CV' + '_t' + str(trial)
-        buildTrainingMatrixFromPredictions(bootCV,hybridOriginal,
-                         CVPredictionPaths[trial],utils.grabCSVColumn)
-        buildPredictorMatrixFromPredictions(testPredictionPaths[trial],
-                         utils.grabCSVColumn,hybridPredict)
-        utils.bootsplit(hybridOriginal,hybridOriginal + '_tmp',
-                utils.HYBRID_BOOT_PATH + 'train_t' + str(trial) + '_tmp',
-                utils.HYBRID_BOOT_PATH + 'CV_t'    + str(trial) + '_tmp',
-                split,random)
-        addHeader(utils.HYBRID_BOOT_PATH + 'train_t' + str(trial) + '_tmp',
-                  utils.HYBRID_BOOT_PATH + 'train_t' + str(trial),False)
-        addHeader(utils.HYBRID_BOOT_PATH + 'CV_t'    + str(trial) + '_tmp',
-                  utils.HYBRID_BOOT_PATH + 'CV_t'    + str(trial),False)
-        addHeader(utils.HYBRID_ORIGINAL_PATH + 
-                  'test_t'    + str(trial) + '_tmp',
-                  utils.HYBRID_ORIGINAL_PATH + 
-                  'test_t'    + str(trial),True)
-
+        p = mproc.Process(target=setupHybridTrial,
+                args=(utils.HYBRID_ORIGINAL_PATH,
+                    str(trial),utils.MODEL_BOOT_PATH,
+                    CVPredictionPaths[trial],random,split,
+                    utils.bootsplit,utils.grabCSVColumn,
+                    testPredictionPaths[trial],utils.HYBRID_BOOT_PATH))
+        p.start()
+        processes.append(p)
         for configModel in config.ensembleModels:
             model = HybridModel(configModel,utils,str(trial))
             modelList.append(model)
+    
+    for p in processes:
+        p.join()
+
+def setupHybridTrial(hybridOriginalPath,strTrial,modelBootPath,CVPredictionPaths,random,split,bootsplitFunc,grabCSVColumnFunc,testPredictionPaths,hybridBootPath):    
+    hybridOriginal = hybridOriginalPath \
+                        + 'train_t' + strTrial
+    hybridPredict  = hybridOriginalPath \
+                        + 'test_t' + strTrial + '_tmp'
+    bootCV = modelBootPath  +   \
+                        'CV' + '_t' + strTrial
+    buildTrainingMatrixFromPredictions(bootCV,hybridOriginal,
+                        CVPredictionPaths,grabCSVColumnFunc)
+    buildPredictorMatrixFromPredictions(testPredictionPaths,
+                        grabCSVColumnFunc,hybridPredict)
+    bootsplitFunc(hybridOriginal,hybridOriginal + '_tmp',
+                hybridBootPath + 'train_t' + strTrial + '_tmp',
+                hybridBootPath + 'CV_t'    + strTrial + '_tmp',
+                split,random)
+    addHeader(hybridBootPath + 'train_t' + strTrial + '_tmp',
+                hybridBootPath + 'train_t' + strTrial,False)
+    addHeader(hybridBootPath + 'CV_t'    + strTrial + '_tmp',
+                hybridBootPath + 'CV_t'    + strTrial,False)
+    addHeader(hybridOriginalPath + 
+                'test_t'    + strTrial + '_tmp',
+                hybridOriginalPath + 
+                'test_t'    + strTrial,True)
 
 def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc):
 #-------------------------------------------------
