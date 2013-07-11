@@ -4,6 +4,7 @@ class Model(object):
         self.mode       = configModel[1]
         self.featureSet = configModel[2]
         self.misc       = configModel[3]
+        self.masterTest = utils.TEST_IDS_PATH
         self.bootTrain  =  utils.MODEL_BOOT_PATH  +   \
                                    'train' + '_t' + strTrial
         self.bootCV     =  utils.MODEL_BOOT_PATH  +   \
@@ -60,7 +61,7 @@ class Model(object):
         outfile.writelines(["%s" % item  for item in output])
         
     def fixRun(self):
-        self.prependUserMovieToPredictions(self.bootTest,
+        self.prependUserMovieToPredictions(self.masterTest,
                 self.predTestTmp,
                 self.predTest)
         if self.CVSet:

@@ -6,8 +6,7 @@ class SynthModel(HybridModel):
         self.mode       = configModel[1]
         self.misc       = configModel[2]
         self.trial      = strTrial
-        
-        self.bootTest   = utils.TEST_IDS_PATH
+        self.masterTest = utils.TEST_IDS_PATH        
         self.runTrain   = utils.SYNTH_ORIGINAL_PATH \
                           + 'train_t' + strTrial
         self.runTest    = utils.SYNTH_ORIGINAL_PATH \

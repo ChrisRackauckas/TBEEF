@@ -6,7 +6,7 @@ class HybridModel(Model):
         self.mode       = configModel[1]
         self.misc       = configModel[2]
         self.trial      = strTrial
-
+        self.masterTest = utils.TEST_IDS_PATH
         self.runTrain   = utils.HYBRID_BOOT_PATH     + 'train_t' + strTrial
         self.runCV      = utils.HYBRID_BOOT_PATH     + 'CV_t'    + strTrial
         self.runTest    = utils.HYBRID_ORIGINAL_PATH + 'test_t'  + strTrial
@@ -32,19 +32,19 @@ class HybridModel(Model):
         self.RCatch     = self.runTrain + ' ' + self.runCV +\
                           ' ' + self.runTest + ' ' + self.predCVTmp \
                           + ' ' + self.predTestTmp  
-        #self.logCall    =' > ' + self.log + \
-        #                  ' 2>&1'
         self.RscriptPath= os.path.abspath('Rscript')
         
     def run(self,sproc,subprocesses):  
-        progCall = 'Rscript ' + self.OLS + self.RCatch
-        progArr = progCall.split()
-        if self.mode == 'OLS':
+        if self.mode == 'OLS': 
             print("Hybrid Choice: OLS Regression")
-            p = sproc.Popen(progArr,shell=False)
+            progCall = 'Rscript ' + self.OLS + self.RCatch
         if self.mode == 'OLSR':
+            progCall = 'Rscript ' + self.RR  + self.RCatch
             print("Hybrid Choice: Ridge Regression")
-            p = sproc.Popen([self.RCall + self.RR 
-                            + self.RCatch + self.logCall],shell=False)
+        progArr = progCall.split()
+        logFile = open(self.log,'w')
+        p = sproc.Popen(progArr,shell=False,
+                        stderr=logFile,stdout=logFile)
         subprocesses.append(p)
+
 
