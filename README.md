@@ -37,6 +37,7 @@ Contributors
 *	Chris Rackauckas, University of California, Irvine
 *	Colin Jarvis, Macalester College
 *	Weijie CAI, Hong Kong University of Science and Technology
+*	Chenxiao XU, The Chinese University of Hong Kong
 
 Acknowledgements
 ----------------------------------------------
