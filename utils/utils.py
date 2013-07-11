@@ -51,10 +51,6 @@ SVDFEATURE_BINARY           = './Models/SVDFeature/svd_feature'
 SVDFEATURE_INFER_BINARY     = './Models/SVDFeature/svd_feature_infer'
 SVDFEATURE_MODEL_OUT_PATH   = 'Data/ModelData/'
 
-### Holds ##########
-
-userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
-
 #### Utility Functions ####
 
 def grabCSVColumn(csv_path,columnNumber):

@@ -1,4 +1,4 @@
-def postProcess(os,utils, DE_EFFECT,trials):
+def postProcess(os,utils, DE_EFFECT,trials,userMovieRating):
 #-----------------------------------------------------------------
 # Reads in prediction data file with (userID, movieID, effected rating)
 #       rating and Re-effects data (to 1 to 5 range)
@@ -6,12 +6,11 @@ def postProcess(os,utils, DE_EFFECT,trials):
 
     for trial in range(0,trials):
         strTrial = str(trial)
-        umr = utils.userMovieRating
-        predTest    = utils.SYNTH_PREDICT_PATH + self.tag\
-                          + '_test_t' + strTrial
+        predTest    = utils.SYNTH_PREDICT_PATH \
+                         + 't' + strTrial
         trialOutput = utils.TRIAL_OUTPUT_PATH + 't' + strTrial 
         if DE_EFFECT:
-            reEffect(predTest,trialOutput)
+            reEffect(utils,predTest,trialOutput,userMovieRating)
         else:
             os.system('cp '+ predTest +' '+ trialOutput)
 
@@ -19,13 +18,15 @@ def postProcess(os,utils, DE_EFFECT,trials):
 
     os.system('cp ' + trialOutput + ' ' + utils.OUTPUT_PATH)
 
-def reEffect(inputFile,outputFile):
+def reEffect(utils,inputFile,outputFile,userMovieRating):
+    umr = userMovieRating
     globalMeanFile = open(utils.EFFECTS_GLOBAL_PATH, 'r')
     globalMean = float(globalMeanFile.read())
     globalMeanFile.close()
     infile = open(inputFile, 'r')
     outfile = open(outputFile, 'w')
-    for line in infile:
+    infileLines = infile.readlines()
+    for line in infileLines:
         line = line.replace('\n', '')
         columns = line.split('\t')
         user = columns[0]

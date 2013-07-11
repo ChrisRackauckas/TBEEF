@@ -30,7 +30,7 @@ synthModel = ['OLSR','OLS',[]]
 
 TRIALS           = 2 
 PRE_PROCESS      = True
-DE_EFFECT        = True #If De-effect is false, model predictions are correct
+DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
 RUN_MODELS       = True
 SETUP_HYBRID     = True

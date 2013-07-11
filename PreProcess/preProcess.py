@@ -1,4 +1,4 @@
-def preProcess(os,utils,random,DE_EFFECT):
+def preProcess(os,utils,random,DE_EFFECT,userMovieRating):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -20,7 +20,7 @@ def preProcess(os,utils,random,DE_EFFECT):
     # De-effects data file
     if DE_EFFECT:
         deEffectData(utils.ORIGINAL_DATA_CLEAN_PATH, \
-                 utils.PROCESSED_DATA_PATH, utils)
+                 utils.PROCESSED_DATA_PATH, utils,userMovieRating)
     else:
        os.system("cp " + utils.ORIGINAL_DATA_CLEAN_PATH + " " + \
                   utils.PROCESSED_DATA_PATH)
@@ -53,7 +53,7 @@ def cleanUpData(inputPath,outputPath):
                 newDataFile.write( line )
     newDataFile.close()
             
-def deEffectData(infilePath, outfilePath, utils):
+def deEffectData(infilePath, outfilePath, utils,userMovieRating):
 
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -93,10 +93,10 @@ def deEffectData(infilePath, outfilePath, utils):
             elif user in umr:
                 umr[user][0].append(movie)
                 umr[user][1].append(rating)
-            utils.userMovieRating = umr
+    
             
             globalSum += rating
-            
+    userMovieRating = umr       
     infile.close()
 
     globalMean = globalSum/lineCounter

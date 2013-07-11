@@ -14,8 +14,8 @@ class SynthModel(HybridModel):
                           + 'test_t'  + strTrial
         self.runCV      = self.runTest
 
-        self.predTest   = utils.SYNTH_PREDICT_PATH + self.tag\
-                          + '_test_t' + strTrial
+        self.predTest   = utils.SYNTH_PREDICT_PATH \
+                          + 't' + strTrial
 
         self.predCV     = self.predTest
         self.predTestTmp= self.predTest + '_tmp'

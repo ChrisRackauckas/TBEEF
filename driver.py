@@ -26,6 +26,7 @@ import preProcess as pre
 import config
 #### Holds  ####
 
+userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
 modelList = []
 testPredictionPaths = []#Array of lists of paths 
                         #where test predictions are saved
@@ -45,7 +46,7 @@ if config.TIME_RUN:
 
 if config.PRE_PROCESS:
     print("Pre-Processing")
-    pre.preProcess(os,utils,random,config.DE_EFFECT)
+    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################
@@ -132,11 +133,15 @@ if config.RUN_SYNTHESIZE:
     
     runModels.fixRun(mproc,processes,modelList)
 
+    for p in processes:
+        p.join()
+    processes = []
+
 ################### Post Process #################
 
 if config.POST_PROCESS:
     print("Starting Post-Process") 
-    post.postProcess(os,utils,config.DE_EFFECT)
+    post.postProcess(os,utils,config.DE_EFFECT,config.TRIALS,userMovieRating)
 
 ################### Timer ########################
 

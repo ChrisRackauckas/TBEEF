@@ -31,9 +31,6 @@ def setupHybrid(utils,config,random,split,CVPredictionPaths,testPredictionPaths,
             modelList.append(model)
 
 def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc):
-    print(fullSet)
-    print(outputPath)
-    print(predictorPaths)
 #-------------------------------------------------
 # Takes in the prediction of various models on CV data
 # Through CVPredictionPaths array
