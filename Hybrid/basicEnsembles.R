@@ -70,8 +70,7 @@ if(model.type=="CIRF"){
   ## Conditional Inference Random Forest
   library(party)
   library(languageR)
-  library(Design)
-  data.controls <- cforest_unbiased(ntree=8000, mtry=3)
+  data.controls <- cforest_unbiased(ntree=500, mtry=3)
   fit <- cforest(y ~ 0 + ., data = dataTrain, 
                           controls=data.controls) 
 }
