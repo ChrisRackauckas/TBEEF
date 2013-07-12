@@ -28,22 +28,17 @@ class HybridModel(Model):
         self.CVSet      = True
 
     def setupRVars(self,utils):
-        import os
-        self.OLS        = 'Hybrid/hybridOLS.R '
-        self.RR         = 'Hybrid/hybridRR.R '
-        self.RCatch     = self.runTrain + ' ' + self.runCV +\
-                          ' ' + self.runTest + ' ' + self.predCVTmp \
-                          + ' ' + self.predTestTmp + ' ' + self.RMSEPath
-        self.RscriptPath= os.path.abspath('Rscript')
-        
+        self.miscStr        = ' '.join(map(str,self.misc))
+        self.basicEnsembles = 'Hybrid/basicEnsembles.R '
+        self.RCatch         = self.runTrain + ' ' + self.runCV +\
+                            ' ' + self.runTest + ' ' + self.predCVTmp \
+                            + ' ' + self.predTestTmp + ' ' \
+                            + self.RMSEPath + ' ' + self.mode \
+                            + ' ' + self.miscStr
 
-    def run(self,sproc,subprocesses):  
-        if self.mode == 'OLS': 
-            print("Hybrid Choice: OLS Regression")
-            progCall = 'Rscript ' + self.OLS + self.RCatch
-        if self.mode == 'OLSR':
-            progCall = 'Rscript ' + self.RR  + self.RCatch
-            print("Hybrid Choice: Ridge Regression")
+    def run(self,sproc,subprocesses):   
+        print("Hybrid Choice: " + self.mode)
+        progCall = 'Rscript ' + self.basicEnsembles + self.RCatch
         progArr = progCall.split()
         logFile = open(self.log,'w')
         p = sproc.Popen(progArr,shell=False,
