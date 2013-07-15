@@ -1,4 +1,4 @@
-def preProcess(os,utils,random,DE_EFFECT,userMovieRating):
+def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -22,7 +22,14 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating):
         deEffectData(utils.ORIGINAL_DATA_CLEAN_PATH, \
                  utils.PROCESSED_DATA_PATH, utils,userMovieRating)
     else:
-       os.system("cp " + utils.ORIGINAL_DATA_CLEAN_PATH + " " + \
+        os.system("cp " + utils.ORIGINAL_DATA_CLEAN_PATH + " " + \
+                  utils.PROCESSED_DATA_PATH)
+    if LAPTOP_TEST:
+        # makes a small data set able to run on laptops
+        utils.bootstrap(utils.PROCESSED_DATA_PATH,\
+                        utils.PROCESSED_DATA_PATH_TEMP, \
+                        10000,random,False)
+        os.system('mv '+utils.PROCESSED_DATA_PATH_TEMP+' '+\
                   utils.PROCESSED_DATA_PATH)
 
 def makeDummyPredictions(utils):
