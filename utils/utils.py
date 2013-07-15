@@ -87,7 +87,8 @@ def bootstrap(inputPath,outputPath, nRows, random,replace):
         samples = random.sample(range(0,len(finLines)),nRows)
         for i in samples:
             rows.append(finLines[i])
-        fout.write(rows)
+        for row in rows:
+            fout.write(row)
     fout.close()
 
 def bootsplit(inputPath,tempPath,outputPath1,outputPath2,split,random):
