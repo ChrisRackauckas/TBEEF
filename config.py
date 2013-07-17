@@ -1,12 +1,12 @@
 ################### Select Models ##################
 
 models = [
-          #['basicFM','FM','Basic',['2']],
+          ['basicFM','FM','Basic',['2']],
           #['bmt','FM','BasicMovieTag',['2']],
-          ['amt','FM','AdjustedMovieTag',['2']]
+          #['amt','FM','AdjustedMovieTag',['2']]
           #['nn', 'FM', 'NearestNeighbor',['2']]
           #['rmt','FM','RelatedMovieTag',['2']]
-    
+          #['auh','FM','AdjustedUserHistory',['2']]
           #['basicSVD','SVD','Basic',[]]
          ] 
 
@@ -32,13 +32,17 @@ ensembleModels = [['OLSR','OLS',[]]]
 synthModel = ['OLSR','OLS',[]]
 
 ################### Select Parts  ##################
-LAPTOP_TEST      = True # uses small data set to run features on laptop
 
 TRIALS           = 1
-PRE_PROCESS      = True
+PRE_PROCESS      = False
+# ---- ---- PreProcess Selection ---- ---- #
+LAPTOP_TEST      = True # uses small data set to run features on laptop
+SHARED_TAGS      = False # generates new file for movie tag feature
+
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
-SETUP_MODELS     = True
-RUN_MODELS       = True
+# ---- ---- ---- ---- ----- ---- ---- ---- #
+SETUP_MODELS     = False
+RUN_MODELS       = False
 SETUP_HYBRID     = False
 RUN_HYBRID       = False
 SETUP_SYNTHESIZE = False

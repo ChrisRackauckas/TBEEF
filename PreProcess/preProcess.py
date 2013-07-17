@@ -1,4 +1,4 @@
-def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST):
+def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST, SHARED_TAGS):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -13,6 +13,8 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST):
 #-----------------------------------------------------------------
 
     makeDummyPredictions(utils)
+    if SHARED_TAGS:
+        makeTagCountFile(utils)
 
     cleanUpData(utils.ORIGINAL_DATA_PATH,
                 utils.ORIGINAL_DATA_CLEAN_PATH)   
@@ -45,6 +47,57 @@ def makeDummyPredictions(utils):
     inPredict.close()
     outPredict.close()
 
+def makeTagCountFile(utils):
+    import os
+#-----------------------------------------------------------------
+# Generates a file from movie_tag.txt that has format
+# (movie1, movie2, N) where N is the number of tags they share
+#-----------------------------------------------------------------
+
+    # creates dict with movies as keys and list of tags as value
+    movieTags = open(utils.MOVIE_TAG_PATH, 'r')
+    movieTagDict = {}
+    movieList =[]
+    movieSet=set()
+    lineCount=0
+    for line in movieTags:
+        if line != '\n':
+            line = line.replace('\n', '')
+            columns = line.split('\t')
+            movie = columns[0]
+            movieList.append(movie)
+            allTags = columns[1]
+            tagList = allTags.split(',')
+            if movie not in movieSet:
+                movieSet.add(movie)
+                movieTagDict[movie]=[]
+            for tag in tagList:
+                movieTagDict[movie].append(tag)
+            lineCount+=1
+    movieTags.close()
+    
+    fout = open(utils.NUM_SHARED_MOVIE_TAGS, 'w')
+    linesSq=lineCount**2
+    speed =0 # counter
+    print('... Generating Movie Shared Tag File')
+    for i in range(len(movieList)):
+        mov1 = movieList[i]
+        for j in range(i+1,len(movieList)):
+            tagCount = 0
+            mov2 = movieList[j]
+            for tag1 in movieTagDict[mov1]:
+                for tag2 in movieTagDict[mov2]:
+                    if tag1 == tag2:
+                        tagCount +=1
+            if tagCount > 0:
+                fout.write(mov1+'\t'+mov2+'\t'+str(tagCount)+'\n')
+            
+            if speed%50==0:
+                os.sys.stdout.write('{0}\r'.format( \
+                    str('-- '+str('{0:.2f}'.format(speed/linesSq*100))+\
+                        ' percent of data written --')))
+            speed+=1
+    fout.close()
 
 def cleanUpData(inputPath,outputPath):
 #-----------------------------------------------------------------
