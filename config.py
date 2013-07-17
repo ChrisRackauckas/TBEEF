@@ -15,7 +15,16 @@ models = [
 # For FM: [dims]
 # For SVDFeature: []
 
-ensembleModels = [['OLSR','OLS',[]]]
+ensembleModels = [  ['OLSR','OLS',[]],
+#                   ['OLSI','OLSI',['2']],
+#                   ['RR'  ,'RR',['2']],
+#                   ['BRT','BRT',[]],
+#                   ['BMAR','BMAR',[]],
+#                   ['RFR' ,'RFR' ,[]],
+#                   ['CIRF','CIRF',[]], Not Working
+                    ['Lasso','Lasso',[]],
+                    ['GBRT','GBRT',['50']]
+                 ]
 
 # Defining ensamble models:
 # Each element is a list:
@@ -28,7 +37,7 @@ synthModel = ['OLSR','OLS',[]]
 
 ################### Select Parts  ##################
 
-TRIALS           = 2 
+TRIALS           = 1 
 PRE_PROCESS      = True
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
@@ -49,7 +58,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 2
+FM_ITER = 10
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
