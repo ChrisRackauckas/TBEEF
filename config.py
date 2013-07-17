@@ -2,11 +2,12 @@
 
 models = [
           ['basicFM','FM','Basic',['2']],
-          #['bmt','FM','BasicMovieTag',['2']],
-          #['amt','FM','AdjustedMovieTag',['2']]
-          #['nn', 'FM', 'NearestNeighbor',['2']]
-          #['rmt','FM','RelatedMovieTag',['2']]
-          #['auh','FM','AdjustedUserHistory',['2']]
+          ['basicMovTag','FM','BasicMovieTag',['2']],
+          ['nearNeib', 'FM', 'NearestNeighbor',['2']],
+          ['rmtThresh','FM','RelatedMovieTagThreshold',['2']],
+          ['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
+          ['userHist','FM','UserHistory',['2']]
+
           #['basicSVD','SVD','Basic',[]]
          ] 
 
@@ -42,34 +43,24 @@ synthModel = ['OLSR','OLS',[]]
 
 ################### Select Parts  ##################
 
-<<<<<<< HEAD
 TRIALS           = 1
-PRE_PROCESS      = False
+PRE_PROCESS      = True
 # ---- ---- PreProcess Selection ---- ---- #
-LAPTOP_TEST      = True # uses small data set to run features on laptop
-SHARED_TAGS      = False # generates new file for movie tag feature
+LAPTOP_TEST      = False # uses small data set to run features on laptop
+PROCESS_TAGS     = False # generates new file for movie tag feature
+PROCESS_SOCIAL   = False # cuts out all the extra social users not in data set
+PROCESS_HISTORY  = False
 
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 # ---- ---- ---- ---- ----- ---- ---- ---- #
-SETUP_MODELS     = False
-RUN_MODELS       = False
+SETUP_MODELS     = True
+RUN_MODELS       = True
 SETUP_HYBRID     = False
 RUN_HYBRID       = False
 SETUP_SYNTHESIZE = False
 RUN_SYNTHESIZE   = False
 POST_PROCESS     = False
-=======
-TRIALS           = 2 
-PRE_PROCESS      = True
-DE_EFFECT        = False #If De-effect is false, model predictions are correct
-SETUP_MODELS     = True
-RUN_MODELS       = True
-SETUP_HYBRID     = True
-RUN_HYBRID       = True
-SETUP_SYNTHESIZE = True
-RUN_SYNTHESIZE   = True
-POST_PROCESS     = True
->>>>>>> ac02d8beaf36c54b3aaf4d88cf378079f55d817a
+
 
 ################## Select Bootstrap Parameters  ##################
 
@@ -81,7 +72,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 2
+FM_ITER = 10
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
