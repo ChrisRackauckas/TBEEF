@@ -11,6 +11,10 @@ MOVIE_TAG_PATH              = 'Data/Original/movie_tag.txt'
 USER_SOCIAL_PATH            = 'Data/Original/user_social.txt'
 USER_HISTORY_PATH           = 'Data/Original/user_history.txt'
 
+PROCESSED_SOCIAL            = 'Data/PreProcessed/processed_social.txt'
+PROCESSED_HISTORY           = 'Data/PreProcessed/processed_history.txt'
+PROCESSED_MOVIE_TAG        = 'Data/PreProcessed/processed_movie_tag.txt'
+
 PROCESSED_DATA_PATH         = 'Data/PreProcessed/data_set_processed'
 PROCESSED_DATA_PATH_TEMP    = 'Data/PreProcessed/data_set_processed_temp'
 
