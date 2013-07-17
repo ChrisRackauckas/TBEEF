@@ -1,8 +1,13 @@
 ################### Select Models ##################
 
 models = [
-          ['basicFM','FM','Basic',['2']],
-          ['basicSVD','SVD','Basic',[]]
+          #['basicFM','FM','Basic',['2']],
+          #['bmt','FM','BasicMovieTag',['2']],
+          ['amt','FM','AdjustedMovieTag',['2']]
+          #['nn', 'FM', 'NearestNeighbor',['2']]
+          #['rmt','FM','RelatedMovieTag',['2']]
+    
+          #['basicSVD','SVD','Basic',[]]
          ] 
 
 # Defining models:
@@ -36,8 +41,9 @@ ensembleModels = [  ['OLSR','OLS',[]],
 synthModel = ['OLSR','OLS',[]]
 
 ################### Select Parts  ##################
+LAPTOP_TEST      = True # uses small data set to run features on laptop
 
-TRIALS           = 1 
+TRIALS           = 2 
 PRE_PROCESS      = True
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
@@ -58,7 +64,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 10
+FM_ITER = 2
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
