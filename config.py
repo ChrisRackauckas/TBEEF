@@ -20,7 +20,16 @@ models = [
 # For FM: [dims]
 # For SVDFeature: []
 
-ensembleModels = [['OLSR','OLS',[]]]
+ensembleModels = [  ['OLSR','OLS',[]],
+#                   ['OLSI','OLSI',['2']],
+#                   ['RR'  ,'RR',['2']],
+#                   ['BRT','BRT',[]],
+#                   ['BMAR','BMAR',[]],
+#                   ['RFR' ,'RFR' ,[]],
+#                   ['CIRF','CIRF',[]], Not Working
+                    ['Lasso','Lasso',[]],
+                    ['GBRT','GBRT',['50']]
+                 ]
 
 # Defining ensamble models:
 # Each element is a list:
@@ -33,6 +42,7 @@ synthModel = ['OLSR','OLS',[]]
 
 ################### Select Parts  ##################
 
+<<<<<<< HEAD
 TRIALS           = 1
 PRE_PROCESS      = False
 # ---- ---- PreProcess Selection ---- ---- #
@@ -48,6 +58,18 @@ RUN_HYBRID       = False
 SETUP_SYNTHESIZE = False
 RUN_SYNTHESIZE   = False
 POST_PROCESS     = False
+=======
+TRIALS           = 2 
+PRE_PROCESS      = True
+DE_EFFECT        = False #If De-effect is false, model predictions are correct
+SETUP_MODELS     = True
+RUN_MODELS       = True
+SETUP_HYBRID     = True
+RUN_HYBRID       = True
+SETUP_SYNTHESIZE = True
+RUN_SYNTHESIZE   = True
+POST_PROCESS     = True
+>>>>>>> ac02d8beaf36c54b3aaf4d88cf378079f55d817a
 
 ################## Select Bootstrap Parameters  ##################
 
@@ -59,7 +81,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 10
+FM_ITER = 2
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
