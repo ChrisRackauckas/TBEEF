@@ -4,7 +4,8 @@ class SVDModel(Model):
 ### Construct ###    
 
     def __init__(self,configModel,utils,config,strTrial):
-        Model.__init__(self,configModel,utils,strTrial)
+	    #This function is to set up different parameters only.
+        Model.__init__(self,configModel,utils,strTrial) #come from model!it's another class object.
         self.configPath = utils.MODEL_CONFIG_PATH   + self.tag + \
                                               '_t' + strTrial
         self.numIter              = config.SVD_NUM_ITER
@@ -182,7 +183,7 @@ class SVDModel(Model):
         fout.close()
 
 ### Setup Features ###
-
+#here's where I should add my comments!
     def setupFeatures(self):
         if self.featureSet == 'Basic':
             self.basicConvert(self.tmpTrain,self.featTrain)
