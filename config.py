@@ -1,7 +1,7 @@
 ################### Select Models ##################
 
 models = [
-    ['basicFM', 'FM', 'Basic', ['2']],
+    ['basicFM', 'FM', 'Basic', ['8']],
     #['bmt','FM','BasicMovieTag',['2']],
     #['amt','FM','AdjustedMovieTag',['2']],
     #['nn', 'FM', 'NearestNeighbor',['2']],
@@ -22,13 +22,12 @@ models = [
 
 ensembleModels = [['OLSR', 'OLS', []],
                   ['OLSI','OLSI',['2']],
-                  #['RR'  ,'RR',['2']],
-                  #['BRT','BRT',[]],
-                  #['BMAR','BMAR',[]],
-                  #['RFR' ,'RFR' ,[]],
-                  #['CIRF','CIRF',[]], Not Working
-                  #['Lasso', 'Lasso', []],
-                  #['GBRT','GBRT',['50']]
+                  ['RR'  ,'RR',['2']],
+                  ['BRT','BRT',[]],
+                  ['BMAR','BMAR',[]],
+                 #['RFR' ,'RFR' ,[]],
+                  ['Lasso', 'Lasso', []],
+                  ['GBRT','GBRT',['50']]
 ]
 
 # Defining ensemble models:
@@ -67,7 +66,7 @@ TIME_RUN = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 50
+FM_ITER = 40
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
@@ -79,7 +78,7 @@ SVD_REGULARIZATION_USER = '.004'
 SVD_REGULARIZATION_GLOBAL = '.001'
 SVD_NUM_FACTOR = '64'
 SVD_ACTIVE_TYPE = '0'
-SVD_NUM_ITER = '50'
+SVD_NUM_ITER = '40'
 
 ################## Hybrid #########################
 

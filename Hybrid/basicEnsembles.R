@@ -39,10 +39,6 @@ if(model.type=="RR"){
   library(ridge)
   input1 = as.numeric(input1)
   fit = linearRidge(y~0+.,data=dataTrain,nPCs=input1)
-  ridgeModel = function(formula, data) {
-    mod <- linearRidge(formula, data=data,nPCs=input1)
-    function(newdata) predict(mod, newdata)
-  }
   print(fit)
   print("Ridge lambdas")
   print(fit$lambda)
@@ -56,7 +52,7 @@ if(model.type=="Lasso"){
   y = data.matrix(dataTrain$y)
   drops = c("y")
   x = data.matrix(dataTrain[,!(names(dataTrain) %in% drops)])
-  fit = glmnet(x,y)
+  fit = cv.glmnet(x,y)
   dataCVMat = data.matrix(dataCV[,!(names(dataCV) %in% drops)])
   CVPredictions = predict(fit,dataCVMat)
   TestPredictions= predict(fit,as.matrix(dataTest))
@@ -83,7 +79,7 @@ if(model.type=="BMAR"){
   cvp = predict(fit,dataCV)
   tp  = predict(fit,dataTest)
   CVPredictions   = unlist(cvp[1])
-  testPreidctions = unlist(tp[1] )
+  TestPredictions = unlist(tp[1] )
 }
 
 
@@ -91,7 +87,7 @@ if(model.type=="RFR"){
   library(randomForest)
   library(ipred)
   ## Random Forest
-  fit      = randomForest(y ~0+., data=dataTrain,importance=TRUE, sampsize=1000, ntree=100)
+  fit      = randomForest(y ~0+., data=dataTrain,importance=TRUE, ntree=100)
   CVPredictions = predict(fit,dataCV)
   TestPredictions= predict(fit,dataTest)
 }
