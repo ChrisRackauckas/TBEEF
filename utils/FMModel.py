@@ -1,7 +1,8 @@
 from Model import Model
 class FMModel(Model):
-   
-### Constructors ########
+
+################################
+######### Constructors #########
     
     def __init__(self,configModel,utils,config,strTrial):
         super(FMModel,self).__init__(configModel,utils,strTrial)
@@ -18,10 +19,13 @@ class FMModel(Model):
         
         self.cleanData              = utils.ORIGINAL_DATA_CLEAN_PATH
         self.movieTag               = utils.MOVIE_TAG_PATH
-        self.historyTag             = utils.USER_HISTORY_PATH
-        self.social                 = utils.USER_SOCIAL_PATH
-        
-### Setup Data ###
+        self.historyTag             = utils.PROCESSED_HISTORY
+        self.social                 = utils.PROCESSED_SOCIAL
+        self.sharedTag              = utils.PROCESSED_MOVIE_TAG
+        self.meanMovieRating        = utils.EFFECTS_MOVIE_PATH
+
+##################################
+########### Setup Data ###########
 
     def setup(self):
         ### Take boot to feat ###
@@ -82,58 +86,131 @@ class FMModel(Model):
             '> /dev/null')
         os.sys.stdout.write('{0}\r'.format('-- Converting (5/6) --') )
         os.system('./Models/libFM/transpose --ifile ' + 
+            self.tmpCV + '.x --ofile ' + 
+            self.runCV + '.xt' + 
+            '> /dev/null')
+        os.sys.stdout.write('{0}\r'.format('-- Converting (6/6) --') )
+        os.system('./Models/libFM/transpose --ifile ' + 
             self.tmpTest + 
             '.x --ofile ' + 
             self.runTest + '.xt' +
             '> /dev/null')
-        os.sys.stdout.write('{0}\r'.format('-- Converting (6/6) --') )
-        os.system('./Models/libFM/transpose --ifile ' + 
-            self.tmpCV + '.x --ofile ' + 
-            self.runCV + '.xt' + 
-            '> /dev/null')
         print()
 
-### Develop Features ###
+#########################################
+########### Develop Features ############
 
     def setupFeatures(self):
         import os
         #-----------------------------------------------------------------
         # creates the features for LibFM, then turns into sparse matrix
         #----------------------------------------------------------------- 
+
+        # ---- ---- Basic Features ---- ---- #
+
         if self.featureSet == 'Basic':
             os.system('cp ' + self.bootTrain + ' ' + self.featTrain)
             os.system('cp ' + self.bootCV    + ' ' + self.featCV   )
             os.system('cp ' + self.bootTest  + ' ' + self.featTest )
             self.libFMFormat(2)
 
-        if self.featureSet == 'BasicMovieTag':
+        elif self.featureSet == 'NearestNeighbor':  
+            print('...Adding Nearest Neighbor Data')
+            moviesRatedByUserDict = self.moviesRatedByUserDict()
+            movieLocationDict = self.userMovieLocationDict(False,True)
+        
+            self.addNearestNeighbor(os,self.bootTrain,self.featTrain,moviesRatedByUserDict,movieLocationDict)
+            self.addNearestNeighbor(os,self.bootCV,self.featCV,moviesRatedByUserDict,movieLocationDict)
+            self.addNearestNeighbor(os,self.bootTest,self.featTest,moviesRatedByUserDict,movieLocationDict)
+
+        # ---- ---- Movie Tag Features ---- ---- #
+
+        elif self.featureSet == 'BasicMovieTag':
             print('...Adding Basic Movie Tag Data')
-            self.basicMovieTag(self.bootTrain,self.featTrain)
-            self.basicMovieTag(self.bootCV,self.featCV)
-            self.basicMovieTag(self.bootTest,self.featTest)
+            tagDict = self.movieTagDict()
+            
+            self.basicMovieTag(os,self.bootTrain,self.featTrain,tagDict)
+            self.basicMovieTag(os,self.bootCV,self.featCV,tagDict)
+            self.basicMovieTag(os,self.bootTest,self.featTest,tagDict)
             self.libFMFormat(2)
 
-        if self.featureSet == 'AdjustedMovieTag':
-            print('...Adding Adjusted Movie Tag Data')
-            self.adjustedMovieTag(self.bootTrain,self.featTrain)
-            self.adjustedMovieTag(self.bootCV,self.featCV)
-            self.adjustedMovieTag(self.bootTest,self.featTest)
+        elif self.featureSet == 'RelatedMovieTagThreshold':
+            print('...Adding Related Movie Tag Threshold Data')
+            movieSharedTagDict, maxTags = self.movieSharedTagDict(5)
+            userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
+            
+            self.relatedMovieTagThreshold(os,self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict)
+            self.relatedMovieTagThreshold(os,self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict)
+            self.relatedMovieTagThreshold(os,self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict)
 
-        if self.featureSet == 'NearestNeighbor':
-            print('...Adding Nearest Neighbor Data')
-            self.addNearestNeighbor(self.bootTrain,self.featTrain)
-            self.addNearestNeighbor(self.bootCV,self.featCV)
-            self.addNearestNeighbor(self.bootTest,self.featTest)
+        elif self.featureSet == 'RelatedMovieTagThreshold2':
+            print('...Adding Related Movie Tag Threshold 2 Data')
+            movieSharedTagDict, maxTags = self.movieSharedTagDict(5)
+            userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
+            moviesRatedByUserDict = self.moviesRatedByUserDict()
+            
+            self.relatedMovieTagThreshold2(os,self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
+            self.relatedMovieTagThreshold2(os,self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
+            self.relatedMovieTagThreshold2(os,self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
 
-        if self.featureSet == 'RelatedMovieTag':
-            print('...Adding Related Movie Tag Data')
-            self.relatedMovieTag(self.bootTrain,self.featTrain)
-            self.relatedMovieTag(self.bootCV,self.featCV)
-            self.relatedMovieTag(self.bootTest,self.featTest)
+        # ---- ---- User History Features ---- ---- #
+
+        elif self.featureSet == 'UserHistory':   
+            print('...Adding User History Data')
+            moviesRatedByUserDict = self.moviesRatedByUserDict()
+            userHistoryDict = self.userHistoryDict()
+            movieLocationDict = self.userMovieLocationDict(False,True)
+        
+            self.userHistory(os,self.bootTrain,self.featTrain,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
+            self.userHistory(os,self.bootCV,self.featCV,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
+            self.userHistory(os,self.bootTest,self.featTest,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
+
+        # ---- ---- User Social Features ---- ---- #
+
+        elif self.featureSet == 'UserSocial':   # TODO
+            print('...Adding User Social Data')
+            self.userSocial(os,self.bootTrain,self.featTrain,tagDict)
+            self.userSocial(os,self.bootCV,self.featCV,tagDict)
+            self.userSocial(os,self.bootTest,self.featTest,tagDict)
 
 
-    def basicMovieTag(self,finPath, foutPath):
-        import os
+    def addNearestNeighbor(self,os,finPath, foutPath,moviesRatedByUserDict,movieLocationDict):
+        #-----------------------------------------------------------------
+        # creates sparse matrix where non-user/movie entries given as column:rating/m
+        # where m is the total number of movies rated by the user
+        #-----------------------------------------------------------------
+
+        lineCount= self.lineCount(finPath)
+        counter = 0
+
+        offset = len(movieLocationDict)
+        fin = open(finPath, 'r')
+        fout = open(foutPath, 'w')
+        for line in fin:
+            line.replace('\n', '')
+            columns = line.split('\t')
+            user = columns[0]
+            movie = columns[1]
+            rating = columns[2]
+            movCol = movieLocationDict[movie]
+            string=''   
+            m = len(moviesRatedByUserDict[user])    # num of movies rated by user
+            for mov in moviesRatedByUserDict[user]:
+                rate = moviesRatedByUserDict[user][mov]    # other movie's rating
+                location = str( int(movieLocationDict[mov]) + offset )
+                val = str( '{0:.4f}'.format( float(rate)/m ) ) # r/m
+                string = string + location+':'+val+' '
+            string=string[:-1]  # gets rid of the extra space on the end
+            fout.write(rating[:-1]+' '+movCol+':1 '+string+'\n')
+
+            self.printProgress(os, counter, lineCount)
+            counter +=1
+        self.printProgressDone(os)
+        fin.close()
+        fout.close()
+        os.system('mv '+foutPath+' '+foutPath+'.libfm')
+
+    def basicMovieTag(self,os,finPath, foutPath, tagDict):
         #-----------------------------------------------------------------
         # creates new data set with movie tag info by appending tags as columns
         # Output data still needs to by formatted for LibFM
@@ -142,7 +219,6 @@ class FMModel(Model):
         lineCount= self.lineCount(finPath)
         counter=0
         
-        tagDict = self.movieTagDict()
         dataSet = open(finPath,'r')
         dataSetWithTags = open(foutPath,'w')
         for line in dataSet:
@@ -159,32 +235,23 @@ class FMModel(Model):
                 else:
                     dataSetWithTags.write(line+'\n')
 
-                if counter%100==0:
-                    # prints read-out that shows how quickly data is being written
-                    os.sys.stdout.write('{0}\r'.format( \
-                        str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ \
-                        ' percent of data formatted --'))
-                        )
+                self.printProgress(os, counter, lineCount)
                 counter +=1
-        os.sys.stdout.write('{0}\r'.format( \
-            '-- Formatting Complete --            ')) # space included on purpose to overwrite previous string
-        print()
+        self.printProgressDone(os)
         dataSet.close()
         dataSetWithTags.close()
 
-    def adjustedMovieTag(self,finPath, foutPath):
-        import os
+    def relatedMovieTagThreshold(self,os,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict):
         #-----------------------------------------------------------------
-        # creates sparse matrix with movie tags where output for tags is
-        # column:1/m where m is the total num tags for the movie
+        # creates sparse matrix using movie tags with userID, movieID, then columns
+        #  with movies that share at least n tags are given a n/max value, max
+        #  is most tags shared between any given pair
         #-----------------------------------------------------------------
 
         lineCount= self.lineCount(finPath)
         counter=0
-        
-        userLocationDict, movieLocationDict = self.userMovieLocationDict()
-        startVal = len(userLocationDict)+len(movieLocationDict)
-        tagDict, tagLocationDict = self.movieTagAndLocationDict(startVal)
+
+        offset = len(movieLocationDict)
         dataSet = open(finPath,'r')
         fout = open(foutPath,'w')
         for line in dataSet:
@@ -196,46 +263,88 @@ class FMModel(Model):
                 rating= columns[2]
                 movCol = movieLocationDict[movie]
                 userCol = userLocationDict[user]
-                if movie in tagDict:
+                if movie in movieSharedTagDict:
                     string=''
-                    m = len(tagDict[movie])
-                    val = str( '{0:.4f}'.format( 1/m ) ) # 1/m
-                    for tag in tagDict[movie]:
-                        string=string+tagLocationDict[tag]+':'+val+' '
+                    for tup in movieSharedTagDict[movie]:
+                        mov2 = tup[0]
+                        if mov2 in movieLocationDict: # some movies in tag data are not in training set
+                            num = tup[1]
+                            val = str( '{0:.4f}'.format( num/maxTags ) ) # value
+                            loc = int(movieLocationDict[mov2])+offset
+                            string=string+str(loc)+':'+val+' '
                     string=string[:-1]
                     fout.write(rating+' '+userCol+':1 '+movCol+':1 '+string+'\n')
                 else:
                     fout.write(rating+' '+userCol+':1 '+movCol+':1\n')
 
-                if counter%100==0:
-                    # prints read-out that shows how quickly data is being written
-                    os.sys.stdout.write('{0}\r'.format( \
-                        str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ \
-                        ' percent of data formatted --'))
-                        )
+                self.printProgress(os, counter, lineCount)
                 counter +=1
-        os.sys.stdout.write('{0}\r'.format( \
-            '-- Formatting Complete --            ')) # space included on purpose to overwrite previous string
-        print()
+        self.printProgressDone(os)
         dataSet.close()
         fout.close()
         os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def addNearestNeighbor(self,finPath, foutPath):
-        import os
+    def relatedMovieTagThreshold2(self,os,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict):
         #-----------------------------------------------------------------
-        # creates sparse matrix where non-user/movie entries given as column:rating/m
-        # where m is the total number of movies rated by the user
+        # creates sparse matrix using movie tags with userID, movieID, then columns
+        #  with movies that share at least n tags and have been rated by same user are assigned a value of
+        #  (n/maxTags + rating/m), m is total number of movies rated by user; otherwise val is just n/maxTags
         #-----------------------------------------------------------------
 
-        moviesRatedByUser = self.movisRatedByUserDict()
-        movieLocationDict = self.movieLocationDict()
         lineCount= self.lineCount(finPath)
+        counter=0
 
-        totalMovies = len(movieLocationDict)
+        offset = len(movieLocationDict)
+        dataSet = open(finPath,'r')
+        fout = open(foutPath,'w')
+        for line in dataSet:
+            if line != '\n':
+                line = line.replace('\n', '')
+                columns = line.split('\t')
+                user=columns[0]
+                movie = columns[1]
+                rating= columns[2]
+                movCol = movieLocationDict[movie]
+                userCol = userLocationDict[user]
+                if movie in movieSharedTagDict and movie in movieLocationDict:
+                    string=''
+                    for tup in movieSharedTagDict[movie]:
+                        mov2 = tup[0]
+                        numTags = tup[1]
+                        if mov2 in movieLocationDict:
+                            if mov2 in moviesRatedByUserDict[user]:
+                                r2 = moviesRatedByUserDict[user][mov2]     # user rating of mov2
+                                m = len(moviesRatedByUserDict[user])
+                                val = str( '{0:.4f}'.format( (numTags/maxTags)+(float(r2)/m) )) # value
+                            else:
+                                val = str( '{0:.4f}'.format( numTags/maxTags) ) # value
+                            loc = int(movieLocationDict[mov2])+offset
+                            string=string+str(loc)+':'+val+' '
+                    string=string[:-1]
+                    fout.write(rating+' '+userCol+':1 '+movCol+':1 '+string+'\n')
+                else:
+                    fout.write(rating+' '+userCol+':1 '+movCol+':1\n')
+
+                self.printProgress(os, counter, lineCount)
+                counter +=1
+        self.printProgressDone(os)
+        dataSet.close()
+        fout.close()
+        os.system('mv '+foutPath+' '+foutPath+'.libfm')
+
+    def userHistory(self,os,finPath, foutPath,userHistoryDict,movieLocationDict,moviesRatedByUserDict):
+        #-----------------------------------------------------------------
+        # creates sparse matrix using user history using movieID,
+        #  then rating/n for each movie in user history and rated, where n is total viewed
+        #  and simply 1/n for each movie in history and unrated by user
+        #-----------------------------------------------------------------
+
+        lineCount= self.lineCount(finPath)
+        counter=0
+
+        offset = len(movieLocationDict)
         fin = open(finPath, 'r')
         fout = open(foutPath, 'w')
-        counter = 0
         for line in fin:
             line.replace('\n', '')
             columns = line.split('\t')
@@ -244,88 +353,35 @@ class FMModel(Model):
             rating = columns[2]
             movCol = movieLocationDict[movie]
             string=''   
-            m = len(moviesRatedByUser[user])    # num of movies rated by user
-            for thing in moviesRatedByUser[user]:
-                mov = thing[0]    # other rated movie by same user
-                rate = thing[1]    # other movie's rating
-                location = str( int(movieLocationDict[mov])+totalMovies )
-                val = str( '{0:.4f}'.format( float(rate)/m ) ) # r/m
+            n = max(len(moviesRatedByUserDict[user]), len(userHistoryDict[user]) )   
+            for mov in userHistoryDict[user]:
+                if mov in moviesRatedByUserDict[user]:
+                    rate = float(moviesRatedByUserDict[user][mov])
+                else:
+                    rate = 1
+                location = str( int(movieLocationDict[mov]) + offset )
+                val = str( '{0:.4f}'.format( rate/n ) ) 
                 string = string + location+':'+val+' '
             string=string[:-1]  # gets rid of the extra space on the end
             fout.write(rating[:-1]+' '+movCol+':1 '+string+'\n')
 
-            if counter%50==0:
-                # prints read-out that shows how quickly data is being written
-                os.sys.stdout.write('{0}\r'.format( \
-                    str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ \
-                        ' percent of data formatted --'))
-                        )
+            self.printProgress(os, counter, lineCount)
             counter +=1
-        os.sys.stdout.write('{0}\r'.format( \
-            '-- Formatting Complete --            ')) # space included on purpose to overwrite previous string
-        print()
+        self.printProgressDone(os)
         fin.close()
         fout.close()
-        
         os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def relatedMovieTag(self,finPath, foutPath):
-        import os
+    def userSocial(self,os,finPath,foutPath):
         #-----------------------------------------------------------------
-        # creates sparse matrix using movie tags with movie id, then columns
-        #  where movies that share tags are given a 1/m value, m is total
-        #  movies with a given tag
+        # creates sparse matrix using user social data 
         #-----------------------------------------------------------------
 
-        lineCount= self.lineCount(finPath)
-        counter=0
-        
-        userLocationDict, movieLocationDict = self.userMovieLocationDict()
-        movieTagDict = self.movieTagDict()
-        relatedMovieDict = self.relatedMovieDict()
-        offset = len(movieLocationDict)
-        
-        dataSet = open(finPath,'r')
-        fout = open(foutPath,'w')
-        for line in dataSet:
-            if line != '\n':
-                line = line.replace('\n', '')
-                columns = line.split('\t')
-                user=columns[0]
-                movie = columns[1]
-                rating= columns[2]
-                movCol = movieLocationDict[movie]
-                userCol = userLocationDict[user]
-                if movie in movieTagDict:
-                    string=''
-                    m = 0   # num related movies
-                    for tag in movieTagDict[movie]:
-                        m += len(relatedMovieDict[tag])
-                    val = str( '{0:.4f}'.format( 1/m ) ) # 1/m
-                    for tag in movieTagDict[movie]:
-                        for relatedMovie in relatedMovieDict[tag]:
-                            loc = int(movieLocationDict[relatedMovie])+offset
-                            string=string+str(loc)+':'+val+' '
-                    string=string[:-1]
-                    fout.write(rating+' '+userCol+':1 '+movCol+':1 '+string+'\n')
-                else:
-                    fout.write(rating+' '+userCol+':1 '+movCol+':1\n')
+        # TODO
+        return
 
-                if counter%100==0:
-                    # prints read-out that shows how quickly data is being written
-                    os.sys.stdout.write('{0}\r'.format( \
-                        str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ \
-                        ' percent of data formatted --'))
-                        )
-                counter +=1
-        os.sys.stdout.write('{0}\r'.format( \
-            '-- Formatting Complete --            ')) # space included on purpose to overwrite previous string
-        print()
-        dataSet.close()
-        fout.close()
-        os.system('mv '+foutPath+' '+foutPath+'.libfm')
-
-### Helpful Functions for adding Features ###
+#######################################
+########## Helpful Functions ##########
 
     def lineCount(self,finPath):
         # returns a line count on the input file
@@ -336,53 +392,55 @@ class FMModel(Model):
         fin.close()
         return lineCount
 
+    def printProgress(self, os, counter, lineCount):
+        # prints to system how much of data has been formatted
+        printEvery = int(lineCount*0.0001)
+        if printEvery < 1:
+            printEvery=1
+        if counter%printEvery==0:
+            os.sys.stdout.write('{0}\r'.format( str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ ' percent of data formatted --')) )
 
-    def movieLocationDict(self):
-        # returns a dict with movies as keys and location in sparse matrix as value
-        movieSet=set()
-        movieLocation = 1
-        movieLocationDict={}   
-        
-        dataSet=open(self.cleanData, 'r')
-        for line in dataSet:
-            columns = line.split('\t')
-            movie = columns[1]
-            if movie not in movieSet:
-                movieSet.add(movie)
-                movieLocationDict[movie] = str(movieLocation)
-                movieLocation +=1
-        dataSet.close()
-        return movieLocationDict
+    def printProgressDone(self,os):
+        # prints to system that formatting is completed
+        os.sys.stdout.write('{0}\r'.format('-- Formatting Complete --              ')) # space included on purpose to overwrite previous string
+        print() # to move to nextline
 
-    def userMovieLocationDict(self):
-        # returns two dicts, one with movies as keys and
-        #  and the other with users as keys. Both hold location in sparse matrix as value
-        movieSet=set()
-        userSet=set()
+##################################################
+########## Dictionary Reading Functions ##########
+
+    def userMovieLocationDict(self, user,movie):
+        # returns two dicts, one with users as keys and the other with movies as keys. Both hold location in sparse matrix as value
         location = 1
-        movieLocationDict={}
-        userLocationDict={}
-        # first time through we get user locations
-        dataSet=open(self.cleanData, 'r')
-        for line in dataSet:
-            columns = line.split('\t')
-            user = columns[0]
-            if user not in userSet:
-                userSet.add(user)
-                userLocationDict[user]= str(location)
-                location += 1
-        dataSet.close()
-        # this time get movie locations
-        dataSet=open(self.cleanData, 'r')
-        for line in dataSet:
-            columns = line.split('\t')
-            movie = columns[1]
-            if movie not in movieSet:
-                movieSet.add(movie)
-                movieLocationDict[movie] = str(location)
-                location +=1
-        dataSet.close()
-        return userLocationDict,movieLocationDict
+        if user: # first time through we get user locations
+            dataSet=open(self.cleanData, 'r')
+            userLocationDict={}
+            userSet=set()
+            for line in dataSet:
+                columns = line.split('\t')
+                user = columns[0]
+                if user not in userSet:
+                    userSet.add(user)
+                    userLocationDict[user]= str(location)
+                    location += 1
+            dataSet.close()
+        if movie:   # this time get movie locations
+            dataSet=open(self.cleanData, 'r')
+            movieLocationDict={}
+            movieSet=set()
+            for line in dataSet:
+                columns = line.split('\t')
+                movie = columns[1]
+                if movie not in movieSet:
+                    movieSet.add(movie)
+                    movieLocationDict[movie] = str(location)
+                    location +=1
+            dataSet.close()
+        if user and not movie: # means movie is False
+            return userLocationDict
+        elif not user and movie: # means user is False
+            return movieLocationDict
+        else:
+            return userLocationDict, movieLocationDict # otherwise we want both (even if false, false)
 
 
     def movieTagDict(self):
@@ -400,6 +458,29 @@ class FMModel(Model):
                 for tag in tagList:
                     tagDict[movie].append(tag)
         return tagDict
+
+    def movieSharedTagDict(self, threshold):
+        # returns a dict with movies as keys and list of (movie, num shared tag) tuples
+        #  where threshold cuts out any movie pairs that do not share at least $threshold many tags
+        sharedTags = open(self.sharedTag, 'r')
+        maxTag = 0  # max number of shared tags between all movie pairs
+        movieSet = set()
+        tagDict = {}
+        for line in sharedTags:
+            if line != '\n':
+                line = line.replace('\n', '')
+                columns = line.split('\t')
+                movie1 = columns[0]
+                movie2 = columns[1]
+                numTags = int(columns[2])
+                if numTags >= threshold:
+                    if numTags > maxTag:
+                        maxTag = numTags
+                    if movie1 not in movieSet:
+                        tagDict[movie1]=[]
+                        movieSet.add(movie1)
+                    tagDict[movie1].append( (movie2, numTags) ) # movie2 is a string ID, numTags is an int
+        return tagDict, maxTag
 
     def movieTagAndLocationDict(self,startVal):
         # returns two dicts, one of tags by movie, the other
@@ -425,10 +506,9 @@ class FMModel(Model):
         return tagDict, tagLocationDict
 
     def moviesRatedByUserDict(self):
-        # returns a dict with user as keys and a list of all (movie,rating) tuples for the given user
-        userSet=set()
-        movieSet=set()   
-        moviesRatedByUser = {}
+        # returns a dict of dicts with user as keys and a dict of movie:rating as values
+        userSet=set()   
+        moviesRatedByUserDict = {}
         
         dataSet=open(self.cleanData, 'r')
         for line in dataSet:
@@ -439,32 +519,76 @@ class FMModel(Model):
             rating = columns[2]
             if user not in userSet:
                 userSet.add(user)
-                moviesRatedByUser[user]=[]
-            moviesRatedByUser[user].append( (movie, rating) )
+                moviesRatedByUserDict[user]={}
+            moviesRatedByUserDict[user][movie]= rating
         dataSet.close()
-        return moviesRatedByUser
+        return moviesRatedByUserDict
 
-    def relatedMovieDict(self):
+    def movieTagAsKeyDict(self):
         # returns a dict with tags as keys and all movies that share tag as values
+        movieSet = set()
+        data=open(self.cleanData, 'r')
+        for line in data:
+            columns = line.split('\t')
+            movie = columns[1]
+            if movie not in movieSet:
+                movieSet.add(movie)
+        data.close()
+        
         tagSet = set()
         movieTags = open(self.movieTag, 'r')
-        relatedMovieDict = {}
+        movieTagAsKeyDict = {}
         for line in movieTags:
             if line != '\n':
                 line = line.replace('\n', '')
                 columns = line.split('\t')
                 movie = columns[0]
-                allTags = columns[1]
-                tagList = allTags.split(',')
-                for tag in tagList:
-                    if tag not in tagSet:
-                        tagSet.add(tag)
-                        relatedMovieDict[tag]=[]
-                    relatedMovieDict[tag].append(movie)
-        return relatedMovieDict
-    
+                if movie in movieSet: # we only care about movie tags for movies in our data set
+                    allTags = columns[1]
+                    tagList = allTags.split(',')
+                    for tag in tagList:
+                        if tag not in tagSet:
+                            tagSet.add(tag)
+                            movieTagAsKeyDict[tag]=[]
+                        movieTagAsKeyDict[tag].append(movie)
+        return movieTagAsKeyDict
 
-### Run ###
+    def meanMovieRatingDict(self):
+        # returns dictionary with average rating for each movie, max rating
+        maxRating = 0
+        data = open(self.meanMovieRating,'r')
+        meanMovieRatingDict = {}
+        for line in data:
+            line = line.replace('\n', '')
+            columns = line.split('\t')
+            movie = columns[0]
+            rating = columns[1]
+            meanMovieRatingDict[movie]=rating
+            if float(rating) > maxRating:
+                maxRating = float(rating)
+        return meanMovieRatingDict, maxRating
+
+    def userHistoryDict(self):
+        # returns a dict with user as keys and list of history tags (movies) as values
+        historyData = open(self.historyTag, 'r')
+        userSet=set()
+        historyDict = {}
+        for line in historyData:
+            if line != '\n':
+                line = line.replace('\n', '')
+                columns = line.split('\t')
+                user = columns[0]
+                movieString = columns[1]
+                movieList = movieString.split(',')
+                if user not in userSet:
+                    userSet.add(user)
+                    historyDict[user]=[]
+                for movie in movieList:
+                    historyDict[user].append(movie)
+        return historyDict
+    
+###############################
+############# Run #############
 
     def run(self,sproc,subprocesses):
 

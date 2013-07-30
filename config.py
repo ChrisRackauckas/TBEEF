@@ -28,7 +28,7 @@ ensembleModels = [  ['OLSR','OLS',[]],
 #                   ['RFR' ,'RFR' ,[]],
 #                   ['CIRF','CIRF',[]], Not Working
                     ['Lasso','Lasso',[]],
-#                    ['GBRT50','GBRT',['50']]
+                    ['GBRT','GBRT',['50']]
                  ]
 
 # Defining ensamble models:
@@ -43,7 +43,7 @@ synthModel = ['OLSR','OLS',[]]
 ################### Select Parts  ##################
 TEST_SUBSET      = True # uses small data set to run features on laptop
 
-TRIALS           = 1
+TRIALS           = 2 
 PRE_PROCESS      = True
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
@@ -64,7 +64,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 2
+FM_ITER = 10
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
