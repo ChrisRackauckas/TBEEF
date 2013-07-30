@@ -41,7 +41,7 @@ ensembleModels = [  ['OLSR','OLS',[]],
 synthModel = ['OLSR','OLS',[]]
 
 ################### Select Parts  ##################
-LAPTOP_TEST      = True # uses small data set to run features on laptop
+TEST_SUBSET      = True # uses small data set to run features on laptop
 
 TRIALS           = 2 
 PRE_PROCESS      = True
