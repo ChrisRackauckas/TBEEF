@@ -22,8 +22,6 @@ class SVDModel(Model):
 ### Setup Data ###
 
     def setup(self):
-        import utils
-        import config
         ### Boot to tmp ###
         print("Re-Indexing")
         values = self.reIndex()
@@ -50,11 +48,6 @@ class SVDModel(Model):
         CVLines    = bootCVFile.readlines()
         testLines  = bootTestFile.readlines()
 
-        fullInput = []
-        fullInput.append(trainLines)
-        fullInput.append(CVLines)
-        fullInput.append(testLines)
-
         uidDic={}
         iidDic={}
         newuid=1
@@ -63,7 +56,7 @@ class SVDModel(Model):
         sum=0.0
 
         #Build dictionary
-    
+
         for line in trainLines:
             arr = line.rsplit('\t')
             uid = int(arr[0].strip())
@@ -73,15 +66,15 @@ class SVDModel(Model):
             sum+=rating
             ctr+=1
 
-		    #this part for reindexing the user ID
+            #this part for reindexing the user ID
             if uid not in uidDic:
                 uidDic[uid]=newuid
                 newuid+=1
-		    #this part for reindexing the item ID
+            #this part for reindexing the item ID
             if iid not in iidDic:
                 iidDic[iid]=newiid
                 newiid+=1
-    
+
         for line in CVLines:
             arr = line.rsplit('\t')
             uid = int(arr[0].strip())
@@ -90,20 +83,20 @@ class SVDModel(Model):
             if uid not in uidDic:
                 uidDic[uid]=newuid
                 newuid+=1
-		    #this part for reindexing the item ID
+            #this part for reindexing the item ID
             if iid not in iidDic:
                 iidDic[iid]=newiid
                 newiid+=1
-    
+
         for line in testLines:
             arr = line.rsplit('\t')
             uid = int(arr[0].strip())
             iid = int(arr[1].strip())
-	        #this part for reindexing the user ID
+            #this part for reindexing the user ID
             if uid not in uidDic:
                 uidDic[uid]=newuid
                 newuid+=1
-		    #this part for reindexing the item ID
+            #this part for reindexing the item ID
             if iid not in iidDic:
                 iidDic[iid]=newiid
                 newiid+=1
@@ -129,12 +122,12 @@ class SVDModel(Model):
             tmpTestFile.write('%d\t%d\t%d\n' %(uidDic[uid],iidDic[iid],rating))
 
         #calculate different parameter.
-    
+
         self.numUser=len(uidDic)
         self.numMovie=len(iidDic)
         self.avg=sum/ctr
         self.numGlobal = 0
-    
+
         #Close files
         bootTrainFile.close()
         bootTestFile.close()

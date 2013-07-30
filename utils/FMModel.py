@@ -21,7 +21,7 @@ class FMModel(Model):
         self.movieTag               = utils.MOVIE_TAG_PATH
         self.historyTag             = utils.PROCESSED_HISTORY
         self.social                 = utils.PROCESSED_SOCIAL
-        self.sharedTag              = utils.PROCESSED_MOVIE_TAG
+        self.sharedTag              = utils.PROCESSED_MOVIE_TAGS
         self.meanMovieRating        = utils.EFFECTS_MOVIE_PATH
 
 ##################################

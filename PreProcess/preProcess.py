@@ -1,4 +1,4 @@
-def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAGS,\
+def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAGS,
                PROCESS_SOCIAL,PROCESS_HISTORY):
     
 #-----------------------------------------------------------------
@@ -58,6 +58,139 @@ def makeDummyPredictions(utils):
     inPredict.close()
     outPredict.close()
 
+def processHistoryData(utils):
+    #-----------------------------------------------------------------
+    # Generates a processed user history file that cuts out all the extraneous
+    #  users who do not rate in the actual training set
+    #-----------------------------------------------------------------
+    historyData = open(utils.USER_HISTORY_PATH, 'r')
+    fout = open(utils.PROCESSED_HISTORY ,'w')
+
+    # this gets a set of all users and all movies we see in our data set
+    userSet=set()
+    movieSet=set()
+    data = open(utils.ORIGINAL_DATA_PATH,'r')
+    for line in data:
+        if line != '\n':
+            columns = line.split('\t')
+            user = columns[0]
+            movie = columns[1]
+            if user not in userSet:
+                userSet.add(user)
+            if movie not in movieSet:
+                movieSet.add(movie)
+    data.close()
+
+    historyDict = {}
+    usersSeen=set()
+    for line in historyData:
+        if line != '\n':
+            line = line.replace('\n', '')
+            columns = line.split('\t')
+            user = columns[0]
+            if user in userSet:
+                if user not in usersSeen:
+                    historyDict[user]=[]
+                    usersSeen.add(user)
+                movie = columns[1]
+                if movie in movieSet:
+                    historyDict[user].append(movie)
+    for user in historyDict:
+        string=''
+        for movie in historyDict[user]:
+            string=string+movie+','
+        string=string[:-1]
+        fout.write(user+'\t'+string+'\n')
+    historyData.close()
+    fout.close()
+
+def processSocialData(utils):
+    #-----------------------------------------------------------------
+    # Generates a processed social file that cuts out all the extraneous
+    #  users which do not show up in the actual training set
+    #-----------------------------------------------------------------
+    socialData = open(utils.USER_SOCIAL_PATH, 'r')
+    fout = open(utils.PROCESSED_SOCIAL ,'w')
+
+    # this gets a set of all users we see in our data set
+    userSet=set()
+    userData = open(utils.ORIGINAL_DATA_PATH,'r')
+    for line in userData:
+        if line != '\n':
+            columns = line.split('\t')
+            user = columns[0]
+            if user not in userSet:
+                userSet.add(user)
+    userData.close()
+
+    socialDict = {}
+    for line in socialData:
+        if line != '\n':
+            line = line.replace('\n', '')
+            columns = line.split('\t')
+            user = columns[0]
+            if user in userSet:
+                friends = columns[1]
+                friendList = friends.split(',')
+                string=''
+                for friend in friendList:
+                    if friend in userSet:
+                        string=string+friend+','
+                string=string[:-1]
+                if string != '':
+                    fout.write(user+'\t'+string+'\n')
+    fout.close()
+
+def processMovieTags(utils):
+    import os
+    #-----------------------------------------------------------------
+    # Generates a file from movie_tag.txt that has format
+    # (movie1, movie2, N) where N is the number of tags they share
+    #-----------------------------------------------------------------
+
+    # creates dict with movies as keys and list of tags as value
+    movieTags = open(utils.MOVIE_TAG_PATH, 'r')
+    movieTagDict = {}
+    movieList =[]
+    movieSet=set()
+    lineCount=0
+    for line in movieTags:
+        if line != '\n':
+            line = line.replace('\n', '')
+            columns = line.split('\t')
+            movie = columns[0]
+            movieList.append(movie)
+            allTags = columns[1]
+            tagList = allTags.split(',')
+            if movie not in movieSet:
+                movieSet.add(movie)
+                movieTagDict[movie]=[]
+            for tag in tagList:
+                movieTagDict[movie].append(tag)
+            lineCount+=1
+    movieTags.close()
+
+    fout = open(utils.PROCESSED_MOVIE_TAGS, 'w')
+    linesSq=lineCount**2
+    speed =0 # counter
+    for i in range(len(movieList)):
+        mov1 = movieList[i]
+        for j in range(i+1,len(movieList)):
+            tagCount = 0
+            mov2 = movieList[j]
+            for tag1 in movieTagDict[mov1]:
+                for tag2 in movieTagDict[mov2]:
+                    if tag1 == tag2:
+                        tagCount +=1
+            if tagCount > 0:
+                fout.write(mov1+'\t'+mov2+'\t'+str(tagCount)+'\n')
+
+            if speed%50==0:
+                os.sys.stdout.write('{0}\r'.format(
+                    str('-- '+str('{0:.2f}'.format(speed/linesSq*100))+
+                        ' percent of data written --')))
+            speed+=1
+    fout.close()
 
 def cleanUpData(inputPath,outputPath):
 #-----------------------------------------------------------------

@@ -51,9 +51,9 @@ class Model(object):
         import csv
         data = csv.reader(open(idsPath,'rU'), delimiter="\t", quotechar='|')
         fixData = open(fixPath, 'r')
-        fixLines = fixData.readlines();
+        fixLines = fixData.readlines()
         i = 0
-        output = [];
+        output = []
         for row in data :
             output.append(row[0] + '\t' + row[1] + "\t" + fixLines[i])
             i = i + 1

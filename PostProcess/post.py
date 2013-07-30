@@ -57,4 +57,4 @@ def pickWinner(trials,RMSEPaths):
             bestTrial = i
             bestRMSE  = RMSE
 
-    return(bestTrial,bestRMSE)
+    return bestTrial,bestRMSE
