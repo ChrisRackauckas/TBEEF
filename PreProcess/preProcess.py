@@ -1,4 +1,5 @@
-def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET):
+def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAGS,\
+               PROCESS_SOCIAL,PROCESS_HISTORY):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -15,7 +16,19 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET):
     makeDummyPredictions(utils)
 
     cleanUpData(utils.ORIGINAL_DATA_PATH,
-                utils.ORIGINAL_DATA_CLEAN_PATH)   
+                utils.ORIGINAL_DATA_CLEAN_PATH)
+    
+    if PROCESS_TAGS:
+        print('... Processing Movie Tag Data')
+        processMovieTags(utils)
+        
+    if PROCESS_SOCIAL:
+        print('... Processing User Social Data')
+        processSocialData(utils)
+
+    if PROCESS_HISTORY:
+        print('... Processing User History Data')
+        processHistoryData(utils)
 
     # De-effects data file
     if DE_EFFECT:

@@ -47,8 +47,9 @@ if config.TIME_RUN:
 
 if config.PRE_PROCESS:
     print("Pre-Processing")
-    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,
-                   config.TEST_SUBSET)
+    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,\
+                   config.TEST_SUBSET,config.PROCESS_TAGS,config.PROCESS_SOCIAL,\
+                   config.PROCESS_HISTORY)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################
