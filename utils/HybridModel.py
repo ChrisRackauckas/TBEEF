@@ -25,7 +25,6 @@ class HybridModel(Model):
         self.RMSEPath   = utils.HYBRID_RMSE_PATH+ self.tag + '_t'\
                                                 + strTrial
         self.setupRVars(utils)
-        self.CVSet      = True
 
     def setupRVars(self,utils):
         self.miscStr        = ' '.join(map(str,self.misc))
@@ -36,8 +35,7 @@ class HybridModel(Model):
                             + self.RMSEPath + ' ' + self.mode \
                             + ' ' + self.miscStr
 
-    def run(self,sproc,subprocesses):   
-        print("Hybrid Choice: " + self.mode)
+    def run(self,sproc,subprocesses):
         progCall = 'Rscript ' + self.basicEnsembles + self.RCatch
         progArr = progCall.split()
         logFile = open(self.log,'w')

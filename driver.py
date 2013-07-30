@@ -72,7 +72,9 @@ modelList = []
 
 if config.SETUP_HYBRID:
     print("Setting up hybrid")
-    hybrid.setupHybrid(utils,config,mproc,random,config.BOOTSTRAP_SPLITS[1],CVPredictionPaths,testPredictionPaths,modelList,config.TRIALS)
+    hybrid.setupHybrid(utils,config,mproc,random,config.BOOTSTRAP_SPLITS[1],
+                       CVPredictionPaths,testPredictionPaths,
+                       modelList,config.TRIALS)
 
 ################### Run Hybrid #####################
 
@@ -94,7 +96,9 @@ modelList = []
 
 if config.SETUP_SYNTHESIZE:
     print("Setting up synthesis")
-    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,config.synthModel,config.TRIALS,modelList,mproc,processes)
+    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,
+                               config.BOOTSTRAP_SPLITS[2],random,config.synthModel,
+                               config.TRIALS,modelList,mproc,processes)
 
 ################### Run Synthesize #####################
 

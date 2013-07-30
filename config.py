@@ -3,9 +3,9 @@
 models = [
     ['basicFM', 'FM', 'Basic', ['2']],
     #['bmt','FM','BasicMovieTag',['2']],
-    #['amt','FM','AdjustedMovieTag',['2']]
-    #['nn', 'FM', 'NearestNeighbor',['2']]
-    #['rmt','FM','RelatedMovieTag',['2']]
+    #['amt','FM','AdjustedMovieTag',['2']],
+    #['nn', 'FM', 'NearestNeighbor',['2']],
+    #['rmt','FM','RelatedMovieTag',['2']],
 
     ['basicSVD', 'SVD', 'Basic', []]
 ]
@@ -59,7 +59,7 @@ POST_PROCESS = True
 
 ################## Select Bootstrap Parameters  ##################
 
-BOOTSTRAP_SPLITS = [.8, .8]
+BOOTSTRAP_SPLITS = [.8, .8, .8]
 
 ################## Timer  ##############
 
@@ -67,7 +67,7 @@ TIME_RUN = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 10
+FM_ITER = 50
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
@@ -79,7 +79,7 @@ SVD_REGULARIZATION_USER = '.004'
 SVD_REGULARIZATION_GLOBAL = '.001'
 SVD_NUM_FACTOR = '64'
 SVD_ACTIVE_TYPE = '0'
-SVD_NUM_ITER = '10'
+SVD_NUM_ITER = '50'
 
 ################## Hybrid #########################
 
