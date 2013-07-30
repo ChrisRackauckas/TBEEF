@@ -136,16 +136,18 @@ class FMModel(Model):
 
         elif self.featureSet == 'RelatedMovieTagThreshold':
             print('...Adding Related Movie Tag Threshold Data')
-            movieSharedTagDict, maxTags = self.movieSharedTagDict(5)
+            threshold = 6
+            movieSharedTagDict, maxTags = self.movieSharedTagDict(threshold) 
             userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
             
-            self.relatedMovieTagThreshold(os,self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict)
-            self.relatedMovieTagThreshold(os,self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict)
-            self.relatedMovieTagThreshold(os,self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict)
+            self.relatedMovieTagThreshold(os,self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
+            self.relatedMovieTagThreshold(os,self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
+            self.relatedMovieTagThreshold(os,self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
 
         elif self.featureSet == 'RelatedMovieTagThreshold2':
             print('...Adding Related Movie Tag Threshold 2 Data')
-            movieSharedTagDict, maxTags = self.movieSharedTagDict(5)
+            threshold = 6
+            movieSharedTagDict, maxTags = self.movieSharedTagDict(threshold)
             userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
             moviesRatedByUserDict = self.moviesRatedByUserDict()
             
@@ -167,11 +169,14 @@ class FMModel(Model):
 
         # ---- ---- User Social Features ---- ---- #
 
-        elif self.featureSet == 'UserSocial':   # TODO
+        elif self.featureSet == 'UserSocial':
             print('...Adding User Social Data')
-            self.userSocial(os,self.bootTrain,self.featTrain,tagDict)
-            self.userSocial(os,self.bootCV,self.featCV,tagDict)
-            self.userSocial(os,self.bootTest,self.featTest,tagDict)
+            userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
+            userSocialDict = self.userSocialDictReader()
+            
+            self.userSocial(os,self.bootTrain,self.featTrain,userLocationDict,movieLocationDict,userSocialDict)
+            self.userSocial(os,self.bootCV,self.featCV,userLocationDict,movieLocationDict,userSocialDict)
+            self.userSocial(os,self.bootTest,self.featTest,userLocationDict,movieLocationDict,userSocialDict)
 
 
     def addNearestNeighbor(self,os,finPath, foutPath,moviesRatedByUserDict,movieLocationDict):
@@ -241,10 +246,10 @@ class FMModel(Model):
         dataSet.close()
         dataSetWithTags.close()
 
-    def relatedMovieTagThreshold(self,os,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict):
+    def relatedMovieTagThreshold(self,os,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict, threshold):
         #-----------------------------------------------------------------
         # creates sparse matrix using movie tags with userID, movieID, then columns
-        #  with movies that share at least n tags are given a n/max value, max
+        #  with movies that share at least n tags are given a (n-t)/max value, max
         #  is most tags shared between any given pair
         #-----------------------------------------------------------------
 
@@ -269,7 +274,7 @@ class FMModel(Model):
                         mov2 = tup[0]
                         if mov2 in movieLocationDict: # some movies in tag data are not in training set
                             num = tup[1]
-                            val = str( '{0:.4f}'.format( num/maxTags ) ) # value
+                            val = str( '{0:.4f}'.format( (num-threshold+1)/maxTags ) ) # value
                             loc = int(movieLocationDict[mov2])+offset
                             string=string+str(loc)+':'+val+' '
                     string=string[:-1]
@@ -372,13 +377,42 @@ class FMModel(Model):
         fout.close()
         os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def userSocial(self,os,finPath,foutPath):
+    def userSocial(self,os,finPath,foutPath,userLocationDict,movieLocationDict,userSocialDict):
         #-----------------------------------------------------------------
         # creates sparse matrix using user social data 
         #-----------------------------------------------------------------
 
-        # TODO
-        return
+        lineCount= self.lineCount(finPath)
+        counter=0
+
+        offset = len(movieLocationDict)+len(userLocationDict)
+        fin = open(finPath,'r')
+        fout = open(foutPath,'w')
+        for line in fin:
+            if line != '\n':
+                line = line.replace('\n', '')
+                columns = line.split('\t')
+                user=columns[0]
+                movie = columns[1]
+                rating= columns[2]
+                movCol = movieLocationDict[movie]
+                userCol = userLocationDict[user]
+                string = ''
+                if user in userSocialDict:
+                    m = len(userSocialDict[user])  # num of friends
+                    val = str( '{0:.4f}'.format( 1/m ) )
+                    for friend in userSocialDict[user]:
+                        loc = str( int(userLocationDict[friend])+offset )
+                        string = string + loc +':'+ val +' '
+                    string=string[:-1]
+                fout.write(rating+' '+userCol+':1 '+movCol+':1 '+string+'\n')
+
+                self.printProgress(os, counter, lineCount)
+                counter +=1
+        self.printProgressDone(os)
+        fin.close()
+        fout.close()
+        os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
 #######################################
 ########## Helpful Functions ##########
@@ -585,7 +619,25 @@ class FMModel(Model):
                     historyDict[user]=[]
                 for movie in movieList:
                     historyDict[user].append(movie)
+        historyData.close()
         return historyDict
+
+    def userSocialDictReader(self):
+        # returns a dict with user as keys and list of friends as values
+        data = open(self.social, 'r')
+        socialDict = {}
+        for line in data:
+            if line != '\n':
+                line = line.replace('\n', '')
+                columns = line.split('\t')
+                user = columns[0]
+                friendString = columns[1]
+                friendList = friendString.split(',')
+                socialDict[user]=[]
+                for friend in friendList:
+                    socialDict[user].append(friend)
+        data.close()
+        return socialDict
     
 ###############################
 ############# Run #############

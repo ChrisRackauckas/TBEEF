@@ -1,5 +1,5 @@
-def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST,PROCESS_TAGS,\
-               PROCESS_SOCIAL,PROCESS_HISTORY):
+def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST,\
+               PROCESS_MOVIE_TAG,PROCESS_SOCIAL,PROCESS_HISTORY):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -18,7 +18,7 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,LAPTOP_TEST,PROCESS_TAG
     cleanUpData(utils.ORIGINAL_DATA_PATH,
                 utils.ORIGINAL_DATA_CLEAN_PATH)
     
-    if PROCESS_TAGS:
+    if PROCESS_MOVIE_TAG:
         print('... Processing Movie Tag Data')
         processMovieTags(utils)
         
@@ -171,7 +171,7 @@ def processMovieTags(utils):
             lineCount+=1
     movieTags.close()
     
-    fout = open(utils.PROCESSED_MOVIE_TAGS, 'w')
+    fout = open(utils.PROCESSED_MOVIE_TAG, 'w')
     linesSq=lineCount**2
     speed =0 # counter
     for i in range(len(movieList)):

@@ -1,12 +1,13 @@
 ################### Select Models ##################
 
 models = [
-          ['basicFM','FM','Basic',['2']],
-          ['basicMovTag','FM','BasicMovieTag',['2']],
-          ['nearNeib', 'FM', 'NearestNeighbor',['2']],
-          ['rmtThresh','FM','RelatedMovieTagThreshold',['2']],
-          ['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
-          ['userHist','FM','UserHistory',['2']]
+          #['basicFM','FM','Basic',['2']],
+          #['basicMovTag','FM','BasicMovieTag',['2']],
+          #['nearNeib', 'FM', 'NearestNeighbor',['2']],
+          ['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
+          #['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
+          #['userHist','FM','UserHistory',['2']]
+          #['userSocial','FM','UserSocial',['2']]
 
           #['basicSVD','SVD','Basic',[]]
          ] 
@@ -44,10 +45,10 @@ synthModel = ['OLSR','OLS',[]]
 ################### Select Parts  ##################
 
 TRIALS           = 1
-PRE_PROCESS      = True
+PRE_PROCESS      = False
 # ---- ---- PreProcess Selection ---- ---- #
-LAPTOP_TEST      = False # uses small data set to run features on laptop
-PROCESS_TAGS     = False # generates new file for movie tag feature
+LAPTOP_TEST      = True # uses small data set to run features on laptop
+PROCESS_MOVIE_TAG= False # generates new file for movie tag feature
 PROCESS_SOCIAL   = False # cuts out all the extra social users not in data set
 PROCESS_HISTORY  = False
 
