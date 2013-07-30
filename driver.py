@@ -1,12 +1,10 @@
 ﻿#!/usr/bin/python
 import sys
 import os
-import re
 import random
 import time
 import multiprocessing as mproc
 import subprocess as sproc
-from math import *
 WORK_PATH = os.getcwd()
 sys.path.append(WORK_PATH + '/PreProcess')
 sys.path.append(WORK_PATH + '/Hybrid')
@@ -47,8 +45,8 @@ if config.TIME_RUN:
 
 if config.PRE_PROCESS:
     print("Pre-Processing")
-    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,\
-                   config.LAPTOP_TEST)
+    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,
+                   config.TEST_SUBSET)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################

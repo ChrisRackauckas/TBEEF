@@ -1,13 +1,13 @@
 ################### Select Models ##################
 
 models = [
-          #['basicFM','FM','Basic',['2']],
+          ['basicFM','FM','Basic',['2']],
           #['bmt','FM','BasicMovieTag',['2']],
-          ['amt','FM','AdjustedMovieTag',['2']]
+          #['amt','FM','AdjustedMovieTag',['2']]
           #['nn', 'FM', 'NearestNeighbor',['2']]
           #['rmt','FM','RelatedMovieTag',['2']]
     
-          #['basicSVD','SVD','Basic',[]]
+          ['basicSVD','SVD','Basic',[]]
          ] 
 
 # Defining models:
@@ -28,7 +28,7 @@ ensembleModels = [  ['OLSR','OLS',[]],
 #                   ['RFR' ,'RFR' ,[]],
 #                   ['CIRF','CIRF',[]], Not Working
                     ['Lasso','Lasso',[]],
-                    ['GBRT','GBRT',['50']]
+#                    ['GBRT50','GBRT',['50']]
                  ]
 
 # Defining ensamble models:
@@ -43,7 +43,7 @@ synthModel = ['OLSR','OLS',[]]
 ################### Select Parts  ##################
 TEST_SUBSET      = True # uses small data set to run features on laptop
 
-TRIALS           = 2 
+TRIALS           = 1
 PRE_PROCESS      = True
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
