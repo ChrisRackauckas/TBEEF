@@ -48,9 +48,9 @@ TRIALS           = 1
 PRE_PROCESS      = True
 # ---- ---- PreProcess Selection ---- ---- #
 TEST_SUBSET      = True   # uses small data set
-PROCESS_TAGS     = False  # generates new file for movie tag feature
-PROCESS_SOCIAL   = False  # cuts out all the extra social users not in data set
-PROCESS_HISTORY  = False
+PROCESS_TAGS     = True  # generates new file for movie tag feature
+PROCESS_SOCIAL   = True  # cuts out all the extra social users not in data set
+PROCESS_HISTORY  = True
 DE_EFFECT        = False  # If De-effect is false, model predictions are correct
 # ---- ---- ---- ---- ----- ---- ---- ---- #
 SETUP_MODELS     = True

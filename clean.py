@@ -6,7 +6,7 @@ import os
 import sys
 WORK_PATH = os.getcwd()
 try:
-    delPre = int(sys.argv[1])==1
+    delPre = int(sys.argv[1]) == 1
 except IndexError:
     delPre = False
 

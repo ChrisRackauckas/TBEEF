@@ -188,7 +188,6 @@ def processMovieTags(movieTagPath,processedTagPath):
             for tag in tagList:
                 movieTagDict[movie].append(tag)
             lineCount+=1
-    print(lineCount)
     movieTags.close()
 
     fout = open(processedTagPath, 'w')
