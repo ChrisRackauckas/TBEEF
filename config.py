@@ -1,13 +1,13 @@
 ################### Select Models ##################
 
 models = [
-          #['basicFM','FM','Basic',['2']],
+           ['basicFM','FM','Basic',['2']],
           #['basicMovTag','FM','BasicMovieTag',['2']],
-          #['nearNeib', 'FM', 'NearestNeighbor',['2']],
-          ['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
+           ['nearNeib', 'FM', 'NearestNeighbor',['2']],
+          #['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
           #['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
-          #['userHist','FM','UserHistory',['2']]
-          #['userSocial','FM','UserSocial',['2']]
+           ['userHist','FM','UserHistory',['2']],
+           ['userSocial','FM','UserSocial',['2']]
 
           #['basicSVD','SVD','Basic',[]]
          ] 
@@ -27,7 +27,7 @@ ensembleModels = [['OLSR', 'OLS', []],
                   ['RR'  ,'RR',['2']],
                   ['BRT','BRT',[]],
                   ['BMAR','BMAR',[]],
-                 #['RFR' ,'RFR' ,[]],
+                 #['RFR' ,'RFR' ,[]],  # Large memory requirement
                   ['Lasso', 'Lasso', []],
                   ['GBRT','GBRT',['10']]
 ]
@@ -47,14 +47,14 @@ synthModel = ['GBRT','GBRT',['10']]
 TRIALS           = 1
 PRE_PROCESS      = True
 # ---- ---- PreProcess Selection ---- ---- #
-TEST_SUBSET      = True          # uses small data set
-PROCESS_TAGS     = False # generates new file for movie tag feature
-PROCESS_SOCIAL   = False # cuts out all the extra social users not in data set
-PROCESS_HISTORY  = False
-DE_EFFECT        = False #If De-effect is false, model predictions are correct
+TEST_SUBSET      = True   # uses small data set
+PROCESS_TAGS     = True  # generates new file for movie tag feature
+PROCESS_SOCIAL   = True  # cuts out all the extra social users not in data set
+PROCESS_HISTORY  = True
+DE_EFFECT        = False  # If De-effect is false, model predictions are correct
 # ---- ---- ---- ---- ----- ---- ---- ---- #
-SETUP_MODELS     = True
-RUN_MODELS       = True
+SETUP_MODELS     = False
+RUN_MODELS       = False
 SETUP_HYBRID     = False
 RUN_HYBRID       = False
 SETUP_SYNTHESIZE = False

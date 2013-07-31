@@ -119,9 +119,9 @@ class FMModel(Model):
             moviesRatedByUserDict = self.moviesRatedByUserDict()
             movieLocationDict = self.userMovieLocationDict(False,True)
         
-            self.addNearestNeighbor(os,self.bootTrain,self.featTrain,moviesRatedByUserDict,movieLocationDict)
-            self.addNearestNeighbor(os,self.bootCV,self.featCV,moviesRatedByUserDict,movieLocationDict)
-            self.addNearestNeighbor(os,self.bootTest,self.featTest,moviesRatedByUserDict,movieLocationDict)
+            self.addNearestNeighbor(self.bootTrain,self.featTrain,moviesRatedByUserDict,movieLocationDict)
+            self.addNearestNeighbor(self.bootCV,self.featCV,moviesRatedByUserDict,movieLocationDict)
+            self.addNearestNeighbor(self.bootTest,self.featTest,moviesRatedByUserDict,movieLocationDict)
 
         # ---- ---- Movie Tag Features ---- ---- #
 
@@ -129,9 +129,9 @@ class FMModel(Model):
             print('...Adding Basic Movie Tag Data')
             tagDict = self.movieTagDict()
             
-            self.basicMovieTag(os,self.bootTrain,self.featTrain,tagDict)
-            self.basicMovieTag(os,self.bootCV,self.featCV,tagDict)
-            self.basicMovieTag(os,self.bootTest,self.featTest,tagDict)
+            self.basicMovieTag(self.bootTrain,self.featTrain,tagDict)
+            self.basicMovieTag(self.bootCV,self.featCV,tagDict)
+            self.basicMovieTag(self.bootTest,self.featTest,tagDict)
             self.libFMFormat(2)
 
         elif self.featureSet == 'RelatedMovieTagThreshold':
@@ -140,9 +140,9 @@ class FMModel(Model):
             movieSharedTagDict, maxTags = self.movieSharedTagDict(threshold) 
             userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
             
-            self.relatedMovieTagThreshold(os,self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
-            self.relatedMovieTagThreshold(os,self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
-            self.relatedMovieTagThreshold(os,self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
+            self.relatedMovieTagThreshold(self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
+            self.relatedMovieTagThreshold(self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
+            self.relatedMovieTagThreshold(self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,threshold)
 
         elif self.featureSet == 'RelatedMovieTagThreshold2':
             print('...Adding Related Movie Tag Threshold 2 Data')
@@ -151,9 +151,9 @@ class FMModel(Model):
             userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
             moviesRatedByUserDict = self.moviesRatedByUserDict()
             
-            self.relatedMovieTagThreshold2(os,self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
-            self.relatedMovieTagThreshold2(os,self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
-            self.relatedMovieTagThreshold2(os,self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
+            self.relatedMovieTagThreshold2(self.bootTrain,self.featTrain, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
+            self.relatedMovieTagThreshold2(self.bootCV,self.featCV, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
+            self.relatedMovieTagThreshold2(self.bootTest,self.featTest, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict)
 
         # ---- ---- User History Features ---- ---- #
 
@@ -163,9 +163,9 @@ class FMModel(Model):
             userHistoryDict = self.userHistoryDict()
             movieLocationDict = self.userMovieLocationDict(False,True)
         
-            self.userHistory(os,self.bootTrain,self.featTrain,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
-            self.userHistory(os,self.bootCV,self.featCV,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
-            self.userHistory(os,self.bootTest,self.featTest,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
+            self.userHistory(self.bootTrain,self.featTrain,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
+            self.userHistory(self.bootCV,self.featCV,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
+            self.userHistory(self.bootTest,self.featTest,userHistoryDict,movieLocationDict,moviesRatedByUserDict)
 
         # ---- ---- User Social Features ---- ---- #
 
@@ -174,12 +174,12 @@ class FMModel(Model):
             userLocationDict, movieLocationDict = self.userMovieLocationDict(True,True)
             userSocialDict = self.userSocialDictReader()
             
-            self.userSocial(os,self.bootTrain,self.featTrain,userLocationDict,movieLocationDict,userSocialDict)
-            self.userSocial(os,self.bootCV,self.featCV,userLocationDict,movieLocationDict,userSocialDict)
-            self.userSocial(os,self.bootTest,self.featTest,userLocationDict,movieLocationDict,userSocialDict)
+            self.userSocial(self.bootTrain,self.featTrain,userLocationDict,movieLocationDict,userSocialDict)
+            self.userSocial(self.bootCV,self.featCV,userLocationDict,movieLocationDict,userSocialDict)
+            self.userSocial(self.bootTest,self.featTest,userLocationDict,movieLocationDict,userSocialDict)
 
 
-    def addNearestNeighbor(self,os,finPath, foutPath,moviesRatedByUserDict,movieLocationDict):
+    def addNearestNeighbor(self,finPath, foutPath,moviesRatedByUserDict,movieLocationDict):
         #-----------------------------------------------------------------
         # creates sparse matrix where non-user/movie entries given as column:rating/m
         # where m is the total number of movies rated by the user
@@ -190,7 +190,7 @@ class FMModel(Model):
 
         offset = len(movieLocationDict)
         fin = open(finPath, 'r')
-        fout = open(foutPath, 'w')
+        fout = open(foutPath + '.libfm', 'w')
         for line in fin:
             line.replace('\n', '')
             columns = line.split('\t')
@@ -208,14 +208,13 @@ class FMModel(Model):
             string=string[:-1]  # gets rid of the extra space on the end
             fout.write(rating[:-1]+' '+movCol+':1 '+string+'\n')
 
-            self.printProgress(os, counter, lineCount)
+            self.printProgress(counter, lineCount)
             counter +=1
-        self.printProgressDone(os)
+        self.printProgressDone()
         fin.close()
         fout.close()
-        os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def basicMovieTag(self,os,finPath, foutPath, tagDict):
+    def basicMovieTag(self,finPath, foutPath, tagDict):
         #-----------------------------------------------------------------
         # creates new data set with movie tag info by appending tags as columns
         # Output data still needs to by formatted for LibFM
@@ -240,13 +239,13 @@ class FMModel(Model):
                 else:
                     dataSetWithTags.write(line+'\n')
 
-                self.printProgress(os, counter, lineCount)
+                self.printProgress(counter, lineCount)
                 counter +=1
-        self.printProgressDone(os)
+        self.printProgressDone()
         dataSet.close()
         dataSetWithTags.close()
 
-    def relatedMovieTagThreshold(self,os,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict, threshold):
+    def relatedMovieTagThreshold(self,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict, threshold):
         #-----------------------------------------------------------------
         # creates sparse matrix using movie tags with userID, movieID, then columns
         #  with movies that share at least n tags are given a (n-t)/max value, max
@@ -258,7 +257,7 @@ class FMModel(Model):
 
         offset = len(movieLocationDict)
         dataSet = open(finPath,'r')
-        fout = open(foutPath,'w')
+        fout = open(foutPath + '.libfm','w')
         for line in dataSet:
             if line != '\n':
                 line = line.replace('\n', '')
@@ -282,14 +281,13 @@ class FMModel(Model):
                 else:
                     fout.write(rating+' '+userCol+':1 '+movCol+':1\n')
 
-                self.printProgress(os, counter, lineCount)
+                self.printProgress(counter, lineCount)
                 counter +=1
-        self.printProgressDone(os)
+        self.printProgressDone()
         dataSet.close()
         fout.close()
-        os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def relatedMovieTagThreshold2(self,os,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict):
+    def relatedMovieTagThreshold2(self,finPath, foutPath, movieSharedTagDict, maxTags, userLocationDict, movieLocationDict,moviesRatedByUserDict):
         #-----------------------------------------------------------------
         # creates sparse matrix using movie tags with userID, movieID, then columns
         #  with movies that share at least n tags and have been rated by same user are assigned a value of
@@ -301,7 +299,7 @@ class FMModel(Model):
 
         offset = len(movieLocationDict)
         dataSet = open(finPath,'r')
-        fout = open(foutPath,'w')
+        fout = open(foutPath + '.libfm','w')
         for line in dataSet:
             if line != '\n':
                 line = line.replace('\n', '')
@@ -330,14 +328,13 @@ class FMModel(Model):
                 else:
                     fout.write(rating+' '+userCol+':1 '+movCol+':1\n')
 
-                self.printProgress(os, counter, lineCount)
+                self.printProgress(counter, lineCount)
                 counter +=1
-        self.printProgressDone(os)
+        self.printProgressDone()
         dataSet.close()
         fout.close()
-        os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def userHistory(self,os,finPath, foutPath,userHistoryDict,movieLocationDict,moviesRatedByUserDict):
+    def userHistory(self,finPath, foutPath,userHistoryDict,movieLocationDict,moviesRatedByUserDict):
         #-----------------------------------------------------------------
         # creates sparse matrix using user history using movieID,
         #  then rating/n for each movie in user history and rated, where n is total viewed
@@ -349,7 +346,7 @@ class FMModel(Model):
 
         offset = len(movieLocationDict)
         fin = open(finPath, 'r')
-        fout = open(foutPath, 'w')
+        fout = open(foutPath + '.libfm', 'w')
         for line in fin:
             line.replace('\n', '')
             columns = line.split('\t')
@@ -370,14 +367,13 @@ class FMModel(Model):
             string=string[:-1]  # gets rid of the extra space on the end
             fout.write(rating[:-1]+' '+movCol+':1 '+string+'\n')
 
-            self.printProgress(os, counter, lineCount)
+            self.printProgress(counter, lineCount)
             counter +=1
-        self.printProgressDone(os)
+        self.printProgressDone()
         fin.close()
         fout.close()
-        os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
-    def userSocial(self,os,finPath,foutPath,userLocationDict,movieLocationDict,userSocialDict):
+    def userSocial(self,finPath,foutPath,userLocationDict,movieLocationDict,userSocialDict):
         #-----------------------------------------------------------------
         # creates sparse matrix using user social data 
         #-----------------------------------------------------------------
@@ -387,7 +383,7 @@ class FMModel(Model):
 
         offset = len(movieLocationDict)+len(userLocationDict)
         fin = open(finPath,'r')
-        fout = open(foutPath,'w')
+        fout = open(foutPath + '.libfm','w')
         for line in fin:
             if line != '\n':
                 line = line.replace('\n', '')
@@ -407,12 +403,11 @@ class FMModel(Model):
                     string=string[:-1]
                 fout.write(rating+' '+userCol+':1 '+movCol+':1 '+string+'\n')
 
-                self.printProgress(os, counter, lineCount)
+                self.printProgress(counter, lineCount)
                 counter +=1
-        self.printProgressDone(os)
+        self.printProgressDone()
         fin.close()
         fout.close()
-        os.system('mv '+foutPath+' '+foutPath+'.libfm')
 
 #######################################
 ########## Helpful Functions ##########
@@ -426,17 +421,17 @@ class FMModel(Model):
         fin.close()
         return lineCount
 
-    def printProgress(self, os, counter, lineCount):
+    def printProgress(self, counter, lineCount):
         # prints to system how much of data has been formatted
-        printEvery = int(lineCount*0.0001)
+        printEvery = int(lineCount*0.01)
         if printEvery < 1:
             printEvery=1
         if counter%printEvery==0:
-            os.sys.stdout.write('{0}\r'.format( str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ ' percent of data formatted --')) )
+            print('{0}\r'.format( str('-- '+str('{0:.2f}'.format(counter/lineCount*100))+ ' percent of data formatted for ' + self.tag + self.trial)) )
 
-    def printProgressDone(self,os):
+    def printProgressDone(self):
         # prints to system that formatting is completed
-        os.sys.stdout.write('{0}\r'.format('-- Formatting Complete --              ')) # space included on purpose to overwrite previous string
+        print('{0}\r'.format('-- Formatting Complete For ' + self.tag + self.trial)) # space included on purpose to overwrite previous string
         print() # to move to nextline
 
 ##################################################

@@ -8,7 +8,7 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
 # Splits data into training_set and crossVal_set files according to
 #   the specification in utils.DATA_SET_SPLIT
 # De-effects
-# Makes a prediction text with a "dummy" rating for libfm
+# Makes a prediction jfseftext with a "dummy" rating for libfm
 # Saves in Data/PreProcessed/training_set_processed.txt
 # and Data/PreProcessed/predict_dummy.txt
 #-----------------------------------------------------------------
@@ -39,7 +39,8 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
         print('... Processing User History Data')
         p=mproc.Process(target=processHistoryData,
                         args=(utils.USER_HISTORY_PATH,utils.PROCESSED_HISTORY,utils.ORIGINAL_DATA_PATH))
-
+        p.start()
+        processes.append(p)
     for p in processes:
         p.join()
 
@@ -96,7 +97,9 @@ def processHistoryData(userHistoryPath,processedHistoryPath,originalDataPath):
     print("Loaded User History Data")
     historyDict = {}
     usersSeen=set()
-    for line in historyData:
+    historyDataLines = historyData.readlines()
+    length = len(historyDataLines)
+    for line in historyDataLines:
         if line != '\n':
             line = line.replace('\n', '')
             columns = line.split('\t')
@@ -108,6 +111,7 @@ def processHistoryData(userHistoryPath,processedHistoryPath,originalDataPath):
                 movie = columns[1]
                 if movie in movieSet:
                     historyDict[user].append(movie)
+    print('Finishing user history')
     for user in historyDict:
         string=''
         for movie in historyDict[user]:
@@ -116,6 +120,7 @@ def processHistoryData(userHistoryPath,processedHistoryPath,originalDataPath):
         fout.write(user+'\t'+string+'\n')
     historyData.close()
     fout.close()
+    print('User History Complete!')
 
 def processSocialData(userSocialPath,processedSocialPath,originalDataPath):
     #-----------------------------------------------------------------
@@ -137,7 +142,9 @@ def processSocialData(userSocialPath,processedSocialPath,originalDataPath):
     userData.close()
     print("Loaded User Social Data")
     socialDict = {}
-    for line in socialData:
+    socialDataLines = socialData.readlines()
+    length = len(socialDataLines)
+    for line in socialDataLines:
         if line != '\n':
             line = line.replace('\n', '')
             columns = line.split('\t')
@@ -153,6 +160,7 @@ def processSocialData(userSocialPath,processedSocialPath,originalDataPath):
                 if string != '':
                     fout.write(user+'\t'+string+'\n')
     fout.close()
+    print('User Social Complete!')
 
 def processMovieTags(movieTagPath,processedTagPath):
     #-----------------------------------------------------------------
@@ -181,9 +189,11 @@ def processMovieTags(movieTagPath,processedTagPath):
                 movieTagDict[movie].append(tag)
             lineCount+=1
     movieTags.close()
-    print("Loaded Movie Tag Data")
+
     fout = open(processedTagPath, 'w')
     linesSq=lineCount**2
+    print("Movie tags loaded")
+    print("Total Lines Squared: " + str(linesSq))
     speed =0 # counter
     for i in range(len(movieList)):
         mov1 = movieList[i]
@@ -196,13 +206,14 @@ def processMovieTags(movieTagPath,processedTagPath):
                         tagCount +=1
             if tagCount > 0:
                 fout.write(mov1+'\t'+mov2+'\t'+str(tagCount)+'\n')
-
-            #if speed%50==0:
-                #print('{0}\r'.format(
-                #    str('-- '+str('{0:.2f}'.format(speed/linesSq*100))+
-                #        ' percent of data written --')))
+            if speed%(linesSq/100)==0:
+                print('{0}\r'.format( \
+                    str('-- '+str('{0:.6f}'.format(speed/linesSq*100))+ \
+                        ' percent of data written --')))
+                print(speed)
             speed+=1
     fout.close()
+    print("Movie Tags Complete!")
 
 def cleanUpData(inputPath,outputPath):
 #-----------------------------------------------------------------
