@@ -3,7 +3,7 @@
 models = [
     ['basicFM', 'FM', 'Basic', ['8']],
     #['bmt','FM','BasicMovieTag',['2']],
-    #['amt','FM','AdjustedMovieTag',['2']],
+    ['amt','FM','AdjustedMovieTag',['2']],
     #['nn', 'FM', 'NearestNeighbor',['2']],
     #['rmt','FM','RelatedMovieTag',['2']],
 
@@ -27,7 +27,7 @@ ensembleModels = [['OLSR', 'OLS', []],
                   ['BMAR','BMAR',[]],
                  #['RFR' ,'RFR' ,[]],
                   ['Lasso', 'Lasso', []],
-                  ['GBRT','GBRT',['50']]
+                  ['GBRT','GBRT',['10']]
 ]
 
 # Defining ensemble models:
@@ -37,16 +37,16 @@ ensembleModels = [['OLSR', 'OLS', []],
 # modelType defines what model to use
 # misc is the arguments to the program
 
-synthModel = ['OLSR', 'OLS', []]
+synthModel = ['GBRT','GBRT',['10']]
 
 ################### Select Parts  ##################
-TEST_SUBSET = True # uses small data set to run features on laptop
+TEST_SUBSET = True          # uses small data set
 
 TRIALS = 2
 PRE_PROCESS = True
-PROCESS_TAGS = False
-PROCESS_SOCIAL = False
-PROCESS_HISTORY = False
+PROCESS_TAGS = True
+PROCESS_SOCIAL = True
+PROCESS_HISTORY = True
 DE_EFFECT = False           # If De-effect is false, model predictions are correct
 SETUP_MODELS = True
 RUN_MODELS = True

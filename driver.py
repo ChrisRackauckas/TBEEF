@@ -48,7 +48,7 @@ if config.PRE_PROCESS:
     pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,
                    config.TEST_SUBSET,config.PROCESS_TAGS,
                    config.PROCESS_SOCIAL,
-                   config.PROCESS_HISTORY)
+                   config.PROCESS_HISTORY,processes,mproc)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################

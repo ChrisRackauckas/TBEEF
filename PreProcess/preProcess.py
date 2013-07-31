@@ -1,5 +1,5 @@
 def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAGS,
-               PROCESS_SOCIAL,PROCESS_HISTORY):
+               PROCESS_SOCIAL,PROCESS_HISTORY,processes,mproc):
     
 #-----------------------------------------------------------------
 # Reads in data file with (userID, movieID, rating) format.
@@ -12,23 +12,36 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
 # Saves in Data/PreProcessed/training_set_processed.txt
 # and Data/PreProcessed/predict_dummy.txt
 #-----------------------------------------------------------------
+    p = mproc.Process(target=makeDummyPredictions,
+                      args=(utils.TEST_IDS_PATH,utils.TEST_IDS_DUMMY_PATH))
+    p.start()
+    processes.append(p)
 
-    makeDummyPredictions(utils)
+    p = mproc.Process(target=cleanUpData,
+                      args=(utils.ORIGINAL_DATA_PATH,
+                        utils.ORIGINAL_DATA_CLEAN_PATH))
+    p.start()
+    processes.append(p)
 
-    cleanUpData(utils.ORIGINAL_DATA_PATH,
-                utils.ORIGINAL_DATA_CLEAN_PATH)
-    
     if PROCESS_TAGS:
         print('... Processing Movie Tag Data')
-        processMovieTags(utils)
-        
+        p=mproc.Process(target=processMovieTags,
+                        args=(utils.USER_HISTORY_PATH,utils.PROCESSED_HISTORY))
+        p.start()
+        processes.append(p)
     if PROCESS_SOCIAL:
         print('... Processing User Social Data')
-        processSocialData(utils)
-
+        p=mproc.Process(target=processSocialData,
+                        args=(utils.USER_SOCIAL_PATH,utils.PROCESSED_SOCIAL,utils.ORIGINAL_DATA_PATH))
+        p.start()
+        processes.append(p)
     if PROCESS_HISTORY:
         print('... Processing User History Data')
-        processHistoryData(utils)
+        p=mproc.Process(target=processHistoryData,
+                        args=(utils.USER_HISTORY_PATH,utils.PROCESSED_HISTORY,utils.ORIGINAL_DATA_PATH))
+
+    for p in processes:
+        p.join()
 
     # De-effects data file
     if DE_EFFECT:
@@ -45,12 +58,12 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
         os.system('mv '+utils.PROCESSED_DATA_PATH_TEMP+' '+
                   utils.PROCESSED_DATA_PATH)
 
-def makeDummyPredictions(utils):
+def makeDummyPredictions(testIdsPath,testIdsDummyPath):
 #-----------------------------------------------------------------
 # Makes dummy 3rd column in prediction file for LibFM
 #-----------------------------------------------------------------
-    inPredict = open(utils.TEST_IDS_PATH, 'r')
-    outPredict = open(utils.TEST_IDS_DUMMY_PATH, 'w')
+    inPredict = open(testIdsPath, 'r')
+    outPredict = open(testIdsDummyPath, 'w')
     for line in inPredict:
         if line != '\n':
             line = line.replace('\n','\t1\n') #adds dummy column
@@ -58,18 +71,18 @@ def makeDummyPredictions(utils):
     inPredict.close()
     outPredict.close()
 
-def processHistoryData(utils):
+def processHistoryData(userHistoryPath,processedHistoryPath,originalDataPath):
     #-----------------------------------------------------------------
     # Generates a processed user history file that cuts out all the extraneous
     #  users who do not rate in the actual training set
     #-----------------------------------------------------------------
-    historyData = open(utils.USER_HISTORY_PATH, 'r')
-    fout = open(utils.PROCESSED_HISTORY ,'w')
+    historyData = open(userHistoryPath, 'r')
+    fout = open(processedHistoryPath ,'w')
 
     # this gets a set of all users and all movies we see in our data set
     userSet=set()
     movieSet=set()
-    data = open(utils.ORIGINAL_DATA_PATH,'r')
+    data = open(originalDataPath,'r')
     for line in data:
         if line != '\n':
             columns = line.split('\t')
@@ -80,7 +93,7 @@ def processHistoryData(utils):
             if movie not in movieSet:
                 movieSet.add(movie)
     data.close()
-
+    print("Loaded User History Data")
     historyDict = {}
     usersSeen=set()
     for line in historyData:
@@ -104,17 +117,17 @@ def processHistoryData(utils):
     historyData.close()
     fout.close()
 
-def processSocialData(utils):
+def processSocialData(userSocialPath,processedSocialPath,originalDataPath):
     #-----------------------------------------------------------------
     # Generates a processed social file that cuts out all the extraneous
     #  users which do not show up in the actual training set
     #-----------------------------------------------------------------
-    socialData = open(utils.USER_SOCIAL_PATH, 'r')
-    fout = open(utils.PROCESSED_SOCIAL ,'w')
+    socialData = open(userSocialPath, 'r')
+    fout = open(processedSocialPath ,'w')
 
     # this gets a set of all users we see in our data set
     userSet=set()
-    userData = open(utils.ORIGINAL_DATA_PATH,'r')
+    userData = open(originalDataPath,'r')
     for line in userData:
         if line != '\n':
             columns = line.split('\t')
@@ -122,7 +135,7 @@ def processSocialData(utils):
             if user not in userSet:
                 userSet.add(user)
     userData.close()
-
+    print("Loaded User Social Data")
     socialDict = {}
     for line in socialData:
         if line != '\n':
@@ -141,15 +154,14 @@ def processSocialData(utils):
                     fout.write(user+'\t'+string+'\n')
     fout.close()
 
-def processMovieTags(utils):
-    import os
+def processMovieTags(movieTagPath,processedTagPath):
     #-----------------------------------------------------------------
     # Generates a file from movie_tag.txt that has format
     # (movie1, movie2, N) where N is the number of tags they share
     #-----------------------------------------------------------------
 
     # creates dict with movies as keys and list of tags as value
-    movieTags = open(utils.MOVIE_TAG_PATH, 'r')
+    movieTags = open(movieTagPath, 'r')
     movieTagDict = {}
     movieList =[]
     movieSet=set()
@@ -169,8 +181,8 @@ def processMovieTags(utils):
                 movieTagDict[movie].append(tag)
             lineCount+=1
     movieTags.close()
-
-    fout = open(utils.PROCESSED_MOVIE_TAGS, 'w')
+    print("Loaded Movie Tag Data")
+    fout = open(processedTagPath, 'w')
     linesSq=lineCount**2
     speed =0 # counter
     for i in range(len(movieList)):
@@ -185,10 +197,10 @@ def processMovieTags(utils):
             if tagCount > 0:
                 fout.write(mov1+'\t'+mov2+'\t'+str(tagCount)+'\n')
 
-            if speed%50==0:
-                os.sys.stdout.write('{0}\r'.format(
-                    str('-- '+str('{0:.2f}'.format(speed/linesSq*100))+
-                        ' percent of data written --')))
+            #if speed%50==0:
+                #print('{0}\r'.format(
+                #    str('-- '+str('{0:.2f}'.format(speed/linesSq*100))+
+                #        ' percent of data written --')))
             speed+=1
     fout.close()
 
