@@ -26,7 +26,7 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
     if PROCESS_TAGS:
         print('... Processing Movie Tag Data')
         p=mproc.Process(target=processMovieTags,
-                        args=(utils.USER_HISTORY_PATH,utils.PROCESSED_HISTORY))
+                        args=(utils.MOVIE_TAG_PATH,utils.PROCESSED_MOVIE_TAGS))
         p.start()
         processes.append(p)
     if PROCESS_SOCIAL:
@@ -169,7 +169,7 @@ def processMovieTags(movieTagPath,processedTagPath):
     #-----------------------------------------------------------------
 
     # creates dict with movies as keys and list of tags as value
-    movieTags = open(movieTagPath, 'r')
+    movieTags = open(movieTagPath, 'rU')
     movieTagDict = {}
     movieList =[]
     movieSet=set()
@@ -188,12 +188,12 @@ def processMovieTags(movieTagPath,processedTagPath):
             for tag in tagList:
                 movieTagDict[movie].append(tag)
             lineCount+=1
+    print(lineCount)
     movieTags.close()
 
     fout = open(processedTagPath, 'w')
     linesSq=lineCount**2
     print("Movie tags loaded")
-    print("Total Lines Squared: " + str(linesSq))
     speed =0 # counter
     for i in range(len(movieList)):
         mov1 = movieList[i]
@@ -206,11 +206,10 @@ def processMovieTags(movieTagPath,processedTagPath):
                         tagCount +=1
             if tagCount > 0:
                 fout.write(mov1+'\t'+mov2+'\t'+str(tagCount)+'\n')
-            if speed%(linesSq/100)==0:
+            if speed%100000==0:
                 print('{0}\r'.format( \
-                    str('-- '+str('{0:.6f}'.format(speed/linesSq*100))+ \
-                        ' percent of data written --')))
-                print(speed)
+                    str('-- '+str('{0:.2f}'.format(speed/linesSq*100))+ \
+                        ' percent of tag data written --')))
             speed+=1
     fout.close()
     print("Movie Tags Complete!")
