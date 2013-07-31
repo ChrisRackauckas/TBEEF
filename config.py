@@ -3,11 +3,11 @@
 models = [
           #['basicFM','FM','Basic',['2']],
           #['bmt','FM','BasicMovieTag',['2']],
-          ['amt','FM','AdjustedMovieTag',['2']]
+          #['amt','FM','AdjustedMovieTag',['2']]
           #['nn', 'FM', 'NearestNeighbor',['2']]
           #['rmt','FM','RelatedMovieTag',['2']]
     
-          #['basicSVD','SVD','Basic',[]]
+          ['basicSVD','SVD','Basic',[]]
          ] 
 
 # Defining models:
@@ -48,11 +48,11 @@ PRE_PROCESS      = True
 DE_EFFECT        = False #If De-effect is false, model predictions are correct
 SETUP_MODELS     = True
 RUN_MODELS       = True
-SETUP_HYBRID     = True
-RUN_HYBRID       = True
-SETUP_SYNTHESIZE = True
-RUN_SYNTHESIZE   = True
-POST_PROCESS     = True
+SETUP_HYBRID     = False
+RUN_HYBRID       = False
+SETUP_SYNTHESIZE = False
+RUN_SYNTHESIZE   = False
+POST_PROCESS     = False
 
 ################## Select Bootstrap Parameters  ##################
 

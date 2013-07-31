@@ -1,4 +1,5 @@
 from Model import Model
+import ImplicitFeedbackFunctions
 class SVDModel(Model):
 
 ### Construct ###    
