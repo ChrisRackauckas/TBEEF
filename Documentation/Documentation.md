@@ -1,7 +1,7 @@
 Hybrid Movie Recommendation System Documentation
 ==============================================
 
-This program is a hybrid recommendation system. This documentation is written for those who wish to modify the program in some manner or join the effect. 
+This program is a hybrid recommendation system. This documentation is written for those who wish to modify the program in some manner or join the effort. 
 
 Program Structure
 ----------------------------------------------
