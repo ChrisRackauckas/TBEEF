@@ -1,9 +1,18 @@
+### Cleans the data folder out ###
+### Takes an argument, 1 to delete PreProcess folder items ###
+### Defaults to 0 ###
+
 import os
-import config
+import sys
 WORK_PATH = os.getcwd()
+try:
+    delPre = int(sys.argv[1])==1
+except IndexError:
+    delPre = False
 
 os.system("find Data/Effects ! -name README -type f -delete")
-os.system("find Data/PreProcessed ! -name README -type f -delete")
+if delPre:
+    os.system("find Data/PreProcessed ! -name README -type f -delete")
 os.system("find Data/ModelPredictions ! -name README -type f -delete")
 os.system("find Data/ModelData/* -maxdepth 0 -name 'README' -prune -o -exec rm -rf '{}' ';'")
 os.system("find Data/LogFiles ! -name README -type f -delete")
