@@ -1,14 +1,16 @@
 ################### Select Models ##################
 
 models = [
-    ['basicFM', 'FM', 'Basic', ['8']],
-    #['bmt','FM','BasicMovieTag',['2']],
-    ['amt','FM','AdjustedMovieTag',['2']],
-    #['nn', 'FM', 'NearestNeighbor',['2']],
-    #['rmt','FM','RelatedMovieTag',['2']],
+          #['basicFM','FM','Basic',['2']],
+          #['basicMovTag','FM','BasicMovieTag',['2']],
+          #['nearNeib', 'FM', 'NearestNeighbor',['2']],
+          ['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
+          #['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
+          #['userHist','FM','UserHistory',['2']]
+          #['userSocial','FM','UserSocial',['2']]
 
-    ['basicSVD', 'SVD', 'Basic', []]
-]
+          #['basicSVD','SVD','Basic',[]]
+         ] 
 
 # Defining models:
 # Each element is a list: 
@@ -40,21 +42,25 @@ ensembleModels = [['OLSR', 'OLS', []],
 synthModel = ['GBRT','GBRT',['10']]
 
 ################### Select Parts  ##################
-TEST_SUBSET = True          # uses small data set
 
-TRIALS = 2
-PRE_PROCESS = True
-PROCESS_TAGS = True
-PROCESS_SOCIAL = True
-PROCESS_HISTORY = True
-DE_EFFECT = False           # If De-effect is false, model predictions are correct
-SETUP_MODELS = True
-RUN_MODELS = True
-SETUP_HYBRID = True
-RUN_HYBRID = True
-SETUP_SYNTHESIZE = True
-RUN_SYNTHESIZE = True
-POST_PROCESS = True
+
+TRIALS           = 1
+PRE_PROCESS      = True
+# ---- ---- PreProcess Selection ---- ---- #
+TEST_SUBSET      = True          # uses small data set
+PROCESS_TAGS     = False # generates new file for movie tag feature
+PROCESS_SOCIAL   = False # cuts out all the extra social users not in data set
+PROCESS_HISTORY  = False
+DE_EFFECT        = False #If De-effect is false, model predictions are correct
+# ---- ---- ---- ---- ----- ---- ---- ---- #
+SETUP_MODELS     = True
+RUN_MODELS       = True
+SETUP_HYBRID     = False
+RUN_HYBRID       = False
+SETUP_SYNTHESIZE = False
+RUN_SYNTHESIZE   = False
+POST_PROCESS     = False
+
 
 ################## Select Bootstrap Parameters  ##################
 
@@ -62,7 +68,7 @@ BOOTSTRAP_SPLITS = [.8, .8, .8]
 
 ################## Timer  ##############
 
-TIME_RUN = False
+TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
@@ -72,13 +78,13 @@ FM_INIT_STD = '.3'
 
 ################## SVD Feature #####################
 
-SVD_LEARNING_RATE = '.005'
-SVD_REGULARIZATION_ITEM = '.004'
-SVD_REGULARIZATION_USER = '.004'
+SVD_LEARNING_RATE         = '.005'
+SVD_REGULARIZATION_ITEM   = '.004'
+SVD_REGULARIZATION_USER   = '.004'
 SVD_REGULARIZATION_GLOBAL = '.001'
-SVD_NUM_FACTOR = '64'
-SVD_ACTIVE_TYPE = '0'
-SVD_NUM_ITER = '40'
+SVD_NUM_FACTOR            = '64'
+SVD_ACTIVE_TYPE           = '0'
+SVD_NUM_ITER              = '40'
 
 ################## Hybrid #########################
 
