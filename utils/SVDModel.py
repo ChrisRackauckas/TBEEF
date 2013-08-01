@@ -21,8 +21,7 @@ class SVDModel(Model):
         self.SVDFeatureBinary     = utils.SVDFEATURE_BINARY
         self.SVDFeatureInferBinary= utils.SVDFEATURE_INFER_BINARY
         self.SVDFeatureLineReorder= utils.SVDFEATURE_LINE_REORDER
-        self.SVDFeatureSVDPPRandOrder
-                                  = utils.SVDFEATURE_SVDPP_RANDORDER 
+        self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER 
 
 ### Setup Data ###
 

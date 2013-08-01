@@ -17,12 +17,25 @@ class Model(object):
                                       '_CV' + '_t' + strTrial
         self.featTest   = utils.MODEL_FEATURED_PATH + self.tag + \
                                     '_test' + '_t' + strTrial
-        self.tmpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
-                                   '_train' + '_t' + strTrial
+        self.ImfeatTrain  = utils.MODEL_FEATURED_PATH + self.tag + \           #The following 3 files are implicit feature files
+                                        '_Imtrain' + '_t' + strTrial
+        self.ImfeatCV     = utils.MODEL_FEATURED_PATH + self.tag + \
+                                      '_ImCV' + '_t' + strTrial
+        self.ImfeatTest   = utils.MODEL_FEATURED_PATH + self.tag + \
+                                    '_Imtest' + '_t' + strTrial
+        self.tmptrain   = utils.model_tmp_path      + self.tag + \
+                                   '_train' + '_t' + strtrial
+        self.tmpGptrain   = utils.model_tmp_path      + self.tag + \
+                                   '_Gptrain' + '_t' + strtrial                 #Gp for group training file, the test file is already in group format,so skip it
+        self.tmpGpCV   = utils.model_tmp_path      + self.tag + \
+                                   '_GpCV' + '_t' + strtrial
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
                                       '_CV' + '_t' + strTrial
         self.tmpTest    = utils.MODEL_TMP_PATH      + self.tag + \
                                      '_test'+ '_t' + strTrial 
+        self.tmpLineOrder = utils.MODEL_TMP_PATH      + self.tag + \
+                                   '_LineOrder' + '_t' + strTrial
+                             
         self.runTrain   = utils.MODEL_RUN_PATH      + self.tag + \
                                    '_train' + '_t' + strTrial
         self.runCV      = utils.MODEL_RUN_PATH      + self.tag + \
@@ -40,7 +53,9 @@ class Model(object):
         self.userSocialPath = utils.USER_SOCIAL_PATH
         self.userHistoryPath= utils.USER_HISTORY_PATH
         self.CVSet = True
-        self.GroupTrainingFile    = self.bootTrain
+        self.userHistoryReindexPath= utils.MODEL_TMP_PATH      + self.tag + \
+                                   '_userHistoryReindex' + '_t' + strTrial
+
 
     def prependUserMovieToPredictions(self,idsPath,fixPath,savePath):
         ### Takes in a column of ratings as toFix
