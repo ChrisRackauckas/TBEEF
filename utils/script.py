@@ -1,10 +1,4 @@
 def setupImplicitFeatures(self):
-    bootTrainFile = open(self.bootTrain, 'r')
-    bootCVFile    = open(self.bootCV   , 'r')
-    bootTestFile  = open(self.bootTest , 'r')
-    tmpTrainFile  = open(self.tmpTrain,  'w')
-    tmpTestFile   = open(self.tmpTest,   'w')
-    tmpCVFile     = open(self.tmpCV,     'w')
     #translate the training files and build two dicts
     Udic,ItemDic,avg=reIndex_Implicit(self.bootTrain,self.tmpTrain)
     #translate CV file
