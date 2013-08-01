@@ -27,7 +27,7 @@ class Model(object):
         self.ImfeatTest   = utils.MODEL_FEATURED_PATH + self.tag + \
                                     '_Imtest' + '_t' + strTrial
 
-        self.tmptrain   = utils.MODEL_TMP_PATH      + self.tag + \
+        self.tmpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_train' + '_t' + strtrial
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
                                       '_CV' + '_t' + strTrial
@@ -39,6 +39,7 @@ class Model(object):
 
         self.tmpTest    = utils.MODEL_TMP_PATH      + self.tag + \
                                      '_test'+ '_t' + strTrial 
+        #for storing the line order of the group file
         self.tmpLineOrder = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_LineOrder' + '_t' + strTrial
                              
@@ -58,9 +59,9 @@ class Model(object):
         self.movieTagPath   = utils.MOVIE_TAG_PATH
         self.userSocialPath = utils.USER_SOCIAL_PATH
         self.userHistoryPath= utils.USER_HISTORY_PATH
-        self.CVSet = True
         self.userHistoryReindexPath= utils.MODEL_TMP_PATH      + self.tag + \
-                                   '_userHistoryReindex' + '_t' + strTrial
+                '_userHistoryReindex' + '_t' + strTrial
+        self.CVSet = True
 
 
     def prependUserMovieToPredictions(self,idsPath,fixPath,savePath):

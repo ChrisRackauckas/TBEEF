@@ -1,21 +1,40 @@
 def setupImplicitFeatures(self):
-    #translate the training files and build two dicts
+    import os
+    #reindex the training files and build two dicts
     Udic,ItemDic,avg=reIndex_Implicit(self.bootTrain,self.tmpTrain)
-    #translate CV file
+    #reindex the history
+    transalte(self.userHistoryPath, self.userHistoryReindexPath, Udic, ItemDic)
+    #reindex CV file
     translate(self.bootCV, self.tmpCV, Udic, ItemDic)
-    #translate Testfile
+    #reindex Testfile
     translate(self.bootTest, self.tmpTest, Udic, ItemDic)
 
+    #make group training files
+    os.system(self.SVDFeatureLineReorder +' '+ self.tmpTrain + \
+            ' '+ self.tmpLineOrder)
+    os.system(self.SVDFeatureSVDPPRandOrder + ' ' + self.tmpTrain + \
+            ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain）
+
+    #make group training files of the CV set
+    os.system(self.SVDFeatureLineReorder +' '+ self.tmpCV + \
+            ' '+ self.tmpLineOrder)
+    os.system(self.SVDFeatureSVDPPRandOrder + ' ' + self.tmpCV + \
+            ' ' + self.tmpLineOrder + ' ' + self.tmpGpCV）
+
+    #make basic feature files
+    self.basicConvert(self.tmpGpTrain,self.featTrain)
+    self.basicConvert(self.tmpGpCV,   self.featCV)
+    self.basicConvert(self.tmpTest, self.featTest)
+
+    #make implicit feature files
+    
+
     #set different parameters
-    self.numUser=len(UDic)
+    self.numUser=len(Udic)
     self.numMovie=len(ItemDic)
     self.avg=avg
     self.numGlobal = 0
 
-    #make basic feature files
-    self.basicConvert(self.tmpTrain,self.featTrain)
-    self.basicConvert(self.tmpCV,   self.featCV)
-    self.basicConvert(self.tmpTest, self.featTest)
     
     #make implicit feature files
     #Here I need to issue two command
