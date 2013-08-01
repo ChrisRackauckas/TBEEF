@@ -185,6 +185,10 @@ class SVDModel(Model):
         fout.write('#Model save path\n')
         fout.write('model_out_folder = \"' + self.modelOutPath
                 + self.tag + '_t' + self.trial + '\"')
+        if self.featureSet == 'ImplicitFeedback':
+            fout.write("format_type = " + self.formatType + '\n')
+            fout.write("num_ufeedback = " + self.numUserFeedback + '\n')
+            fout.write("wd_ufeedback = " + self.regularizationFeedback + '\n')
 
         os.system('mkdir ' + self.modelOutPath 
                 + self.tag + '_t' + self.trial)

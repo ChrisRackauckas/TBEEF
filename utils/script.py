@@ -40,6 +40,3 @@ def setupImplicitFeatures(self):
     self.formatType = 1
     self.numUserFeedback = len(ItemDic)
     
-    #make implicit feature files
-    #Here I need to issue two command
-    #
