@@ -54,7 +54,7 @@ class FMModel(Model):
         # Then converts it to the binary form
         #-----------------------------
         
-        os.sys.stdout.write('{0}\r'.format('-- Converting (1/6) --') )
+        os.sys.stdout.write('{0}\r'.format('-- Converting (1/6) ' + self.tag + ' --') )
         os.system('./Models/libFM/convert --ifile ' + 
             self.featTrain + 
             '.libfm ' + '--ofilex ' + 
@@ -62,7 +62,7 @@ class FMModel(Model):
             '.x --ofiley ' + 
             self.runTrain + '.y' +
             '> /dev/null')
-        os.sys.stdout.write('{0}\r'.format('-- Converting (2/6) --') )
+        os.sys.stdout.write('{0}\r'.format('-- Converting (2/6) ' + self.tag + ' --') )
         os.system('./Models/libFM/convert --ifile ' + 
             self.featCV + 
             '.libfm ' + '--ofilex ' + 
@@ -70,7 +70,7 @@ class FMModel(Model):
             '.x --ofiley ' + 
             self.runCV + '.y' +
             '> /dev/null')
-        os.sys.stdout.write('{0}\r'.format('-- Converting (3/6) --') )
+        os.sys.stdout.write('{0}\r'.format('-- Converting (3/6) ' + self.tag + ' --') )
         os.system('./Models/libFM/convert --ifile ' + 
             self.featTest + 
             '.libfm ' + '--ofilex ' + 
@@ -78,24 +78,24 @@ class FMModel(Model):
             '.x --ofiley ' + 
             self.runTest + '.y'
             '> /dev/null')
-        os.sys.stdout.write('{0}\r'.format('-- Converting (4/6) --') )
+        os.sys.stdout.write('{0}\r'.format('-- Converting (4/6) ' + self.tag + ' --') )
         os.system('./Models/libFM/transpose --ifile ' + 
             self.tmpTrain + 
             '.x --ofile ' + 
             self.runTrain + '.xt' +
             '> /dev/null')
-        os.sys.stdout.write('{0}\r'.format('-- Converting (5/6) --') )
+        os.sys.stdout.write('{0}\r'.format('-- Converting (5/6) ' + self.tag + ' --') )
         os.system('./Models/libFM/transpose --ifile ' + 
             self.tmpCV + '.x --ofile ' + 
             self.runCV + '.xt' + 
             '> /dev/null')
-        os.sys.stdout.write('{0}\r'.format('-- Converting (6/6) --') )
+        os.sys.stdout.write('{0}\r'.format('-- Converting (6/6) ' + self.tag + ' --') )
         os.system('./Models/libFM/transpose --ifile ' + 
             self.tmpTest + 
             '.x --ofile ' + 
             self.runTest + '.xt' +
             '> /dev/null')
-        print()
+        print(self.tag + ' data is converted.')
 
 #########################################
 ########### Develop Features ############
