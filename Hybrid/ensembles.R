@@ -69,7 +69,6 @@ if(model.type=="BRT"){
 
 if(model.type=="BMAR"){
   library(BMA)
-  library(ipred)
   ## Bayesian Model Averaging Regression
   y = dataTrain$y
   drops = c("y")
@@ -85,7 +84,6 @@ if(model.type=="BMAR"){
 
 if(model.type=="RFR"){
   library(randomForest)
-  library(ipred)
   ## Random Forest
   fit      = randomForest(y ~0+., data=dataTrain,importance=TRUE, ntree=100)
   CVPredictions = predict(fit,dataCV)
@@ -94,10 +92,10 @@ if(model.type=="RFR"){
 
 if(model.type=="CIRF"){
   ## Conditional Inference Random Forest
-  ## Not Working
   library(party)
-  library(languageR)
   fit <- cforest(y ~ 0 + ., data = dataTrain)
+  CVPredictions = predict(fit,dataCV)
+  TestPredictions= predict(fit,dataTest)
 }
 
 if(model.type=="GBRT"){
