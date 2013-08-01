@@ -49,8 +49,9 @@ LIBFM_BINARY                = './Models/libFM/libFM'
 #### SVD Feature ###
 
 SVDFEATURE_BUFFER_BINARY    = './Models/SVDFeature/tools/make_feature_buffer'
+SVDFEATURE_GROUP_BUFFER_BINARY = './Models/SVDFeature/tools/make_ugroup_buffer'
 SVDFEATURE_LINE_REORDER     = './Models/SVDFeature/tools/line_reorder'
-SVDFEATURE_SVDPP_RANDORDER  = './Models/SVDFeature/tools/svdpp_randorder`'
+SVDFEATURE_SVDPP_RANDORDER  = './Models/SVDFeature/tools/svdpp_randorder'
 SVDFEATURE_BINARY           = './Models/SVDFeature/svd_feature'
 SVDFEATURE_INFER_BINARY     = './Models/SVDFeature/svd_feature_infer'
 SVDFEATURE_MODEL_OUT_PATH   = 'Data/ModelData/'

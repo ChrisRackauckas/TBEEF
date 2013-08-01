@@ -155,12 +155,15 @@ class SVDModel(Model):
 
     def dataConvert(self):
         import os
-        os.system(self.SVDBufferPath + ' ' + 
-                self.featTrain + ' ' + self.runTrain)
-        os.system(self.SVDBufferPath + ' ' + 
-                self.featCV    + ' ' + self.runCV   )
-        os.system(self.SVDBufferPath + ' ' + 
-                self.featTest  + ' ' + self.runTest )
+        if self.featureSet == 'Basic':
+            os.system(self.SVDBufferPath + ' ' + 
+                    self.featTrain + ' ' + self.runTrain)
+            os.system(self.SVDBufferPath + ' ' + 
+                    self.featCV    + ' ' + self.runCV   )
+            os.system(self.SVDBufferPath + ' ' + 
+                    self.featTest  + ' ' + self.runTest )
+        if self.featureSet == 'ImplicitFeedback':
+            
 
     def writeConfig(self):
         import os
@@ -188,8 +191,9 @@ class SVDModel(Model):
         fout.write('model_out_folder = \"' + self.modelOutPath
                 + self.tag + '_t' + self.trial + '\"')
         if self.featureSet == 'ImplicitFeedback':
-            fout.write("format_type = " + self.formatType + '\n')
-            fout.write("num_ufeedback = " + self.numUserFeedback + '\n')
+            fout.write('\n')
+            fout.write("format_type = " + str(self.formatType) + '\n')
+            fout.write("num_ufeedback = " + str(self.numUserFeedback) + '\n')
             fout.write("wd_ufeedback = " + self.regularizationFeedback + '\n')
 
         os.system('mkdir ' + self.modelOutPath 
@@ -246,7 +250,7 @@ class SVDModel(Model):
     def setupImplicitFeatures(self):
         import os
         #reindex the training files and build two dicts
-        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.bootTrain,self.tmpTrain)
+        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.originDataSet)
         #reindex the history
         IFF.translate(self.userHistoryPath, self.userHistoryReindexPath, Udic, ItemDic)
         #reindex CV file
@@ -257,15 +261,16 @@ class SVDModel(Model):
         IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
 
         #make group training files
-        os.system(self.SVDFeatureLineReorder +' '+ self.tmpTrain + \
-                ' '+ self.tmpLineOrder)
-        os.system(self.SVDFeatureSVDPPRandOrder + ' ' + self.tmpTrain + \
-                ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain)
+        command=self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder
+        os.system(command)
+        
+        anothercommand=self.SVDFeatureLineReorder + ' ' + self.tmpTrain + ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain
+        os.system(anothercommand)
 
         #make group training files of the CV set
-        os.system(self.SVDFeatureLineReorder +' '+ self.tmpCV + \
+        os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpCV + \
                 ' '+ self.tmpLineOrder)
-        os.system(self.SVDFeatureSVDPPRandOrder + ' ' + self.tmpCV + \
+        os.system(self.SVDFeatureLineReorder + ' ' + self.tmpCV + \
                 ' ' + self.tmpLineOrder + ' ' + self.tmpGpCV)
 
         #make basic feature files
@@ -283,7 +288,7 @@ class SVDModel(Model):
         self.numMovie=len(ItemDic)
         self.avg=avg
         self.numGlobal = 0
-        self.activeType = 0
+        self.activeType = '0'
         self.formatType = 1
         self.numUserFeedback = len(ItemDic)
         

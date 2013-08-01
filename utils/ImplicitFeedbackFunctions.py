@@ -29,22 +29,26 @@ def reIndex_Implicit(fin):#, fout):
             iidDic[iid]=newiid
             newiid+=1
             
-    #    fo.write('%d\t%d\t%d\n' %(uidDic[uid],iidDic[iid],rating))
+        #fo.write('%d\t%d\t%d\n' %(uidDic[uid],iidDic[iid],rating))
     #fo.close()
     fi.close()
     #calculate different parameter.
     avg=sum/ctr
     #switch the key and the value in both dictionaries
-    uidCorrespondence={value:key for key,value in uidDic.items()}
-    iidCorrespondence={value:key for key,value in iidDic.items()}
+    #uidCorrespondence={value:key for key,value in uidDic.items()}
+    #iidCorrespondence={value:key for key,value in iidDic.items()}
     print("finished")
-    return(uidCorrespondence,iidCorrespondence,avg)
+    return(uidDic,iidDic,avg)
     
 def translate(fin,fout,Udic,ItemDic):
     print("start translation.Tranlating " +fin+" .")
     fi=open(fin,'r')
     fo=open(fout,'w')
     #translate the file
+    #test things
+    writectr=0
+    userNotFound=0
+    ItemNotFound=0
     for line in fi:
         arr=line.split()
         uid=int(arr[0].strip())
@@ -58,6 +62,12 @@ def translate(fin,fout,Udic,ItemDic):
                 else:
                     writeline=str(Udic[uid])+'\t'+str(ItemDic[iid])+'\r\n'
                 fo.write(writeline)
+                writectr+=1
+            else:
+                ItemNotFound+=1
+        else:
+            userNotFound+=1
+
     fi.close()
     fo.close()
     print("translation finished.")
@@ -69,7 +79,7 @@ def userfeedback(fname):
         attr = line.strip().split('\t')
         uid = int(attr[0])-1
         iid = int(attr[1])-1
-        if feedback.has_key(uid):
+        if uid in feedback:
             feedback[uid].append(iid)
         else:
             feedback[uid] = [iid]
@@ -85,7 +95,7 @@ def usergroup(fname):
     for line in fi:
         attr = line.strip().split('\t')
         uid = int(attr[0])-1
-        if groupnum.has_key(uid):
+        if uid in groupnum:
             groupnum[uid] += 1
         else:
             groupnum[uid] = 1
