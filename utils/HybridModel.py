@@ -28,7 +28,7 @@ class HybridModel(Model):
 
     def setupRVars(self,utils):
         self.miscStr        = ' '.join(map(str,self.misc))
-        self.basicEnsembles = 'Hybrid/basicEnsembles.R '
+        self.ensemblePath   = 'Hybrid/ensembles.R '
         self.RCatch         = self.runTrain + ' ' + self.runCV +\
                             ' ' + self.runTest + ' ' + self.predCVTmp \
                             + ' ' + self.predTestTmp + ' ' \
@@ -36,7 +36,7 @@ class HybridModel(Model):
                             + ' ' + self.miscStr
 
     def run(self,sproc,subprocesses):
-        progCall = 'Rscript ' + self.basicEnsembles + self.RCatch
+        progCall = 'Rscript ' + self.ensemblePath + self.RCatch
         progArr = progCall.split()
         logFile = open(self.log,'w')
         p = sproc.Popen(progArr,shell=False,
