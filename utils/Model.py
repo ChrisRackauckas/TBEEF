@@ -32,7 +32,7 @@ class Model(object):
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
                                       '_CV' + '_t' + strTrial
         #Gp for group training file, the test file is already in group format,so skip it
-        self.tmpGptrain   = utils.MODEL_TMP_PATH      + self.tag + \
+        self.tmpGpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_Gptrain' + '_t' + strtrial                 
         self.tmpGpCV   = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_GpCV' + '_t' + strtrial
