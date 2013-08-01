@@ -11,26 +11,32 @@ class Model(object):
                                       'CV' + '_t' + strTrial
         self.bootTest   =  utils.MODEL_BOOT_PATH + \
                                     'test' + '_t' + strTrial  
+        #The following will be regarded as basic feature files
         self.featTrain  = utils.MODEL_FEATURED_PATH + self.tag + \
                                         '_train' + '_t' + strTrial
         self.featCV     = utils.MODEL_FEATURED_PATH + self.tag + \
                                       '_CV' + '_t' + strTrial
         self.featTest   = utils.MODEL_FEATURED_PATH + self.tag + \
                                     '_test' + '_t' + strTrial
-        self.ImfeatTrain  = utils.MODEL_FEATURED_PATH + self.tag + \           #The following 3 files are implicit feature files
+
+        #The following 3 files are implicit feature files
+        self.ImfeatTrain  = utils.MODEL_FEATURED_PATH + self.tag + \
                                         '_Imtrain' + '_t' + strTrial
         self.ImfeatCV     = utils.MODEL_FEATURED_PATH + self.tag + \
                                       '_ImCV' + '_t' + strTrial
         self.ImfeatTest   = utils.MODEL_FEATURED_PATH + self.tag + \
                                     '_Imtest' + '_t' + strTrial
-        self.tmptrain   = utils.model_tmp_path      + self.tag + \
+
+        self.tmptrain   = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_train' + '_t' + strtrial
-        self.tmpGptrain   = utils.model_tmp_path      + self.tag + \
-                                   '_Gptrain' + '_t' + strtrial                 #Gp for group training file, the test file is already in group format,so skip it
-        self.tmpGpCV   = utils.model_tmp_path      + self.tag + \
-                                   '_GpCV' + '_t' + strtrial
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
                                       '_CV' + '_t' + strTrial
+        #Gp for group training file, the test file is already in group format,so skip it
+        self.tmpGptrain   = utils.MODEL_TMP_PATH      + self.tag + \
+                                   '_Gptrain' + '_t' + strtrial                 
+        self.tmpGpCV   = utils.MODEL_TMP_PATH      + self.tag + \
+                                   '_GpCV' + '_t' + strtrial
+
         self.tmpTest    = utils.MODEL_TMP_PATH      + self.tag + \
                                      '_test'+ '_t' + strTrial 
         self.tmpLineOrder = utils.MODEL_TMP_PATH      + self.tag + \
