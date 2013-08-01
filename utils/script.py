@@ -36,7 +36,7 @@ def setupImplicitFeatures(self):
     self.numMovie=len(ItemDic)
     self.avg=avg
     self.numGlobal = 0
-
+    self.activeType = 0
     
     #make implicit feature files
     #Here I need to issue two command
