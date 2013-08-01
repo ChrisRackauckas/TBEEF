@@ -66,6 +66,11 @@ if config.RUN_MODELS:
     #### Fix #####
     runModels.fixRun(mproc,modelList)
 
+print("CVPredictionPaths is")
+print(CVPredictionPaths)
+print("testPredictionPaths is")
+print(testPredictionPaths)
+
 ################### Setup Hybrid ###################
 
 modelList = []
@@ -89,6 +94,11 @@ if config.RUN_HYBRID:
 
 
     runModels.fixRun(mproc,modelList)
+
+print("CVPredictionPaths is")
+print(CVPredictionPaths)
+print("testPredictionPaths is")
+print(testPredictionPaths)
 
 ################### Setup Synthesize ###################
 
