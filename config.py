@@ -1,16 +1,17 @@
 ################### Select Models ##################
 
 models = [
-           ['basicFM','FM','Basic',['2']],
-           ['basicMovTag','FM','BasicMovieTag',['2']],
-           ['nearNeib', 'FM', 'NearestNeighbor',['2']],
-           ['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
-           ['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
-           ['userHist','FM','UserHistory',['2']],
-           ['userSocial','FM','UserSocial',['2']]
+          ['basicFM','FM','Basic',['2']],
+          #['basicMovTag','FM','BasicMovieTag',['2']],
+          #['nearNeib', 'FM', 'NearestNeighbor',['2']],
+          #['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
+          #['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
+          #['userHist','FM','UserHistory',['2']],
+          #['userSocial','FM','UserSocial',['2']]
 
-          #['basicSVD','SVD','Basic',[]]
-         ] 
+          ['basicSVD','SVD','Basic',[]],
+          ['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
+          ] 
 
 # Defining models:
 # Each element is a list: 
@@ -28,8 +29,8 @@ ensembleModels = [['OLSR', 'OLS', []],
                   ['BRT','BRT',[]],
                   ['BMAR','BMAR',[]],
                  #['RFR' ,'RFR' ,[]],  # Large memory requirement
-                  ['Lasso', 'Lasso', []],
-                  ['GBRT','GBRT',['10']]
+                  ['Lasso', 'Lasso', []]
+                 #['GBRT','GBRT',['10']]
 ]
 
 # Defining ensemble models:
@@ -42,16 +43,21 @@ ensembleModels = [['OLSR', 'OLS', []],
 synthModel = ['GBRT','GBRT',['10']]
 
 ################### Select Parts  ##################
+LAPTOP_TEST      = True # uses small data set to run features on laptop
 
 
 TRIALS           = 1
 PRE_PROCESS      = True
 # ---- ---- PreProcess Selection ---- ---- #
 TEST_SUBSET      = True   # uses small data set
-PROCESS_TAGS     = True  # generates new file for movie tag feature
+
+### Baidu Specific Preprocess ###
+PROCESS_TAGS     = False  # generates new file for movie tag feature
 PROCESS_SOCIAL   = True  # cuts out all the extra social users not in data set
 PROCESS_HISTORY  = True
-DE_EFFECT        = False  # If De-effect is false, model predictions are correct
+### End Baidu Specific ####
+
+DE_EFFECT        = False  # If De-effect is false, intermittent predictions are correct
 # ---- ---- ---- ---- ----- ---- ---- ---- #
 SETUP_MODELS     = True
 RUN_MODELS       = True
@@ -82,6 +88,8 @@ SVD_LEARNING_RATE         = '.005'
 SVD_REGULARIZATION_ITEM   = '.004'
 SVD_REGULARIZATION_USER   = '.004'
 SVD_REGULARIZATION_GLOBAL = '.001'
+
+SVD_REGULARIZATION_FEEDBACK = '.004'
 SVD_NUM_FACTOR            = '64'
 SVD_ACTIVE_TYPE           = '0'
 SVD_NUM_ITER              = '40'

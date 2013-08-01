@@ -10,19 +10,20 @@ class Model(object):
         self.bootCV     =  utils.MODEL_BOOT_PATH  +   \
                                       'CV' + '_t' + strTrial
         self.bootTest   =  utils.MODEL_BOOT_PATH + \
-                                    'test' + '_t' + strTrial  
+                                    'test' + '_t' + strTrial
         self.featTrain  = utils.MODEL_FEATURED_PATH + self.tag + \
                                         '_train' + '_t' + strTrial
         self.featCV     = utils.MODEL_FEATURED_PATH + self.tag + \
                                       '_CV' + '_t' + strTrial
         self.featTest   = utils.MODEL_FEATURED_PATH + self.tag + \
                                     '_test' + '_t' + strTrial
+
         self.tmpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_train' + '_t' + strTrial
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
                                       '_CV' + '_t' + strTrial
         self.tmpTest    = utils.MODEL_TMP_PATH      + self.tag + \
-                                     '_test'+ '_t' + strTrial 
+                          '_test'+ '_t' + strTrial
         self.runTrain   = utils.MODEL_RUN_PATH      + self.tag + \
                                    '_train' + '_t' + strTrial
         self.runCV      = utils.MODEL_RUN_PATH      + self.tag + \

@@ -123,6 +123,8 @@ class FMModel(Model):
             self.addNearestNeighbor(self.bootCV,self.featCV,moviesRatedByUserDict,movieLocationDict,'CV')
             self.addNearestNeighbor(self.bootTest,self.featTest,moviesRatedByUserDict,movieLocationDict,'test')
 
+        ### Baidu Dataset Specific Features ###
+
         # ---- ---- Movie Tag Features ---- ---- #
 
         elif self.featureSet == 'BasicMovieTag':
@@ -178,6 +180,7 @@ class FMModel(Model):
             self.userSocial(self.bootCV,self.featCV,userLocationDict,movieLocationDict,userSocialDict,'CV')
             self.userSocial(self.bootTest,self.featTest,userLocationDict,movieLocationDict,userSocialDict,'test')
 
+        ### End Baidu Dataset Specific Features ###
 
     def addNearestNeighbor(self,finPath, foutPath,moviesRatedByUserDict,movieLocationDict,step):
         #-----------------------------------------------------------------

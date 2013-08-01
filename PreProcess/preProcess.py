@@ -23,6 +23,9 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
     p.start()
     processes.append(p)
 
+    ### Baidu Dataset Specific ###
+    ### Preprocesses the Baidu extra features data ###
+
     if PROCESS_TAGS:
         print('... Processing Movie Tag Data')
         p=mproc.Process(target=processMovieTags,
@@ -41,8 +44,12 @@ def preProcess(os,utils,random,DE_EFFECT,userMovieRating,TEST_SUBSET,PROCESS_TAG
                         args=(utils.USER_HISTORY_PATH,utils.PROCESSED_HISTORY,utils.ORIGINAL_DATA_PATH))
         p.start()
         processes.append(p)
+
+
     for p in processes:
         p.join()
+
+    ### End Baidu Dataset Specific ###
 
     # De-effects data file
     if DE_EFFECT:
