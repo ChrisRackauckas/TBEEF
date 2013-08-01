@@ -18,3 +18,5 @@ def setupImplicitFeatures(self):
     self.basicConvert(self.tmpTest, self.featTest)
     
     #make implicit feature files
+    #Here I need to issue two command
+    #
