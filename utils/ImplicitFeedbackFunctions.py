@@ -1,8 +1,8 @@
 import sys
-def reIndex_Implicit(fin, fout):
-    print("Reindexing Training Set and Buiding the Correspondence Dics")
+def reIndex_Implicit(fin):#, fout):
+    print("Reindexing Origin Data Set and Buiding the Correspondence Dics")
     fi = open( fin, 'r' ) #training set
-    fo = open( fout, 'w') #reindexed training set
+    #fo = open( fout, 'w') #reindexed training set
     #extract from input file
     uidDic={}
     iidDic={}
@@ -29,8 +29,8 @@ def reIndex_Implicit(fin, fout):
             iidDic[iid]=newiid
             newiid+=1
             
-        fo.write('%d\t%d\t%d\n' %(uidDic[uid],iidDic[iid],rating))
-    fo.close()
+    #    fo.write('%d\t%d\t%d\n' %(uidDic[uid],iidDic[iid],rating))
+    #fo.close()
     fi.close()
     #calculate different parameter.
     avg=sum/ctr
