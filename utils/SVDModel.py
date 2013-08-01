@@ -22,9 +22,10 @@ class SVDModel(Model):
         self.SVDFeatureInferBinary= utils.SVDFEATURE_INFER_BINARY
         self.SVDFeatureLineReorder= utils.SVDFEATURE_LINE_REORDER
         self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER 
-        self.regularizationFeedback = 0
+        self.regularizationFeedback = config.SVD_REGULARIZATION_FEEDBACK
         self.formatType           = 0
         self.numUserFeedback      = 0
+        # 0 is the default value
         
 ### Setup Data ###
 

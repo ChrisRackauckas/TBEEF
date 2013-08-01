@@ -37,6 +37,8 @@ def setupImplicitFeatures(self):
     self.avg=avg
     self.numGlobal = 0
     self.activeType = 0
+    self.formatType = 1
+    self.numUserFeedback = len(ItemDic)
     
     #make implicit feature files
     #Here I need to issue two command
