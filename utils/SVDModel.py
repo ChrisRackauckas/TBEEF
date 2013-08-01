@@ -11,6 +11,7 @@ class SVDModel(Model):
                                               '_t' + strTrial
         self.numIter              = config.SVD_NUM_ITER
         self.SVDBufferPath        = utils.SVDFEATURE_BUFFER_BINARY
+        self.SVDGroupBufferPath   = utils.SVDFEATURE_GROUP_BUFFER_BINARY
         self.learningRate         = config.SVD_LEARNING_RATE
         self.regularizationItem   = config.SVD_REGULARIZATION_ITEM
         self.regularizationUser   = config.SVD_REGULARIZATION_USER
@@ -163,8 +164,12 @@ class SVDModel(Model):
             os.system(self.SVDBufferPath + ' ' + 
                     self.featTest  + ' ' + self.runTest )
         if self.featureSet == 'ImplicitFeedback':
-            
-
+            os.system(self.SVDGroupBufferPath + ' ' + self.featTrain + \
+                        ' ' + self.runTrain + ' ' + '-fd' + ' ' + self.ImfeatTrain)
+            os.system(self.SVDGroupBufferPath + ' ' + self.featCV + \
+                        ' ' + self.runCV + ' ' + '-fd' + ' ' + self.ImfeatCV)
+            os.system(self.SVDGroupBufferPath + ' ' + self.featTest + \
+                        ' ' + self.runTest + ' ' + '-fd' + ' ' + self.ImfeatTest)
     def writeConfig(self):
         import os
         fout =  open(self.configPath,'w')
@@ -283,6 +288,7 @@ class SVDModel(Model):
         IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpTest,self.ImfeatTest)
         IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpCV,self.ImfeatCV)
 
+ 
         #set different parameters
         self.numUser=len(Udic)
         self.numMovie=len(ItemDic)
