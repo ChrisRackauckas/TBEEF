@@ -22,7 +22,10 @@ class SVDModel(Model):
         self.SVDFeatureInferBinary= utils.SVDFEATURE_INFER_BINARY
         self.SVDFeatureLineReorder= utils.SVDFEATURE_LINE_REORDER
         self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER 
-
+        self.regularizationFeedback = 0
+        self.formatType           = 0
+        self.numUserFeedback      = 0
+        
 ### Setup Data ###
 
     def setup(self):
@@ -181,6 +184,7 @@ class SVDModel(Model):
         fout.write('#Model save path\n')
         fout.write('model_out_folder = \"' + self.modelOutPath
                 + self.tag + '_t' + self.trial + '\"')
+
         os.system('mkdir ' + self.modelOutPath 
                 + self.tag + '_t' + self.trial)
         fout.close()
