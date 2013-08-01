@@ -1,8 +1,7 @@
 import sys
-def reIndex_Implicit(fin):#, fout):
+def reIndex_Implicit(fin):
     print("Reindexing Origin Data Set and Buiding the Correspondence Dics")
     fi = open( fin, 'r' ) #training set
-    #fo = open( fout, 'w') #reindexed training set
     #extract from input file
     uidDic={}
     iidDic={}
@@ -29,14 +28,9 @@ def reIndex_Implicit(fin):#, fout):
             iidDic[iid]=newiid
             newiid+=1
             
-        #fo.write('%d\t%d\t%d\n' %(uidDic[uid],iidDic[iid],rating))
-    #fo.close()
     fi.close()
     #calculate different parameter.
     avg=sum/ctr
-    #switch the key and the value in both dictionaries
-    #uidCorrespondence={value:key for key,value in uidDic.items()}
-    #iidCorrespondence={value:key for key,value in iidDic.items()}
     print("finished")
     return(uidDic,iidDic,avg)
     
@@ -45,10 +39,6 @@ def translate(fin,fout,Udic,ItemDic):
     fi=open(fin,'r')
     fo=open(fout,'w')
     #translate the file
-    #test things
-    writectr=0
-    userNotFound=0
-    ItemNotFound=0
     for line in fi:
         arr=line.split()
         uid=int(arr[0].strip())
@@ -62,11 +52,6 @@ def translate(fin,fout,Udic,ItemDic):
                 else:
                     writeline=str(Udic[uid])+'\t'+str(ItemDic[iid])+'\r\n'
                 fo.write(writeline)
-                writectr+=1
-            else:
-                ItemNotFound+=1
-        else:
-            userNotFound+=1
 
     fi.close()
     fo.close()

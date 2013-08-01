@@ -266,11 +266,8 @@ class SVDModel(Model):
         IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
 
         #make group training files
-        command=self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder
-        os.system(command)
-        
-        anothercommand=self.SVDFeatureLineReorder + ' ' + self.tmpTrain + ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain
-        os.system(anothercommand)
+        os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder)
+        os.system(self.SVDFeatureLineReorder + ' ' + self.tmpTrain + ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain)
 
         #make group training files of the CV set
         os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpCV + \
