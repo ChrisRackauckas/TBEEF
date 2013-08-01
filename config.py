@@ -7,8 +7,9 @@ models = [
           #['nn', 'FM', 'NearestNeighbor',['2']]
           #['rmt','FM','RelatedMovieTag',['2']]
     
-          ['basicSVD','SVD','Basic',[]]
-         ] 
+          #['basicSVD','SVD','Basic',[]]
+          ['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
+          ] 
 
 # Defining models:
 # Each element is a list: 

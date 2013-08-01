@@ -28,14 +28,14 @@ class Model(object):
                                     '_Imtest' + '_t' + strTrial
 
         self.tmpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
-                                   '_train' + '_t' + strtrial
+                                   '_train' + '_t' + strTrial
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
                                       '_CV' + '_t' + strTrial
         #Gp for group training file, the test file is already in group format,so skip it
         self.tmpGpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
-                                   '_Gptrain' + '_t' + strtrial                 
+                                   '_Gptrain' + '_t' + strTrial                 
         self.tmpGpCV   = utils.MODEL_TMP_PATH      + self.tag + \
-                                   '_GpCV' + '_t' + strtrial
+                                   '_GpCV' + '_t' + strTrial
 
         self.tmpTest    = utils.MODEL_TMP_PATH      + self.tag + \
                                      '_test'+ '_t' + strTrial 
