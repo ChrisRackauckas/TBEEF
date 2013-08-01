@@ -27,7 +27,9 @@ def setupImplicitFeatures(self):
     self.basicConvert(self.tmpTest, self.featTest)
 
     #make implicit feature files
-    
+    mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpTrain,self.ImfeatTrain)
+    mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpTest,self.ImfeatTest)
+    mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpCV,self.ImfeatCV)
 
     #set different parameters
     self.numUser=len(Udic)
