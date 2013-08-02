@@ -25,20 +25,18 @@ class HybridModel(Model):
         self.RMSEPath   = utils.HYBRID_RMSE_PATH+ self.tag + '_t'\
                                                 + strTrial
         self.setupRVars(utils)
-        self.CVSet      = True
 
     def setupRVars(self,utils):
         self.miscStr        = ' '.join(map(str,self.misc))
-        self.basicEnsembles = 'Hybrid/basicEnsembles.R '
+        self.ensemblePath   = 'Hybrid/ensembles.R '
         self.RCatch         = self.runTrain + ' ' + self.runCV +\
                             ' ' + self.runTest + ' ' + self.predCVTmp \
                             + ' ' + self.predTestTmp + ' ' \
                             + self.RMSEPath + ' ' + self.mode \
                             + ' ' + self.miscStr
 
-    def run(self,sproc,subprocesses):   
-        print("Hybrid Choice: " + self.mode)
-        progCall = 'Rscript ' + self.basicEnsembles + self.RCatch
+    def run(self,sproc,subprocesses):
+        progCall = 'Rscript ' + self.ensemblePath + self.RCatch
         progArr = progCall.split()
         logFile = open(self.log,'w')
         p = sproc.Popen(progArr,shell=False,

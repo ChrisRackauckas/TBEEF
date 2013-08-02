@@ -22,14 +22,12 @@ ToDo
 ----------------------------------------------
 
 1. Integrate ensemble methods: 
-    - Gradient boosted ridge regression
     - Multinomial logistic regression
-    - Item-Based Collaborative Filering
-2. Implement synthesis.
-3. Parallelize ensemble setup.
-4. Parallelize ensemble run.
-5. Implement more features for SVD and FM.
-6. Document and clean parts of the code. 
+    - Item-Based Collaborative Filering.
+2. Add CV set to synthesis.
+3. Fix up CV prediction readouts.
+4. Implement more features for SVD and FM.
+5. Document and clean parts of the code. 
 
 Contributors
 ----------------------------------------------

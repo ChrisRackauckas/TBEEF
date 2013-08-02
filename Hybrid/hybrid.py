@@ -26,7 +26,7 @@ def setupHybridTrial(hybridOriginalPath,strTrial,modelBootPath,CVPredictionPaths
     bootCV = modelBootPath  +   \
                         'CV' + '_t' + strTrial
     buildTrainingMatrixFromPredictions(bootCV,hybridOriginal,
-                        CVPredictionPaths,grabCSVColumnFunc)
+                        CVPredictionPaths,grabCSVColumnFunc,2)
     buildPredictorMatrixFromPredictions(testPredictionPaths,
                         grabCSVColumnFunc,hybridPredict)
     bootsplitFunc(hybridOriginal,hybridOriginal + '_tmp',
@@ -42,13 +42,13 @@ def setupHybridTrial(hybridOriginalPath,strTrial,modelBootPath,CVPredictionPaths
                 hybridOriginalPath + 
                 'test_t'    + strTrial,True)
 
-def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc):
+def buildTrainingMatrixFromPredictions(fullSet,outputPath,predictorPaths,grabCSVColumnFunc,masterColumn):
 #-------------------------------------------------
 # Takes in the prediction of various models on CV data
 # Through CVPredictionPaths array
 # Generates a txt file that is a matrix for training Hybrid
 #-------------------------------------------------
-    predictionArrays = [grabCSVColumnFunc(fullSet,2)]
+    predictionArrays = [grabCSVColumnFunc(fullSet,masterColumn)]
     for predictPath in predictorPaths:
         predictionArrays.append(grabCSVColumnFunc(predictPath,2))
     toWrite = []

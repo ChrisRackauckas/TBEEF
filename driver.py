@@ -1,12 +1,10 @@
 ﻿#!/usr/bin/python
 import sys
 import os
-import re
 import random
 import time
 import multiprocessing as mproc
 import subprocess as sproc
-from math import *
 WORK_PATH = os.getcwd()
 sys.path.append(WORK_PATH + '/PreProcess')
 sys.path.append(WORK_PATH + '/Hybrid')
@@ -29,7 +27,7 @@ import config
 RMSEPaths = []
 userMovieRating = {}    #Dictionary of user and movie ratings for de/re-effect
 modelList = []
-testPredictionPaths = []#Array of lists of paths 
+testPredictionPaths = []#Array of lists of paths
                         #where test predictions are saved
 CVPredictionPaths = []  #Array of lists of paths 
                         #where CV predictions are saved
@@ -47,8 +45,10 @@ if config.TIME_RUN:
 
 if config.PRE_PROCESS:
     print("Pre-Processing")
-    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,\
-                   config.LAPTOP_TEST)
+    pre.preProcess(os,utils,random,config.DE_EFFECT,userMovieRating,
+                   config.TEST_SUBSET,config.PROCESS_TAGS,
+                   config.PROCESS_SOCIAL,
+                   config.PROCESS_HISTORY,processes,mproc)
     print("Pre-Processing Complete")
 
 ################### Setup Models ###################
@@ -72,7 +72,9 @@ modelList = []
 
 if config.SETUP_HYBRID:
     print("Setting up hybrid")
-    hybrid.setupHybrid(utils,config,mproc,random,config.BOOTSTRAP_SPLITS[1],CVPredictionPaths,testPredictionPaths,modelList,config.TRIALS)
+    hybrid.setupHybrid(utils,config,mproc,random,config.BOOTSTRAP_SPLITS[1],
+                       CVPredictionPaths,testPredictionPaths,
+                       modelList,config.TRIALS)
 
 ################### Run Hybrid #####################
 
@@ -94,7 +96,9 @@ modelList = []
 
 if config.SETUP_SYNTHESIZE:
     print("Setting up synthesis")
-    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,config.synthModel,config.TRIALS,modelList,mproc,processes)
+    synthesize.setupSynthesize(utils,CVPredictionPaths,testPredictionPaths,
+                               config.BOOTSTRAP_SPLITS[2],random,config.synthModel,
+                               config.TRIALS,modelList,mproc,processes)
 
 ################### Run Synthesize #####################
 

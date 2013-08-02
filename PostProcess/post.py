@@ -16,7 +16,7 @@ def postProcess(os,utils, DE_EFFECT,trials,userMovieRating,RMSEPaths):
 
     winner = pickWinner(trials,RMSEPaths)
     print("Best trial: " + str(winner[0]))
-    print("Best Synth Boot/K-Fold RMSE:  " + str(winner[1]))
+    print("Best Synth CV-RMSE:  " + str(winner[1]))
     trialOutput = utils.TRIAL_OUTPUT_PATH + 't' + str(winner[0])
     os.system('cp ' + trialOutput + ' ' + utils.OUTPUT_PATH)
 
@@ -57,4 +57,4 @@ def pickWinner(trials,RMSEPaths):
             bestTrial = i
             bestRMSE  = RMSE
 
-    return(bestTrial,bestRMSE)
+    return bestTrial,bestRMSE

@@ -1,0 +1,7 @@
+These script files can be used to help one setup the program. 
+
+findInitStd.py - Runs the program on small iterations on a list of initial standard deviations to find a good prior std.
+
+installPackages.R - Installs the packages needed for the default ensemble models
+
+test.R - Can be used to easily test and develop ensemble models. Should be used interactively with an R interpreter. Already has paths setup to easily import data matrices.

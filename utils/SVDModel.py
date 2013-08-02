@@ -9,6 +9,31 @@ class SVDModel(Model):
         Model.__init__(self,configModel,utils,strTrial) #come from model!it's another class object.
         self.configPath = utils.MODEL_CONFIG_PATH   + self.tag + \
                                               '_t' + strTrial
+        self.userHistoryReindexPath= utils.MODEL_TMP_PATH      + self.tag + \
+                                     '_userHistoryReindex' + '_t' + strTrial
+
+        ### Baidu Specific ###
+        ### Implicit Feedback Files ###
+        #The following 3 files are implicit feature files
+        self.ImfeatTrain  = utils.MODEL_FEATURED_PATH + self.tag + \
+                            '_Imtrain' + '_t' + strTrial
+        self.ImfeatCV     = utils.MODEL_FEATURED_PATH + self.tag + \
+                            '_ImCV' + '_t' + strTrial
+        self.ImfeatTest   = utils.MODEL_FEATURED_PATH + self.tag + \
+                            '_Imtest' + '_t' + strTrial
+        #Gp for group training file, the test file is already in group format,so skip it
+        self.tmpGpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
+                            '_Gptrain' + '_t' + strTrial
+        self.tmpGpCV   = utils.MODEL_TMP_PATH      + self.tag + \
+                         '_GpCV' + '_t' + strTrial
+        #for storing the line order of the group file
+        self.tmpLineOrder = utils.MODEL_TMP_PATH      + self.tag + \
+                            '_LineOrder' + '_t' + strTrial
+        ### End Implicit Feature Files ###
+
+        self.regularizationFeedback = config.SVD_REGULARIZATION_FEEDBACK
+        ### End Baidu Specific ###
+
         self.numIter              = config.SVD_NUM_ITER
         self.SVDBufferPath        = utils.SVDFEATURE_BUFFER_BINARY
         self.SVDGroupBufferPath   = utils.SVDFEATURE_GROUP_BUFFER_BINARY
@@ -22,8 +47,7 @@ class SVDModel(Model):
         self.SVDFeatureBinary     = utils.SVDFEATURE_BINARY
         self.SVDFeatureInferBinary= utils.SVDFEATURE_INFER_BINARY
         self.SVDFeatureLineReorder= utils.SVDFEATURE_LINE_REORDER
-        self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER 
-        self.regularizationFeedback = config.SVD_REGULARIZATION_FEEDBACK
+        self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER
         self.formatType           = 0
         self.numUserFeedback      = 0
         self.originDataSet        = utils.ORIGINAL_DATA_PATH 
@@ -206,14 +230,15 @@ class SVDModel(Model):
         fout.close()
 
 ### Setup Features ###
-#here's where I should add my comments!
     def setupFeatures(self):
         if self.featureSet == 'Basic':
             self.basicConvert(self.tmpTrain,self.featTrain)
             self.basicConvert(self.tmpCV,   self.featCV)
             self.basicConvert(self.tmpTest, self.featTest)
+        ### Baidu Specific Features ###
         if self.featureSet == 'ImplicitFeedback':
             self.setupImplicitFeatures()
+        ### End Baidu Specific Features ###
 
     def basicConvert(self,fin,fout):
         fi = open( fin , 'r' )
@@ -230,7 +255,51 @@ class SVDModel(Model):
         fi.close()
         fo.close()
 
-### Run ###
+    def setupImplicitFeatures(self):
+        import os
+
+        #reindex the training files and build two dicts
+        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.originDataSet)
+        #reindex the history
+        IFF.translate(self.userHistoryPath, self.userHistoryReindexPath, Udic, ItemDic)
+        #reindex CV file
+        IFF.translate(self.bootCV, self.tmpCV, Udic, ItemDic)
+        #reindex Testfile
+        IFF.translate(self.bootTest, self.tmpTest, Udic, ItemDic)
+        #reindex the training
+        IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
+
+        #make group training files
+        os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder)
+        os.system(self.SVDFeatureLineReorder + ' ' + self.tmpTrain + ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain)
+
+        #make group training files of the CV set
+        os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpCV + \
+                  ' '+ self.tmpLineOrder)
+        os.system(self.SVDFeatureLineReorder + ' ' + self.tmpCV + \
+                  ' ' + self.tmpLineOrder + ' ' + self.tmpGpCV)
+
+        #make basic feature files
+        self.basicConvert(self.tmpGpTrain,self.featTrain)
+        self.basicConvert(self.tmpGpCV,   self.featCV)
+        self.basicConvert(self.tmpTest, self.featTest)
+
+        #make implicit feature files
+        IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpTrain,self.ImfeatTrain)
+        IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpTest,self.ImfeatTest)
+        IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpCV,self.ImfeatCV)
+
+
+        #set different parameters
+        self.numUser=len(Udic)
+        self.numMovie=len(ItemDic)
+        self.avg=avg
+        self.numGlobal = 0
+        self.activeType = '0'
+        self.formatType = 1
+        self.numUserFeedback = len(ItemDic)
+
+    ### Run ###
 
     def run(self,sproc,subprocesses):
         p = sproc.Popen(self.SVDFeatureBinary + ' ' + self.configPath +
@@ -262,7 +331,7 @@ class SVDModel(Model):
         IFF.translate(self.bootCV, self.tmpCV, Udic, ItemDic)
         #reindex Testfile
         IFF.translate(self.bootTest, self.tmpTest, Udic, ItemDic)
-        #reindex the training 
+        #reindex the training files
         IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
 
         #make group training files

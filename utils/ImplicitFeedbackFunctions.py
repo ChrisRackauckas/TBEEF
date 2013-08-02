@@ -1,6 +1,20 @@
 import sys
+'''
+Program input requirement:
+    1.reIndex_Implicit: The format of fin should be UserID \t MovieID \t ratings \n
+    2.translate:
+        This function is to reindex the input file according to the correspondence Dictionaries from reIndex_Implicit function
+        input file format:
+            UserID \t MovieID \t [The third column is optional] \n
+    3.userfeedback, usergroup and mkfeature are the functions called by mkImplicitFeatureFile. 
+        input file format:
+            the input file1 format of ftrain:  userid \t itemid \t rate \n
+            the input file2 format of fgtrain: userid \t itemid \t rate \n, which is grouped by user
+            the output format:                 rate \t number of user group \t number of user implicit feedback \t fid1:fvalue1, fid2:fvalue2 ... \n
+'''
+
 def reIndex_Implicit(fin):
-    print("Reindexing Origin Data Set and Buiding the Correspondence Dics")
+    print("Reindexing Origin Data Set and Building the Correspondence Dics")
     fi = open( fin, 'r' ) #training set
     #extract from input file
     uidDic={}
@@ -31,11 +45,12 @@ def reIndex_Implicit(fin):
     fi.close()
     #calculate different parameter.
     avg=sum/ctr
-    print("finished")
+    print("Finished")
     return(uidDic,iidDic,avg)
-    
+
+
 def translate(fin,fout,Udic,ItemDic):
-    print("start translation.Tranlating " +fin+" .")
+    print("Start Translation. Translating " +fin+" .")
     fi=open(fin,'r')
     fo=open(fout,'w')
     #translate the file
@@ -55,7 +70,7 @@ def translate(fin,fout,Udic,ItemDic):
 
     fi.close()
     fo.close()
-    print("translation finished.")
+    print("Translation Finished.")
 
 def userfeedback(fname):
     fi = open(fname,'r')
@@ -71,7 +86,7 @@ def userfeedback(fname):
     fi.close()
     return feedback
 
-#group num and order of the grouped training data
+#usergroup function is to find out group num and order of user in the grouped training data file
 def usergroup(fname):
     fi = open(fname,'r')
     userorder = []
@@ -90,8 +105,8 @@ def usergroup(fname):
     fi.close()
     return userorder,groupnum
 
-#make implict feedback feature, one line for a user, wihch is in the order of the grouped training data 
-#the output format:rate \t number of user group \t number of user implicit feedback \t fid1:fvalue1, fid2:fvalue2 ... \n
+
+#mkfeature is  to calculate the parameters of the feadback features
 def mkfeature(fout,userorder,groupnum,feedback):
     fo = open(fout,'w')
     for uid in userorder:
@@ -102,8 +117,10 @@ def mkfeature(fout,userorder,groupnum,feedback):
             fo.write('%d:%.6f ' %(i,pow(fnum,-0.5)))
         fo.write('\n')
 
+
+
+#make implicit feedback features
 def mkImplicitFeatureFile(ftrain,fgtrain,fout):
-    '''usage:<training_file> <grouped training_file> <output>'''
     feedback = userfeedback(ftrain)
     userorder,groupnum = usergroup(fgtrain)
     #make features and print them  out in file fout 
