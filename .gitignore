@@ -2,16 +2,8 @@
 ## Binaries
 ##############
 
-Models/libFM/libFM
-Models/libFM/convert
-Models/libFM/transpose
-
-###############
-## Config Files
-###############
-
-*config.py
-test.R
+Models/libFM
+Models/SVDFeature
 
 ###############
 ## Data
@@ -42,6 +34,7 @@ Data/
 ## Idea
 #################
 *.idea
+*.iml
 
 #################
 ## Eclipse

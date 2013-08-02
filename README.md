@@ -1,7 +1,7 @@
-Hybrid Movie Recommendation System
+TBEEF - Triple Bagged Ensemble Ensemble Framework.
 ==============================================
 
-This program is a hybrid recommendation system, an implementation of the DubbKavee algorithm which utilizes various different statistical models and ensemble tehcniques, patching them together in an intelligent way to improve prediction accuracy. It was specifically developed to implement the methods from the various top competitors in the Baidu, Inc. movie recommendation algorithm contest into a single unified approach and is written to work with datasets which follow the format of the contest.
+This program is a hybrid recommendation system, an implementation of the TBEEF algorithm which utilizes various different statistical models and ensemble tehcniques, patching them together in an intelligent way to improve prediction accuracy. It was specifically developed to implement the methods from the various top competitors in the Baidu, Inc. movie recommendation algorithm contest into a single unified approach and is written to work with datasets which follow the format of the contest.
 
 Program Structure
 ----------------------------------------------
@@ -16,18 +16,7 @@ The structure of the program is as follows. There are three main phases of the p
 6. Synthesize - Aggregating of the ensemble models through gradient boosted regression
 6. Post-Processing - Fixing predictions and finding which of the random trials had the lowest cross-validation RMSE.
 
-This program requires two datasets: a training dataset and a test/prediction dataset. The training dataset is used to train the models and the prediction dataset is simply a file with predictors for which the program will generate predictions. 
-
-ToDo
-----------------------------------------------
-
-1. Integrate ensemble methods: 
-    - Multinomial logistic regression
-    - Item-Based Collaborative Filering.
-2. Add CV set to synthesis.
-3. Fix up CV prediction readouts.
-4. Implement more features for SVD and FM.
-5. Document and clean parts of the code. 
+This program requires two datasets: a training dataset and a test/prediction dataset. The training dataset is used to train the models and the prediction dataset is simply a file with predictors for which the program will generate predictions.
 
 Contributors
 ----------------------------------------------

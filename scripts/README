@@ -4,4 +4,6 @@ findInitStd.py - Runs the program on small iterations on a list of initial stand
 
 installPackages.R - Installs the packages needed for the default ensemble models
 
+jobScript.sh - An example job script for use on a cluster.
+
 test.R - Can be used to easily test and develop ensemble models. Should be used interactively with an R interpreter. Already has paths setup to easily import data matrices.
