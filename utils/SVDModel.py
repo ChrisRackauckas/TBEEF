@@ -1,18 +1,20 @@
 from Model import Model
 import ImplicitFeedbackFunctions as IFF #IFF for implicitFeedbackFunctions
+import neighborhoodFunctions as NF 
 class SVDModel(Model):
 
 ### Construct ###    
 
     def __init__(self,configModel,utils,config,strTrial):
-        Model.__init__(self,configModel,utils,strTrial)
+	    #This function is to set up different parameters.
+        Model.__init__(self,configModel,utils,strTrial) 
         self.configPath = utils.MODEL_CONFIG_PATH   + self.tag + \
                                               '_t' + strTrial
-        self.userHistoryReindexPath= utils.MODEL_TMP_PATH      + self.tag + \
-                                     '_userHistoryReindex' + '_t' + strTrial
-
+        
         ### Baidu Specific ###
         ### Implicit Feedback Files ###
+        self.userHistoryReindexPath= utils.MODEL_TMP_PATH      + self.tag + \
+                                     '_userHistoryReindex' + '_t' + strTrial
         #The following 3 files are implicit feature files
         self.ImfeatTrain  = utils.MODEL_FEATURED_PATH + self.tag + \
                             '_Imtrain' + '_t' + strTrial
@@ -31,6 +33,17 @@ class SVDModel(Model):
         ### End Implicit Feature Files ###
 
         self.regularizationFeedback = config.SVD_REGULARIZATION_FEEDBACK
+
+
+        ### Neighborhood Model Files###
+        if len(self.misc) > 0:
+            if self.misc[0] == "MovieTag":
+                self.TagFilePath = self.movieTagPath
+                self.TagFileReindexPath = utils.MODEL_TMP_PATH      + self.tag + \
+                                               '_' + self.misc[0] + '_t' + strTrial
+                self.ShareTagPath = utils.MODEL_TMP_PATH      + self.tag + \
+                                               '_share_' + self.misc[0] + '_t' + strTrial
+        ### End Neighborhood Model Files###
         ### End Baidu Specific ###
 
         self.numIter              = config.SVD_NUM_ITER
@@ -49,6 +62,10 @@ class SVDModel(Model):
         self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER
         self.formatType           = 0
         self.numUserFeedback      = 0
+        self.numUser= 0
+        self.numMovie= 0
+        self.numGlobal = 0
+        self.avg= 0
         self.originDataSet        = utils.ORIGINAL_DATA_PATH 
         # 0 is the default value
         
@@ -179,7 +196,8 @@ class SVDModel(Model):
 
     def dataConvert(self):
         import os
-        if self.featureSet == 'Basic':
+        if self.featureSet == 'Basic' or \
+                self.featureSet == 'Neighborhood':
             os.system(self.SVDBufferPath + ' ' + 
                     self.featTrain + ' ' + self.runTrain)
             os.system(self.SVDBufferPath + ' ' + 
@@ -237,6 +255,8 @@ class SVDModel(Model):
         ### Baidu Specific Features ###
         if self.featureSet == 'ImplicitFeedback':
             self.setupImplicitFeatures()
+        if self.featureSet == 'Neighborhood':
+            self.NeighborhoodSetup()
         ### End Baidu Specific Features ###
 
     def basicConvert(self,fin,fout):
@@ -256,17 +276,10 @@ class SVDModel(Model):
 
     def setupImplicitFeatures(self):
         import os
-
         #reindex the training files and build two dicts
-        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.originDataSet)
+        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.bootTrain, self.bootCV, self.bootTest, self.tmpTrain, self.tmpCV, self.tmpTest)
         #reindex the history
         IFF.translate(self.userHistoryPath, self.userHistoryReindexPath, Udic, ItemDic)
-        #reindex CV file
-        IFF.translate(self.bootCV, self.tmpCV, Udic, ItemDic)
-        #reindex Testfile
-        IFF.translate(self.bootTest, self.tmpTest, Udic, ItemDic)
-        #reindex the training
-        IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
 
         #make group training files
         os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder)
@@ -319,3 +332,22 @@ class SVDModel(Model):
              ' name_pred=' + self.predTestTmp)
         self.prependUserMovieToPredictions(self.bootCV,self.predCVTmp,self.predCV)
         self.prependUserMovieToPredictions(self.bootTest,self.predTestTmp,self.predTest)       
+
+
+    def NeighborhoodSetup(self):
+        #second 
+        NSnoUser,NSnoMovie,NSAvg = NF.reIndex(self.bootTrain, self.TagFilePath, self.bootTest, self.bootCV, self.tmpTrain, self.TagFileReindexPath, self.tmpTest, self.tmpCV)
+        
+        #third
+        NF.share(self.TagFileReindexPath,self.ShareTagPath)
+
+        #fourth
+        NumGlobal = NF.neighborhood(self.tmpTrain, self.ShareTagPath, self.tmpTest, self.featTrain, self.featTest)
+        NF.neighborhood(self.tmpCV, self.ShareTagPath, self.tmpTest, self.featCV, self.featTest)
+
+        # set the parameters.
+        self.numUser    =   NSnoUser
+        self.numMovie   =   NSnoMovie
+        self.numGlobal  =   NumGlobal + 1
+        self.avg        =   NSAvg
+
