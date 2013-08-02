@@ -36,12 +36,13 @@ class SVDModel(Model):
 
 
         ### Neighborhood Model Files###
-        if self.misc[0] == "MovieTag":
-            self.TagFilePath = self.movieTagPath
-            self.TagFileReindexPath = utils.MODEL_TMP_PATH      + self.tag + \
-                                           '_' + self.misc[0] + '_t' + strTrial
-            self.ShareTagPath = utils.MODEL_TMP_PATH      + self.tag + \
-                                           '_share_' + self.misc[0] + '_t' + strTrial
+        if len(self.misc) > 0:
+            if self.misc[0] == "MovieTag":
+                self.TagFilePath = self.movieTagPath
+                self.TagFileReindexPath = utils.MODEL_TMP_PATH      + self.tag + \
+                                               '_' + self.misc[0] + '_t' + strTrial
+                self.ShareTagPath = utils.MODEL_TMP_PATH      + self.tag + \
+                                               '_share_' + self.misc[0] + '_t' + strTrial
         ### End Neighborhood Model Files###
         ### End Baidu Specific ###
 
@@ -61,6 +62,10 @@ class SVDModel(Model):
         self.SVDFeatureSVDPPRandOrder = utils.SVDFEATURE_SVDPP_RANDORDER
         self.formatType           = 0
         self.numUserFeedback      = 0
+        self.numUser= 0
+        self.numMovie= 0
+        self.numGlobal = 0
+        self.avg= 0
         self.originDataSet        = utils.ORIGINAL_DATA_PATH 
         # 0 is the default value
         
@@ -271,17 +276,10 @@ class SVDModel(Model):
 
     def setupImplicitFeatures(self):
         import os
-
         #reindex the training files and build two dicts
-        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.originDataSet)
+        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.bootTrain, self.bootCV, self.bootTest, self.tmpTrain, self.tmpCV, self.tmpTest)
         #reindex the history
         IFF.translate(self.userHistoryPath, self.userHistoryReindexPath, Udic, ItemDic)
-        #reindex CV file
-        IFF.translate(self.bootCV, self.tmpCV, Udic, ItemDic)
-        #reindex Testfile
-        IFF.translate(self.bootTest, self.tmpTest, Udic, ItemDic)
-        #reindex the training
-        IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
 
         #make group training files
         os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder)
@@ -334,51 +332,6 @@ class SVDModel(Model):
              ' name_pred=' + self.predTestTmp)
         self.prependUserMovieToPredictions(self.bootCV,self.predCVTmp,self.predCV)
         self.prependUserMovieToPredictions(self.bootTest,self.predTestTmp,self.predTest)       
-
-    def setupImplicitFeatures(self):
-        import os
-        #reindex the training files and build two dicts
-        Udic,ItemDic,avg=IFF.reIndex_Implicit(self.originDataSet)
-        #reindex the history
-        IFF.translate(self.userHistoryPath, self.userHistoryReindexPath, Udic, ItemDic)
-        #reindex CV file
-        IFF.translate(self.bootCV, self.tmpCV, Udic, ItemDic)
-        #reindex Testfile
-        IFF.translate(self.bootTest, self.tmpTest, Udic, ItemDic)
-        #reindex the training files
-        IFF.translate(self.bootTrain,self.tmpTrain,Udic,ItemDic)
-
-        #make group training files
-        os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpTrain + ' ' + self.tmpLineOrder)
-        os.system(self.SVDFeatureLineReorder + ' ' + self.tmpTrain + ' ' + self.tmpLineOrder + ' ' + self.tmpGpTrain)
-
-        #make group training files of the CV set
-        os.system(self.SVDFeatureSVDPPRandOrder +' '+ self.tmpCV + \
-                ' '+ self.tmpLineOrder)
-        os.system(self.SVDFeatureLineReorder + ' ' + self.tmpCV + \
-                ' ' + self.tmpLineOrder + ' ' + self.tmpGpCV)
-
-        #make basic feature files
-        self.basicConvert(self.tmpGpTrain,self.featTrain)
-        self.basicConvert(self.tmpGpCV,   self.featCV)
-        self.basicConvert(self.tmpTest, self.featTest)
-
-        #make implicit feature files
-        IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpTrain,self.ImfeatTrain)
-        IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpTest,self.ImfeatTest)
-        IFF.mkImplicitFeatureFile(self.userHistoryReindexPath,self.tmpGpCV,self.ImfeatCV)
-
- 
-        #set different parameters
-        self.numUser=len(Udic)
-        self.numMovie=len(ItemDic)
-        self.avg=avg
-        self.numGlobal = 0
-        self.activeType = '0'
-        self.formatType = 1
-        self.numUserFeedback = len(ItemDic)
-        
-
 
 
     def NeighborhoodSetup(self):
