@@ -3,20 +3,22 @@ import sys
 #The TrainFile is in format of "uid \t mid \t rating"
 #The PredFile is in format of "uid \t mid \t rating"
 #The MovieTagFile is in format of "mid \t tag1,tag2,......."
-
+#The CVFile is in format of "uid \t mid \t rating"
 #For output
 #The TrainFileReindex is in formate of "uid \t mid \t rating", with reindexed
 #The PredFileReindex is in format of "uid \t mid \t rating",with reindexed
 #The MovieTagFileReindex is in format of "mid \t tag1,tag2,.......", with reindexed
-def reIndex(fin,gin,hin,fout,gout,hout):
+#The CVFileReindex is in format of "uid \t mid \t rating",with reindexed 
+def reIndex(fin,gin,hin,CVfin,fout,gout,hout,CVfout):
 
 	TrainFile           =open(fin,'r')
 	MovieTagFile        =open(gin,'r')
 	PredFile            =open(hin,'r')
-
+    CVFile              =open(CVin,'r')
 	TrainFileReindex    =open(fout,'w')
     MovieTagFileReindex =open(gout,'w')
 	PredFileReindex     =open(hout,'w')
+    CVFileReindex       =open(CVfout,'w')
 
 	uidDic={}	#Key is original uid. Corresponding value is reindexed uid
 	midDic={}	#Key is original mid. Corresponding value is reindexed mid
@@ -45,6 +47,13 @@ def reIndex(fin,gin,hin,fout,gout,hout):
 
 		TrainFileReindex.write('%d\t%d\t%d\n' %(uidDic[uid],midDic[mid],rating))
 
+#this part is for reindexing CVfile
+	for line in CVFile:
+		arr=line.split()
+		uid=int(arr[0].strip())
+		mid=int(arr[1].strip())
+		rating=int(float(arr[2].strip()))
+		CVFileReindex.write('%d\t%d\t%d\n' %(uidDic[uid],midDic[mid],rating))
 #this part is for reindexing movie-tag file
 	for line in MovieTagFile:
 		arr=line.split()
@@ -85,9 +94,11 @@ def reIndex(fin,gin,hin,fout,gout,hout):
 	TrainFileReindex.close()
 	MovieTagFileReindex.close()
 	PredFileReindex.close()
+    CVFileReindex.close()
 	TrainFile.close()
 	MovieTagFile.close()
 	PredFile.close()
+    CVFile.close()
 	return(noUser,noMovie)
 
 #This function is going to use movie_tag_new.txt to get movie pairs which have certain number of tags in common
