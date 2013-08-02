@@ -1,4 +1,4 @@
-TBEEF - Triple Bagged Ensemble Ensemble Framework.
+TBEEF - Triple Bagged Ensemble Ensemble Framework
 ==============================================
 
 This program is a hybrid recommendation system, an implementation of the TBEEF algorithm which utilizes various different statistical models and ensemble tehcniques, patching them together in an intelligent way to improve prediction accuracy. It was specifically developed to implement the methods from the various top competitors in the Baidu, Inc. movie recommendation algorithm contest into a single unified approach and is written to work with datasets which follow the format of the contest.
