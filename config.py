@@ -8,7 +8,8 @@ models = [
           #['rmt','FM','RelatedMovieTag',['2']]
     
           #['basicSVD','SVD','Basic',[]]
-          ['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
+          #['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
+          ['NeighborhoodMovieTag', 'SVD' , 'Neighborhood' , ['MovieTag']]
           ] 
 
 # Defining models:
