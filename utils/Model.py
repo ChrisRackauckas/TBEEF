@@ -17,7 +17,6 @@ class Model(object):
                                       '_CV' + '_t' + strTrial
         self.featTest   = utils.MODEL_FEATURED_PATH + self.tag + \
                                     '_test' + '_t' + strTrial
-
         self.tmpTrain   = utils.MODEL_TMP_PATH      + self.tag + \
                                    '_train' + '_t' + strTrial
         self.tmpCV      = utils.MODEL_TMP_PATH      + self.tag + \
@@ -40,6 +39,7 @@ class Model(object):
         self.movieTagPath   = utils.MOVIE_TAG_PATH
         self.userSocialPath = utils.USER_SOCIAL_PATH
         self.userHistoryPath= utils.USER_HISTORY_PATH
+
 
     def prependUserMovieToPredictions(self,idsPath,fixPath,savePath):
         ### Takes in a column of ratings as toFix
