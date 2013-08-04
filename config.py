@@ -1,14 +1,14 @@
 ################### Select Models ##################
 
 models = [
-          #['basicFM','FM','Basic',['2']],
+          ['basicFM','FM','Basic',['2']],
           #['bmt','FM','BasicMovieTag',['2']],
           #['amt','FM','AdjustedMovieTag',['2']]
           #['nn', 'FM', 'NearestNeighbor',['2']]
           #['rmt','FM','RelatedMovieTag',['2']]
     
-          #['basicSVD','SVD','Basic',[]]
-          ['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
+          ['basicSVD','SVD','Basic',[]]
+          #['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
           #['NeighborhoodMovieTag', 'SVD' , 'Neighborhood' , ['MovieTag']]
           ] 
 
@@ -29,7 +29,7 @@ ensembleModels = [['OLSR', 'OLS', []],
                   ['BMAR','BMAR',[]],
                  #['RFR' ,'RFR' ,[]],  # Large memory requirement
                   ['Lasso', 'Lasso', []]
-                 #['GBRT','GBRT',['10']]
+                  ['GBRT','GBRT',['10']]
 ]
 
 # Defining ensemble models:
@@ -42,8 +42,6 @@ ensembleModels = [['OLSR', 'OLS', []],
 synthModel = ['GBRT','GBRT',['10']]
 
 ################### Select Parts  ##################
-LAPTOP_TEST      = True # uses small data set to run features on laptop
-
 TRIALS           = 1 
 PRE_PROCESS      = True
 # ---- ---- PreProcess Selection ---- ---- #
@@ -51,19 +49,19 @@ TEST_SUBSET      = True   # uses small data set
 
 ### Baidu Specific Preprocess ###
 PROCESS_TAGS     = False  # generates new file for movie tag feature
-PROCESS_SOCIAL   = True  # cuts out all the extra social users not in data set
-PROCESS_HISTORY  = True
+PROCESS_SOCIAL   = False  # cuts out all the extra social users not in data set
+PROCESS_HISTORY  = False
 ### End Baidu Specific ####
 
 DE_EFFECT        = False  # If De-effect is false, intermittent predictions are correct
 # ---- ---- ---- ---- ----- ---- ---- ---- #
 SETUP_MODELS     = True
 RUN_MODELS       = True
-SETUP_HYBRID     = False
-RUN_HYBRID       = False
-SETUP_SYNTHESIZE = False
-RUN_SYNTHESIZE   = False
-POST_PROCESS     = False
+SETUP_HYBRID     = True
+RUN_HYBRID       = True
+SETUP_SYNTHESIZE = True
+RUN_SYNTHESIZE   = True
+POST_PROCESS     = True
 
 
 ################## Select Bootstrap Parameters  ##################
@@ -76,7 +74,7 @@ TIME_RUN     = False
 
 ################## Factorization Machines ##########
 
-FM_ITER = 40
+FM_ITER = 100
 FM_STR_ITER = str(FM_ITER)
 FM_INIT_STD = '.3'
 
@@ -90,6 +88,3 @@ SVD_REGULARIZATION_FEEDBACK = '.004'
 SVD_NUM_FACTOR            = '64'
 SVD_ACTIVE_TYPE           = '0'
 SVD_NUM_ITER              = '40'
-
-################## Hybrid #########################
-
