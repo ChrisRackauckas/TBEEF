@@ -8,7 +8,7 @@ models = [
           #['rmt','FM','RelatedMovieTag',['2']]
     
           ['basicSVD','SVD','Basic',[]]
-          #['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]]
+          #['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]],
           #['NeighborhoodMovieTag', 'SVD' , 'Neighborhood' , ['MovieTag']]
           ] 
 
@@ -28,8 +28,8 @@ ensembleModels = [['OLSR', 'OLS', []],
                   ['BRT','BRT',[]],
                   ['BMAR','BMAR',[]],
                  #['RFR' ,'RFR' ,[]],  # Large memory requirement
-                  ['Lasso', 'Lasso', []]
-                  ['GBRT','GBRT',['10']]
+                  ['Lasso', 'Lasso', []],
+                  ['GBRT','GBRT',['200']]
 ]
 
 # Defining ensemble models:
@@ -39,7 +39,7 @@ ensembleModels = [['OLSR', 'OLS', []],
 # modelType defines what model to use
 # misc is the arguments to the program
 
-synthModel = ['GBRT','GBRT',['10']]
+synthModel = ['GBRT','GBRT',['200']]
 
 ################### Select Parts  ##################
 TRIALS           = 1 
