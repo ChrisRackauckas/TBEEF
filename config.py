@@ -2,10 +2,12 @@
 
 models = [
           ['basicFM','FM','Basic',['2']],
-          #['bmt','FM','BasicMovieTag',['2']],
-          #['amt','FM','AdjustedMovieTag',['2']]
-          #['nn', 'FM', 'NearestNeighbor',['2']]
-          #['rmt','FM','RelatedMovieTag',['2']]
+          #['basicMovTag','FM','BasicMovieTag',['2']],
+          #['nearNeib', 'FM', 'NearestNeighbor',['2']],
+          #['rmtThresh5t','FM','RelatedMovieTagThreshold',['2']],
+          #['rmtThresh2','FM','RelatedMovieTagThreshold2',['2']],
+          #['userHist','FM','UserHistory',['2']],
+          #['userSocial','FM','UserSocial',['2']],
     
           ['basicSVD','SVD','Basic',[]]
           #['ImplicitFeedbackSVD','SVD','ImplicitFeedback',[]],
