@@ -50,7 +50,7 @@ class Model(object):
         ### has a column of ratings or not
         import csv
         data = csv.reader(open(idsPath,'rU'), delimiter="\t", quotechar='|')
-        fixData = open(fixPath, 'w')
+        fixData = open(fixPath, 'rU')
         fixLines = fixData.readlines()
         i = 0
         output = []
